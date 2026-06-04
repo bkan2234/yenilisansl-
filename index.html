@@ -3,175 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Cari Takip Pro v3.0.0 Sheets Edition</title>
+<title>Cari Takip Pro v3.0.1 Sheets Lisanslı</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css">
-<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js">
-/* ==== v3.0.0 SHEETS LİSANSLI BULUT SİSTEMİ ==== */
-const CLOUD_APP_VERSION = 'v3.0.0 Sheets Edition';
-
-function cloudMsg(text, ok){
-  const el=document.getElementById('cloud-license-msg');
-  if(el){ el.textContent=text; el.className='cloud-license-msg '+(ok?'cloud-ok':'cloud-err'); }
-}
-
-function cloudDeviceId(){
-  let id=localStorage.getItem('ct_cloud_device_id');
-  if(!id){
-    id='dev_'+(crypto.randomUUID ? crypto.randomUUID() : (Date.now()+'_'+Math.random().toString(16).slice(2)));
-    localStorage.setItem('ct_cloud_device_id', id);
-  }
-  return id;
-}
-
-function cloudApiUrl(){
-  return localStorage.getItem('ct_cloud_api_url') || '';
-}
-function cloudLicenseKey(){
-  return localStorage.getItem('ct_cloud_license_key') || '';
-}
-
-function cloudJsonp(params){
-  return new Promise((resolve,reject)=>{
-    const api=cloudApiUrl();
-    if(!api) return reject(new Error('Cloud API linki yok'));
-    const cb='ct_cb_'+Date.now()+'_'+Math.random().toString(16).slice(2);
-    params.callback=cb;
-    params._t=Date.now();
-    window[cb]=(data)=>{
-      try{ delete window[cb]; script.remove(); }catch(e){}
-      resolve(data);
-    };
-    const qs=new URLSearchParams(params).toString();
-    const script=document.createElement('script');
-    script.onerror=()=>{ try{delete window[cb]; script.remove();}catch(e){}; reject(new Error('API bağlantısı kurulamadı')); };
-    script.src=api+(api.includes('?')?'&':'?')+qs;
-    document.body.appendChild(script);
-  });
-}
-
-async function cloudCheckLicense(){
-  const key=cloudLicenseKey();
-  if(!key) return {ok:false,error:'Lisans anahtarı yok'};
-  return await cloudJsonp({action:'licenseCheck',licenseKey:key,deviceId:cloudDeviceId()});
-}
-
-async function cloudActivateLicense(){
-  const api=document.getElementById('cloud-api-url').value.trim();
-  const key=document.getElementById('cloud-license-key').value.trim();
-  if(!api || !key){ cloudMsg('API linki ve lisans anahtarı zorunlu.', false); return; }
-
-  localStorage.setItem('ct_cloud_api_url', api);
-  localStorage.setItem('ct_cloud_license_key', key);
-
-  cloudMsg('Lisans kontrol ediliyor...', true);
-  try{
-    const r=await cloudCheckLicense();
-    if(!r.ok){
-      cloudMsg(r.error || 'Lisans geçersiz.', false);
-      return;
-    }
-    localStorage.setItem('ct_cloud_tenant_name', r.customerName || '');
-    localStorage.setItem('ct_cloud_expires_at', r.expiresAt || '');
-    document.getElementById('cloud-license-screen').style.display='none';
-    cloudMsg('Lisans aktif.', true);
-    await cloudLoadFromCustomerSheet(true);
-  }catch(e){
-    cloudMsg(e.message || 'Lisans kontrol hatası.', false);
-  }
-}
-
-function cloudUseOffline(){
-  localStorage.setItem('ct_cloud_offline_only','1');
-  document.getElementById('cloud-license-screen').style.display='none';
-}
-
-function cloudShowLicenseIfNeeded(){
-  if(localStorage.getItem('ct_cloud_offline_only')==='1') return;
-  const screen=document.getElementById('cloud-license-screen');
-  const api=cloudApiUrl(), key=cloudLicenseKey();
-  const apiInp=document.getElementById('cloud-api-url');
-  const keyInp=document.getElementById('cloud-license-key');
-  if(apiInp) apiInp.value=api;
-  if(keyInp) keyInp.value=key;
-  if(!api || !key) screen.style.display='flex';
-  else {
-    cloudCheckLicense().then(r=>{
-      if(!r.ok){ screen.style.display='flex'; cloudMsg(r.error || 'Lisans geçersiz.', false); }
-      else {
-        localStorage.setItem('ct_cloud_tenant_name', r.customerName || '');
-        localStorage.setItem('ct_cloud_expires_at', r.expiresAt || '');
-        cloudLoadFromCustomerSheet(false);
-      }
-    }).catch(()=>screen.style.display='flex');
-  }
-}
-
-async function cloudLoadFromCustomerSheet(showAlert){
-  try{
-    const r=await cloudJsonp({action:'load',licenseKey:cloudLicenseKey(),deviceId:cloudDeviceId()});
-    if(!r.ok){ if(showAlert) alert(r.error || 'Buluttan yükleme hatası'); return false; }
-    if(r.data){
-      DB=r.data;
-      if(typeof dbSave==='function') dbSave();
-      if(typeof initApp==='function') initApp();
-      if(showAlert) alert('Müşteri bulut verisi yüklendi.');
-    }
-    return true;
-  }catch(e){
-    if(showAlert) alert('Buluttan yüklenemedi: '+e.message);
-    return false;
-  }
-}
-
-async function cloudSaveToCustomerSheet(showAlert){
-  try{
-    const api=cloudApiUrl();
-    if(!api){ if(showAlert) alert('Cloud API linki yok'); return false; }
-    const body={
-      action:'save',
-      licenseKey:cloudLicenseKey(),
-      deviceId:cloudDeviceId(),
-      data:DB
-    };
-    const res=await fetch(api,{method:'POST',body:JSON.stringify(body)});
-    const text=await res.text();
-    let r={ok:true};
-    try{ r=JSON.parse(text); }catch(e){}
-    if(!r.ok){ if(showAlert) alert(r.error || 'Buluta kaydetme hatası'); return false; }
-    if(showAlert) alert('Müşteri bulutuna kaydedildi.');
-    return true;
-  }catch(e){
-    if(showAlert) alert('Buluta kaydedilemedi: '+e.message);
-    return false;
-  }
-}
-
-let cloudSaveTimer=null;
-function cloudAutoSave(){
-  if(localStorage.getItem('ct_cloud_offline_only')==='1') return;
-  if(!cloudApiUrl() || !cloudLicenseKey()) return;
-  clearTimeout(cloudSaveTimer);
-  cloudSaveTimer=setTimeout(()=>cloudSaveToCustomerSheet(false), 1200);
-}
-
-/* Mevcut yedek butonlarını lisanslı buluta bağla */
-manuelYedekle = function(){ cloudSaveToCustomerSheet(true); };
-bulutYukle = function(){ cloudLoadFromCustomerSheet(true); };
-
-const _dbSave_cloud_v300 = typeof dbSave === 'function' ? dbSave : null;
-dbSave = function(){
-  if(_dbSave_cloud_v300) _dbSave_cloud_v300();
-  cloudAutoSave();
-};
-
-const _initApp_cloud_v300 = typeof initApp === 'function' ? initApp : null;
-initApp = function(){
-  if(_initApp_cloud_v300) _initApp_cloud_v300();
-  setTimeout(cloudShowLicenseIfNeeded, 300);
-};
-document.addEventListener('DOMContentLoaded',()=>setTimeout(cloudShowLicenseIfNeeded,600));
-
-</script>
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{--g:#1d6f42;--g2:#155732;--r:#d63b3b;--y:#e08c00;--b:#1a2744;--border:1px solid #e5e7eb;--radius:10px;--shadow:0 1px 3px rgba(0,0,0,.08)}
@@ -342,7 +176,7 @@ tr:hover td{background:#fafafa}
 .fav-unit-row select{width:auto!important;min-height:32px!important;font-size:12px!important;padding:5px 7px!important}
 
 
-/* v3.0.0 Sheets Edition uygulama içi sürüm etiketi */
+/* v3.0.1 Sheets Lisanslı uygulama içi sürüm etiketi */
 .app-version-fixed{
   position:fixed;
   right:10px;
@@ -359,11 +193,11 @@ tr:hover td{background:#fafafa}
 @media(max-width:780px){.app-version-fixed{bottom:64px;right:10px}}
 
 
-/* v3.0.0 Sheets Edition stok tam sayı */
+/* v3.0.1 Sheets Lisanslı stok tam sayı */
 #st-tb .num, #st-h-tb .num{font-variant-numeric:tabular-nums}
 
 
-/* v3.0.0 Sheets Edition stok üst formları kaldırıldı, listeden direkt düzenleme */
+/* v3.0.1 Sheets Lisanslı stok üst formları kaldırıldı, listeden direkt düzenleme */
 #page-stok > .g2:first-of-type{display:none!important}
 .stok-inline-input{
   width:88px!important;
@@ -377,11 +211,11 @@ tr:hover td{background:#fafafa}
 }
 
 
-/* v3.0.0 Sheets Edition JSON yedek kartı sadece yedek sayfasında */
+/* v3.0.1 Sheets Lisanslı JSON yedek kartı sadece yedek sayfasında */
 .json-yedek-gizli{display:none!important}
 
 
-/* v3.0.0 Sheets Edition kullanıcı sayfa yetkileri */
+/* v3.0.1 Sheets Lisanslı kullanıcı sayfa yetkileri */
 .page-perm-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:6px}
 .page-perm-item{display:flex;align-items:center;gap:7px;border:1px solid #e5e7eb;background:#fff;border-radius:10px;padding:8px;font-size:12px;font-weight:600;color:#374151}
 .page-perm-item input{width:auto!important;min-height:auto!important}
@@ -389,7 +223,7 @@ tr:hover td{background:#fafafa}
 @media(max-width:780px){.page-perm-grid{grid-template-columns:1fr}}
 
 
-/* v3.0.0 Sheets Edition stok toplu kayıt + son stok değiştirilemez */
+/* v3.0.1 Sheets Lisanslı stok toplu kayıt + son stok değiştirilemez */
 .stok-readonly-box{
   display:inline-block;
   min-width:70px;
@@ -413,9 +247,12 @@ tr:hover td{background:#fafafa}
 @media(max-width:780px){.kat-edit-row{grid-template-columns:1fr}.kat-edit-row .btn-row{display:grid!important;grid-template-columns:1fr 1fr!important}}
 
 
-/* v3.0.0 Sheets Lisanslı Bulut */
-#cloud-license-screen{position:fixed;inset:0;background:linear-gradient(135deg,#1a2744,#1d6f42);z-index:20000;display:none;align-items:center;justify-content:center;padding:16px}
-.cloud-license-box{background:#fff;width:390px;max-width:96vw;border-radius:18px;padding:24px;box-shadow:0 25px 80px rgba(0,0,0,.35)}
+/* v3.0.1 Sheets Lisanslı Cloud Ekranı */
+#cloud-license-screen{
+  position:fixed;inset:0;background:linear-gradient(135deg,#1a2744,#1d6f42);
+  z-index:999999;display:none;align-items:center;justify-content:center;padding:16px
+}
+.cloud-license-box{background:#fff;width:420px;max-width:96vw;border-radius:18px;padding:24px;box-shadow:0 25px 80px rgba(0,0,0,.35)}
 .cloud-license-box h2{margin:0 0 6px;font-size:22px;color:#111827}
 .cloud-license-box p{font-size:12px;color:#6b7280;margin:0 0 14px;line-height:1.5}
 .cloud-license-box input{width:100%;margin-bottom:10px}
@@ -448,7 +285,7 @@ tr:hover td{background:#fafafa}
   <div class="sidebar">
     <div class="sb-logo">
       <div class="ic"><i class="ti ti-building-store"></i></div>
-      <span>Cari Takip <small style="font-size:10px;color:#9ca3af">v3.0.0 Sheets Edition</small></span>
+      <span>Cari Takip <small style="font-size:10px;color:#9ca3af">v3.0.1 Sheets Lisanslı</small></span>
     </div>
     <div class="sb-nav">
       <div class="sb-label">Ana Ekran</div>
@@ -2196,7 +2033,176 @@ function faturaYazdir() {
 #mobile-nav{display:none}
 @media(max-width:780px){#mobile-nav{display:flex;position:fixed;left:8px;right:8px;bottom:8px;z-index:800;background:#fff;border:1px solid #e5e7eb;border-radius:20px;box-shadow:0 8px 25px rgba(0,0,0,.16);padding:6px;justify-content:space-around}#mobile-nav button{border:0;background:transparent;color:#64736b;font-size:10px;font-weight:700;display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 5px;border-radius:14px;min-width:48px}#mobile-nav button i{font-size:19px}#mobile-nav button.active{background:#e8f7ed;color:#1d6f42}}
 </style>
-  </head><body>${icerik}<script>setTimeout(()=>{window.print();window.close();},400);<\/script></body></html>`);
+  </head><body>${icerik}<script>setTimeout(()=>{window.print();window.close();},400);<\/script>
+<script>
+/* ==== v3.0.1 SHEETS LİSANSLI BULUT SİSTEMİ ==== */
+const CLOUD_APP_VERSION = 'v3.0.1 Sheets Lisanslı';
+
+function cloudMsg(text, ok){
+  const el=document.getElementById('cloud-license-msg');
+  if(el){ el.textContent=text; el.className='cloud-license-msg '+(ok?'cloud-ok':'cloud-err'); }
+}
+
+function cloudDeviceId(){
+  let id=localStorage.getItem('ct_cloud_device_id');
+  if(!id){
+    id='dev_'+((crypto && crypto.randomUUID) ? crypto.randomUUID() : (Date.now()+'_'+Math.random().toString(16).slice(2)));
+    localStorage.setItem('ct_cloud_device_id', id);
+  }
+  return id;
+}
+
+function cloudApiUrl(){ return localStorage.getItem('ct_cloud_api_url') || ''; }
+function cloudLicenseKey(){ return localStorage.getItem('ct_cloud_license_key') || ''; }
+
+function cloudJsonp(params){
+  return new Promise((resolve,reject)=>{
+    const api=cloudApiUrl();
+    if(!api) return reject(new Error('Cloud API linki yok'));
+    const cb='ct_cb_'+Date.now()+'_'+Math.random().toString(16).slice(2);
+    params.callback=cb;
+    params._t=Date.now();
+    window[cb]=(data)=>{
+      try{ delete window[cb]; script.remove(); }catch(e){}
+      resolve(data);
+    };
+    const qs=new URLSearchParams(params).toString();
+    const script=document.createElement('script');
+    script.onerror=()=>{ try{delete window[cb]; script.remove();}catch(e){}; reject(new Error('API bağlantısı kurulamadı')); };
+    script.src=api+(api.includes('?')?'&':'?')+qs;
+    document.body.appendChild(script);
+  });
+}
+
+async function cloudCheckLicense(){
+  const key=cloudLicenseKey();
+  if(!key) return {ok:false,error:'Lisans anahtarı yok'};
+  return await cloudJsonp({action:'licenseCheck',licenseKey:key,deviceId:cloudDeviceId()});
+}
+
+async function cloudActivateLicense(){
+  const api=document.getElementById('cloud-api-url').value.trim();
+  const key=document.getElementById('cloud-license-key').value.trim();
+  if(!api || !key){ cloudMsg('API linki ve lisans anahtarı zorunlu.', false); return; }
+
+  localStorage.setItem('ct_cloud_api_url', api);
+  localStorage.setItem('ct_cloud_license_key', key);
+
+  cloudMsg('Lisans kontrol ediliyor...', true);
+  try{
+    const r=await cloudCheckLicense();
+    if(!r.ok){
+      cloudMsg(r.error || 'Lisans geçersiz.', false);
+      return;
+    }
+    localStorage.setItem('ct_cloud_tenant_name', r.customerName || '');
+    localStorage.setItem('ct_cloud_expires_at', r.expiresAt || '');
+    document.getElementById('cloud-license-screen').style.display='none';
+    await cloudLoadFromCustomerSheet(true);
+  }catch(e){
+    cloudMsg(e.message || 'Lisans kontrol hatası.', false);
+  }
+}
+
+function cloudClearAndShow(){
+  localStorage.removeItem('ct_cloud_api_url');
+  localStorage.removeItem('ct_cloud_license_key');
+  localStorage.removeItem('ct_cloud_tenant_name');
+  localStorage.removeItem('ct_cloud_expires_at');
+  const api=document.getElementById('cloud-api-url'); if(api) api.value='';
+  const key=document.getElementById('cloud-license-key'); if(key) key.value='';
+  cloudMsg('Lisans bilgileri sıfırlandı.', true);
+}
+
+function cloudShowLicense(){
+  const screen=document.getElementById('cloud-license-screen');
+  if(!screen) return;
+  const apiInp=document.getElementById('cloud-api-url');
+  const keyInp=document.getElementById('cloud-license-key');
+  if(apiInp) apiInp.value=cloudApiUrl();
+  if(keyInp) keyInp.value=cloudLicenseKey();
+  screen.style.display='flex';
+}
+
+function cloudShowLicenseIfNeeded(){
+  const api=cloudApiUrl(), key=cloudLicenseKey();
+  if(!api || !key){ cloudShowLicense(); return; }
+
+  cloudCheckLicense().then(r=>{
+    if(!r.ok){
+      cloudShowLicense();
+      cloudMsg(r.error || 'Lisans geçersiz.', false);
+    }else{
+      localStorage.setItem('ct_cloud_tenant_name', r.customerName || '');
+      localStorage.setItem('ct_cloud_expires_at', r.expiresAt || '');
+      cloudLoadFromCustomerSheet(false);
+    }
+  }).catch(err=>{
+    cloudShowLicense();
+    cloudMsg(err.message || 'Lisans kontrol edilemedi.', false);
+  });
+}
+
+async function cloudLoadFromCustomerSheet(showAlert){
+  try{
+    const r=await cloudJsonp({action:'load',licenseKey:cloudLicenseKey(),deviceId:cloudDeviceId()});
+    if(!r.ok){ if(showAlert) alert(r.error || 'Buluttan yükleme hatası'); return false; }
+    if(r.data){
+      window.DB=r.data;
+      if(typeof dbSave==='function') dbSave();
+      if(typeof renderDashboard==='function') renderDashboard();
+      if(typeof renderF==='function') renderF();
+      if(typeof renderU==='function') renderU();
+      if(typeof renderStok==='function') renderStok();
+      if(showAlert) alert('Müşteri bulut verisi yüklendi.');
+    }
+    return true;
+  }catch(e){
+    if(showAlert) alert('Buluttan yüklenemedi: '+e.message);
+    return false;
+  }
+}
+
+async function cloudSaveToCustomerSheet(showAlert){
+  try{
+    const api=cloudApiUrl();
+    if(!api){ if(showAlert) alert('Cloud API linki yok'); return false; }
+    const body={action:'save',licenseKey:cloudLicenseKey(),deviceId:cloudDeviceId(),data:window.DB};
+    const res=await fetch(api,{method:'POST',body:JSON.stringify(body)});
+    const text=await res.text();
+    let r={ok:true};
+    try{ r=JSON.parse(text); }catch(e){}
+    if(!r.ok){ if(showAlert) alert(r.error || 'Buluta kaydetme hatası'); return false; }
+    if(showAlert) alert('Müşteri bulutuna kaydedildi.');
+    return true;
+  }catch(e){
+    if(showAlert) alert('Buluta kaydedilemedi: '+e.message);
+    return false;
+  }
+}
+
+let cloudSaveTimer=null;
+function cloudAutoSave(){
+  if(!cloudApiUrl() || !cloudLicenseKey()) return;
+  clearTimeout(cloudSaveTimer);
+  cloudSaveTimer=setTimeout(()=>cloudSaveToCustomerSheet(false), 1500);
+}
+
+(function(){
+  const oldDbSave = window.dbSave;
+  window.dbSave = function(){
+    if(oldDbSave) oldDbSave();
+    cloudAutoSave();
+  };
+  const oldManuel = window.manuelYedekle;
+  window.manuelYedekle = function(){ cloudSaveToCustomerSheet(true); };
+  const oldBulut = window.bulutYukle;
+  window.bulutYukle = function(){ cloudLoadFromCustomerSheet(true); };
+  window.addEventListener('load', ()=>setTimeout(cloudShowLicenseIfNeeded, 500));
+})();
+</script>
+
+</body></html>`);
   win.document.close();
 }
 
@@ -3239,7 +3245,7 @@ sepeteTutarAktar = function(){
 };
 
 
-/* ==== v3.0.0 Sheets Edition SİPARİŞ SEKME + KATEGORİLİ ÜRÜN KATALOĞU ==== */
+/* ==== v3.0.1 Sheets Lisanslı SİPARİŞ SEKME + KATEGORİLİ ÜRÜN KATALOĞU ==== */
 let aktifUrunKategori='';
 
 function urunKategoriBarRender(){
@@ -3386,7 +3392,7 @@ initApp=function(){
 };
 
 
-/* ==== v3.0.0 Sheets Edition FATURA ÖNİZLEME + OTOMATİK TUTAR AKTARIM FIX ==== */
+/* ==== v3.0.1 Sheets Lisanslı FATURA ÖNİZLEME + OTOMATİK TUTAR AKTARIM FIX ==== */
 function sepetSatirMiktar(x){
   return +(x.miktar ?? x.mik ?? x.qty ?? x.adet ?? 1) || 1;
 }
@@ -3552,9 +3558,9 @@ goPage = function(id,el){
 };
 
 
-/* ==== v3.0.0 Sheets Edition SİPARİŞ FATURA BUTONU + TAM OTOMATİK TUTAR ==== */
+/* ==== v3.0.1 Sheets Lisanslı SİPARİŞ FATURA BUTONU + TAM OTOMATİK TUTAR ==== */
 function appVersionYaz(){
-  const v='v3.0.0 Sheets Edition';
+  const v='v3.0.1 Sheets Lisanslı';
   document.querySelectorAll('.app-version').forEach(e=>e.textContent=v);
   if(!document.getElementById('app-version-fixed')){
     const d=document.createElement('div');
@@ -3660,7 +3666,7 @@ initApp = function(){
 };
 
 
-/* ==== v3.0.0 Sheets Edition STOK TAM SAYI GÖSTERİM FIX ==== */
+/* ==== v3.0.1 Sheets Lisanslı STOK TAM SAYI GÖSTERİM FIX ==== */
 function stokTam(n){
   const x = Math.round(Number(n) || 0);
   return String(x);
@@ -3767,7 +3773,7 @@ initApp = function(){
 };
 
 
-/* ==== v3.0.0 Sheets Edition STOK DÜZELTME ==== */
+/* ==== v3.0.1 Sheets Lisanslı STOK DÜZELTME ==== */
 function stokSelectleriDoldur(){
   const selects=['st-urun-sec','st-duz-urun'];
   selects.forEach(id=>{
@@ -3842,7 +3848,7 @@ initApp = function(){
 };
 
 
-/* ==== v3.0.0 Sheets Edition STOK DURUM TABLOSUNDAN DÜZELTME ==== */
+/* ==== v3.0.1 Sheets Lisanslı STOK DURUM TABLOSUNDAN DÜZELTME ==== */
 function stokDuzeltModalAc(id){
   const u=DB.urunler.find(x=>String(x.id)===String(id));
   if(!u) return;
@@ -3952,7 +3958,7 @@ initApp = function(){
 };
 
 
-/* ==== v3.0.0 Sheets Edition STOK HESAP KESİN FIX + GELİŞMİŞ DÜZELTME ==== */
+/* ==== v3.0.1 Sheets Lisanslı STOK HESAP KESİN FIX + GELİŞMİŞ DÜZELTME ==== */
 function stokSayi(n){ return Math.round(Number(n)||0); }
 
 /* ÖNEMLİ: Stok artık hareketleri tekrar toplayarak değil, ürünün gerçek stok alanından okunur.
@@ -4148,7 +4154,7 @@ initApp = function(){
 };
 
 
-/* ==== v3.0.0 Sheets Edition STOK LİSTESİNDEN DİREKT DÜZELTME ==== */
+/* ==== v3.0.1 Sheets Lisanslı STOK LİSTESİNDEN DİREKT DÜZELTME ==== */
 function stokSayiV247(n){
   return Math.round(Number(n) || 0);
 }
@@ -4265,7 +4271,7 @@ initApp = function(){
 };
 
 
-/* ==== v3.0.0 Sheets Edition SİPARİŞTE VARSAYILAN BİRİM KOLİ ==== */
+/* ==== v3.0.1 Sheets Lisanslı SİPARİŞTE VARSAYILAN BİRİM KOLİ ==== */
 function urunBirimSecenekleri(u){
   const opts=[];
   // Sipariş eklerken varsayılan Koli olsun diye Koli ilk sıraya alındı
@@ -4315,7 +4321,7 @@ favoriSepeteEkle = function(id){
 };
 
 
-/* ==== v3.0.0 Sheets Edition FATURA FİRMA BİLGİLERİ + SEVKİYAT ADRESİ ==== */
+/* ==== v3.0.1 Sheets Lisanslı FATURA FİRMA BİLGİLERİ + SEVKİYAT ADRESİ ==== */
 function firmaTeslimatAlaniniBagla(){
   // Eski kayıtlarda alan yoksa boş bırakır
   if(!Array.isArray(DB.firmalar)) return;
@@ -4511,7 +4517,7 @@ initApp = function(){
 };
 
 
-/* ==== v3.0.0 Sheets Edition JSON YEDEK SADECE YEDEK SAYFASINDA GÖRÜNSÜN ==== */
+/* ==== v3.0.1 Sheets Lisanslı JSON YEDEK SADECE YEDEK SAYFASINDA GÖRÜNSÜN ==== */
 function jsonYedekKartlariniDuzenle(){
   document.querySelectorAll('.card').forEach(card=>{
     const text = (card.textContent || '').toUpperCase();
@@ -4543,7 +4549,7 @@ initApp = function(){
 document.addEventListener('DOMContentLoaded',()=>setTimeout(jsonYedekKartlariniDuzenle,200));
 
 
-/* ==== v3.0.0 Sheets Edition KULLANICI SAYFA GÖRME YETKİLERİ ==== */
+/* ==== v3.0.1 Sheets Lisanslı KULLANICI SAYFA GÖRME YETKİLERİ ==== */
 const PAGE_LIST_V252 = [
   ['dashboard','Dashboard'],
   ['firmalar','Firmalar'],
@@ -4758,7 +4764,7 @@ initApp = function(){
 };
 
 
-/* ==== v3.0.0 Sheets Edition ŞEHİR / İLÇE OTOMATİK LİSTE ==== */
+/* ==== v3.0.1 Sheets Lisanslı ŞEHİR / İLÇE OTOMATİK LİSTE ==== */
 const IL_LISTESI_V254 = [
   'Adana','Adıyaman','Afyonkarahisar','Ağrı','Amasya','Ankara','Antalya','Artvin','Aydın','Balıkesir',
   'Bilecik','Bingöl','Bitlis','Bolu','Burdur','Bursa','Çanakkale','Çankırı','Çorum','Denizli',
@@ -4935,7 +4941,7 @@ initApp = function(){
 };
 
 
-/* ==== v3.0.0 Sheets Edition STOK TOPLU KAYDET + SON STOK KİLİTLİ + KATEGORİ DÜZENLEME ==== */
+/* ==== v3.0.1 Sheets Lisanslı STOK TOPLU KAYDET + SON STOK KİLİTLİ + KATEGORİ DÜZENLEME ==== */
 function stokInt(n){ return Math.round(Number(n)||0); }
 
 function stokInputDegisti(el){
