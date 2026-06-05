@@ -1738,7 +1738,7 @@ function initApp(){
 // ══════════════════════════════════════════════════════════════
 // GOOGLE SHEETS BULUT YEDEKLEME
 // ══════════════════════════════════════════════════════════════
-const GS_DEFAULT_URL = 'https://script.google.com/macros/s/AKfycbyDqHQ2QE-Qs6ZUk6D953ipCSztwBhQLD8U_qxDjtV8l0tD1JYCb8d8leOQjF0Y82qL/exec';
+const GS_DEFAULT_URL = 'https://script.google.com/macros/s/AKfycbxBKCDmaT9Q3L-jLhrXlRvouKac-8z9nwJeHVkjmAHmT84w7VwHHQRl2463yotRvlUH/exec';
 const GS_DEFAULT_TOKEN = '1234';
 let autoYedekInterval = null;
 
@@ -5860,7 +5860,7 @@ initApp = function(){
    - window.DB kullanmaz; gerçek global DB değişkenini okur.
    - Açılışta buluttan yükleme bitmeden kayıt atmaz.
    - {} gibi boş veri ile müşteri Sheet'ini ezmez.
-   - save/load tamamen JSONP ile yapılır, no-cors fetch kullanılmaz. */
+   - load JSONP ile yapılır; save GitHub Pages için POST no-cors ile gönderilir. */
 (function(){
   'use strict';
   var MASTER_API_URL = 'https://script.google.com/macros/s/AKfycbxBKCDmaT9Q3L-jLhrXlRvouKac-8z9nwJeHVkjmAHmT84w7VwHHQRl2463yotRvlUH/exec';
@@ -5987,12 +5987,21 @@ initApp = function(){
     if(saving) return false;
     saving=true;
     try{
-      var r=await jsonp({action:'save', licenseKey:key, deviceId:deviceId(), data:dataJson});
-      if(!r || !r.ok) throw new Error((r&&r.error)||'Buluta kaydedilemedi');
+      await fetch(MASTER_API_URL, {
+        method:'POST',
+        mode:'no-cors',
+        headers:{'Content-Type':'text/plain;charset=utf-8'},
+        body:JSON.stringify({
+          action:'save',
+          licenseKey:key,
+          deviceId:deviceId(),
+          data:db
+        })
+      });
       lastPayload=payload;
       userChangedAfterLoad=false;
       saveLocal();
-      status('Otomatik buluta kaydedildi: '+new Date().toLocaleString('tr-TR'), '#166534');
+      status('Otomatik buluta kayıt gönderildi: '+new Date().toLocaleString('tr-TR'), '#166534');
       try{ if(typeof markSaved==='function') markSaved(); }catch(e){}
       if(showAlert) alert('Buluta kaydedildi.');
       return true;
