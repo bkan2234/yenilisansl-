@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Cari Takip Pro v3.0.9 Sheets Lisanslı</title>
+<title>Cari Takip Pro v3.0.24 Sheets Lisanslı</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css">
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 <style>
@@ -176,7 +176,7 @@ tr:hover td{background:#fafafa}
 .fav-unit-row select{width:auto!important;min-height:32px!important;font-size:12px!important;padding:5px 7px!important}
 
 
-/* v3.0.9 Sheets Lisanslı uygulama içi sürüm etiketi */
+/* v3.0.24 Sheets Lisanslı uygulama içi sürüm etiketi */
 .app-version-fixed{
   position:fixed;
   right:10px;
@@ -193,11 +193,11 @@ tr:hover td{background:#fafafa}
 @media(max-width:780px){.app-version-fixed{bottom:64px;right:10px}}
 
 
-/* v3.0.9 Sheets Lisanslı stok tam sayı */
+/* v3.0.24 Sheets Lisanslı stok tam sayı */
 #st-tb .num, #st-h-tb .num{font-variant-numeric:tabular-nums}
 
 
-/* v3.0.9 Sheets Lisanslı stok üst formları kaldırıldı, listeden direkt düzenleme */
+/* v3.0.24 Sheets Lisanslı stok üst formları kaldırıldı, listeden direkt düzenleme */
 #page-stok > .g2:first-of-type{display:none!important}
 .stok-inline-input{
   width:88px!important;
@@ -211,11 +211,11 @@ tr:hover td{background:#fafafa}
 }
 
 
-/* v3.0.9 Sheets Lisanslı JSON yedek kartı sadece yedek sayfasında */
+/* v3.0.24 Sheets Lisanslı JSON yedek kartı sadece yedek sayfasında */
 .json-yedek-gizli{display:none!important}
 
 
-/* v3.0.9 Sheets Lisanslı kullanıcı sayfa yetkileri */
+/* v3.0.24 Sheets Lisanslı kullanıcı sayfa yetkileri */
 .page-perm-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:6px}
 .page-perm-item{display:flex;align-items:center;gap:7px;border:1px solid #e5e7eb;background:#fff;border-radius:10px;padding:8px;font-size:12px;font-weight:600;color:#374151}
 .page-perm-item input{width:auto!important;min-height:auto!important}
@@ -223,7 +223,7 @@ tr:hover td{background:#fafafa}
 @media(max-width:780px){.page-perm-grid{grid-template-columns:1fr}}
 
 
-/* v3.0.9 Sheets Lisanslı stok toplu kayıt + son stok değiştirilemez */
+/* v3.0.24 Sheets Lisanslı stok toplu kayıt + son stok değiştirilemez */
 .stok-readonly-box{
   display:inline-block;
   min-width:70px;
@@ -247,29 +247,25 @@ tr:hover td{background:#fafafa}
 @media(max-width:780px){.kat-edit-row{grid-template-columns:1fr}.kat-edit-row .btn-row{display:grid!important;grid-template-columns:1fr 1fr!important}}
 
 
-/* v3.0.9 Sheets Lisanslı Cloud Ekranı */
+/* v3.0.24 Sheets Lisanslı Cloud Ekranı */
 #cloud-license-screen{position:fixed;inset:0;background:linear-gradient(135deg,#1a2744,#1d6f42);z-index:999999;display:none;align-items:center;justify-content:center;padding:16px}
 .cloud-license-box{background:#fff;width:430px;max-width:96vw;border-radius:18px;padding:24px;box-shadow:0 25px 80px rgba(0,0,0,.35)}
 .cloud-license-box h2{margin:0 0 6px;font-size:22px;color:#111827}.cloud-license-box p{font-size:12px;color:#6b7280;margin:0 0 14px;line-height:1.5}.cloud-license-box input{width:100%;margin-bottom:10px}.cloud-license-msg{font-size:12px;margin-top:10px;font-weight:700;min-height:18px}.cloud-ok{color:#166534}.cloud-err{color:#991b1b}.cloud-badge{position:fixed;right:10px;bottom:42px;z-index:900;background:#1d6f42;color:#fff;font-size:10px;font-weight:800;padding:4px 9px;border-radius:999px;opacity:.75}@media(max-width:780px){.cloud-badge{bottom:96px}}
 </style>
 </head>
 <body>
-<!-- Cloud Lisans Ekranı v3.0.4 -->
+<!-- Cloud Lisans / E-posta Giriş Ekranı v3.0.24 -->
 <div id="cloud-license-screen">
   <div class="cloud-license-box">
     <h2>Cari Takip Pro Cloud</h2>
-    <p>Bu ticari sürüm lisans anahtarıyla çalışır. Lisans bir kez aktifleştirilir; sonraki açılışlarda otomatik kontrol edilir.</p>
-    <label>Cloud API Linki</label>
-    <input id="cloud-api-url" placeholder="Apps Script /exec linki" autocomplete="off">
-    <label>Lisans Anahtarı</label>
-    <input id="cloud-license-key" placeholder="CTP-XXXX-XXXX" autocomplete="off">
-    <button type="button" class="btn btn-g" id="cloud-activate-btn">Lisansı Aktifleştir</button>
-    <button type="button" class="btn" id="cloud-test-btn" style="width:100%;justify-content:center;margin-top:8px">API Test Et</button>
-    <button type="button" class="btn" id="cloud-clear-btn" style="width:100%;justify-content:center;margin-top:8px">Lisans Bilgilerini Sıfırla</button>
-    <div class="cloud-license-msg" id="cloud-license-msg"></div>
+    <p>Önce e-posta adresinizi girin. E-posta kayıtlıysa şifreyle giriş yapılır; kayıtlı değilse lisansla ilk kurulum yapılır.</p>
+    <input id="cloud-api-url" type="hidden" autocomplete="off">
+    <label>E-posta / Kullanıcı</label>
+    <input id="ctp-email" placeholder="ornek@firma.com" autocomplete="username">
+    <div class="cloud-license-msg" id="ctp-email-msg"></div>
   </div>
 </div>
-<div class="cloud-badge">v3.0.6 Sheets</div>
+<div class="cloud-badge">v3.0.24 Sheets</div>
 
 
 <!-- LOGIN -->
@@ -292,7 +288,7 @@ tr:hover td{background:#fafafa}
   <div class="sidebar">
     <div class="sb-logo">
       <div class="ic"><i class="ti ti-building-store"></i></div>
-      <span>Cari Takip <small style="font-size:10px;color:#9ca3af">v3.0.9 Sheets Lisanslı</small></span>
+      <span>Cari Takip <small style="font-size:10px;color:#9ca3af">v3.0.24 Sheets Lisanslı</small></span>
     </div>
     <div class="sb-nav">
       <div class="sb-label">Ana Ekran</div>
@@ -802,8 +798,21 @@ tr:hover td{background:#fafafa}
           <button class="btn btn-g" onclick="gsBaglantiKaydet()"><i class="ti ti-device-floppy"></i> Bağlantıyı Kaydet</button>
           <button class="btn" onclick="manuelYedekle()"><i class="ti ti-cloud-upload"></i> Buluta Kaydet</button>
           <button class="btn btn-b" onclick="bulutYukle()"><i class="ti ti-cloud-download"></i> Buluttan Yükle</button>
+          <button class="btn btn-b" onclick="musteriCihazlariListele()"><i class="ti ti-devices"></i> Kayıtlı Cihazları Göster</button>
+          <button class="btn btn-y" onclick="musteriCihazlariSifirla()"><i class="ti ti-devices-off"></i> Tüm Cihazlardan Çıkış Ver</button>
+          <button class="btn btn-r" onclick="musteriVerileriniSifirla()"><i class="ti ti-trash"></i> Müşteri Verilerini Sıfırla</button>
         </div>
         <div id="auto-son" style="font-size:11px;color:#6b7280;margin-top:8px">Otomatik senkron hazırlanıyor...</div>
+      </div>
+
+      <div class="card only-admin" id="musteri-cihaz-card">
+        <div class="card-head">
+          <div class="card-title" style="color:var(--b)"><i class="ti ti-devices"></i> Kayıtlı Cihazlar</div>
+          <button class="btn btn-sm" onclick="musteriCihazlariListele()"><i class="ti ti-refresh"></i> Yenile</button>
+        </div>
+        <div id="musteri-cihaz-al"></div>
+        <div style="font-size:12px;color:#6b7280;margin-bottom:8px">Bu bölüm sadece admin yetkisindeki kullanıcıya görünür. Cihaz kaldırılırsa o cihaz yeniden lisans doğrulaması yapmak zorunda kalır.</div>
+        <div class="tw"><table><thead><tr><th>Cihaz ID</th><th>İlk Giriş</th><th>Son Giriş</th><th>Durum</th><th>İşlem</th></tr></thead><tbody id="musteri-cihaz-tb"><tr><td colspan="5" style="color:#9ca3af">Listelemek için Yenile butonuna bas.</td></tr></tbody></table></div>
       </div>
 
           <div class="card">
@@ -1037,12 +1046,12 @@ let currentUser=null,hasUnsaved=false;
 const DB={firmalar:[],hareketler:[],urunler:[],nextFId:1,nextHId:1,nextUId:1,users:[]};
 let bulutIlkYuklemeBitti=false, bulutKayitTimer=null, bulutKayitDevam=false;
 
-// v3.0.9: Her lisans kendi yerel kayıt alanını kullanır. Eski cari_pro_v3 verisi artık okunmaz.
+// v3.0.14: Her lisans kendi yerel kayıt alanını kullanır. Eski cari_pro_v3 verisi artık okunmaz.
 function cleanLicenseForKey(){
   return String(localStorage.getItem('ct_cloud_license_key')||'NO_LICENSE').replace(/[^A-Za-z0-9_-]/g,'_');
 }
 function ctStorageKey(){ return 'cari_pro_v3_LISANS_'+cleanLicenseForKey(); }
-function ctBlankDB(){ return {firmalar:[],hareketler:[],urunler:[],nextFId:1,nextHId:1,nextUId:1,users:[],kategoriler:['Cevizli Helva','Tahin Helva','Nuga','Kavala','Krokan'],katRenkler:{},ts:new Date().toISOString()}; }
+function ctBlankDB(){ return {firmalar:[],hareketler:[],urunler:[],nextFId:1,nextHId:1,nextUId:1,users:[],kategoriler:[],katRenkler:{},stokHareketler:[],ts:new Date().toISOString()}; }
 function ctResetDB(){
   const fresh=ctBlankDB();
   Object.keys(DB).forEach(k=>delete DB[k]);
@@ -1077,7 +1086,7 @@ function passHash(s){
 function ensureUsers(){
   if(!Array.isArray(DB.users)) DB.users=[];
 
-  // v3.0.9 FIX: Eski/bulut kullanıcı verisi bozuk gelse bile admin girişi garanti.
+  // v3.0.14 FIX: Eski/bulut kullanıcı verisi bozuk gelse bile admin girişi garanti.
   // Kullanıcı adı: admin / Şifre: 1234
   let admin=DB.users.find(u=>String(u&&u.username||'').toLowerCase()==='admin');
   if(!admin){
@@ -1116,10 +1125,24 @@ function logAction(tip,detay){ if(!DB.logs)DB.logs=[]; DB.logs.push({id:Date.now
 function applyRoleUI(){
   const admin=isAdmin(), write=canWrite();
   document.querySelectorAll('.only-admin').forEach(el=>el.style.display=admin?'':'none');
-  document.querySelectorAll('#page-yedek input,#page-yedek button').forEach(el=>{el.disabled=!admin; el.style.opacity=admin?'':'0.55';});
-  document.querySelectorAll('button[onclick*="Sil"],button[onclick*="sil"],button.btn-r').forEach(el=>{el.style.display=canDelete()?'':'none';});
+
+  // Admin girişinde önceki kullanıcıdan kalan pasiflikleri temizle
+  if(admin){
+    document.querySelectorAll('button,input,select,textarea').forEach(el=>{
+      const inLogin = !!el.closest('#login-screen') || !!el.closest('#cloud-license-screen');
+      if(!inLogin){ el.disabled=false; el.style.opacity=''; }
+    });
+  }
+
+  document.querySelectorAll('#page-yedek input,#page-yedek button,#page-kullanicilar input,#page-kullanicilar select,#page-kullanicilar button').forEach(el=>{
+    el.disabled=!admin; el.style.opacity=admin?'':'0.55';
+  });
+  document.querySelectorAll('button[onclick*="Sil"],button[onclick*="sil"],button.btn-r').forEach(el=>{
+    el.style.display=canDelete()?'':'none';
+    if(admin){ el.disabled=false; el.style.opacity=''; }
+  });
   if(!write){
-    document.querySelectorAll('button[onclick*="Kaydet"],button[onclick*="kaydet"],button[onclick*="Ekle"],button[onclick*="ekle"],button[onclick*="hareketKaydet"],button[onclick*="stokKaydet"],button[onclick*="firmaKaydet"],button[onclick*="urunKaydet"]').forEach(el=>{el.disabled=true; el.style.opacity='0.55';});
+    document.querySelectorAll('button[onclick*="Kaydet"],button[onclick*="kaydet"],button[onclick*="Ekle"],button[onclick*="ekle"],button[onclick*="hareketKaydet"],button[onclick*="stokKaydet"],button[onclick*="firmaKaydet"],button[onclick*="urunKaydet"],button[onclick*="siparisCariKaydet"],button[onclick*="stokTopluKaydet"]').forEach(el=>{el.disabled=true; el.style.opacity='0.55';});
   }
 }
 function kullaniciTemizle(){
@@ -1221,7 +1244,7 @@ function goPage(id,el){
   if(id==='mizan')mzYukle();
   if(id==='hareket'){renderHF();genBelge();}
   if(id==='kategoriler')renderKategoriler();
-  if(id==='yedek'){yedekBilgi();gsFormDoldur();}
+  if(id==='yedek'){yedekBilgi();gsFormDoldur(); if(isAdmin() && typeof musteriCihazlariListele==='function') setTimeout(musteriCihazlariListele,120);}
   if(id==='kullanicilar'){renderKullanicilar();kullaniciTemizle();}
   applyRoleUI();
 }
@@ -1691,7 +1714,7 @@ function jsonYukle(inp){const file=inp.files[0];if(!file)return;const r=new File
 function yedekBilgi(){document.getElementById('y-f').textContent=DB.firmalar.length;document.getElementById('y-h').textContent=DB.hareketler.length;document.getElementById('y-u').textContent=DB.urunler.length;document.getElementById('y-son').textContent=new Date().toLocaleString('tr-TR');}
 
 function initApp(){
-  if(!DB.kategoriler){DB.kategoriler=['Cevizli Helva','Tahin Helva','Nuga','Kavala','Krokan'];DB.katRenkler={};}
+  if(!Array.isArray(DB.kategoriler)){DB.kategoriler=[];DB.katRenkler={};}
   if(!DB.firmalar.length){
     DB.firmalar=[];
     DB.urunler=[];
@@ -1854,7 +1877,7 @@ window.addEventListener('load', () => {
 // KATEGORİ YÖNETİMİ
 // ══════════════════════════════════════════════════════════════
 // DB'ye kategoriler dizisi ekle (mevcut yoksa)
-if (!DB.kategoriler) DB.kategoriler = ['Cevizli Helva','Tahin Helva','Nuga','Kavala','Krokan'];
+if (!Array.isArray(DB.kategoriler)) DB.kategoriler = [];
 if (!DB.katRenkler) DB.katRenkler = {};
 
 function kategoriKaydet() {
@@ -3122,7 +3145,7 @@ sepeteTutarAktar = function(){
 };
 
 
-/* ==== v3.0.9 Sheets Lisanslı SİPARİŞ SEKME + KATEGORİLİ ÜRÜN KATALOĞU ==== */
+/* ==== v3.0.24 Sheets Lisanslı SİPARİŞ SEKME + KATEGORİLİ ÜRÜN KATALOĞU ==== */
 let aktifUrunKategori='';
 
 function urunKategoriBarRender(){
@@ -3269,7 +3292,7 @@ initApp=function(){
 };
 
 
-/* ==== v3.0.9 Sheets Lisanslı FATURA ÖNİZLEME + OTOMATİK TUTAR AKTARIM FIX ==== */
+/* ==== v3.0.24 Sheets Lisanslı FATURA ÖNİZLEME + OTOMATİK TUTAR AKTARIM FIX ==== */
 function sepetSatirMiktar(x){
   return +(x.miktar ?? x.mik ?? x.qty ?? x.adet ?? 1) || 1;
 }
@@ -3435,9 +3458,9 @@ goPage = function(id,el){
 };
 
 
-/* ==== v3.0.9 Sheets Lisanslı SİPARİŞ FATURA BUTONU + TAM OTOMATİK TUTAR ==== */
+/* ==== v3.0.24 Sheets Lisanslı SİPARİŞ FATURA BUTONU + TAM OTOMATİK TUTAR ==== */
 function appVersionYaz(){
-  const v='v3.0.9 Sheets Lisanslı';
+  const v='v3.0.24 Sheets Lisanslı';
   document.querySelectorAll('.app-version').forEach(e=>e.textContent=v);
   if(!document.getElementById('app-version-fixed')){
     const d=document.createElement('div');
@@ -3543,7 +3566,7 @@ initApp = function(){
 };
 
 
-/* ==== v3.0.9 Sheets Lisanslı STOK TAM SAYI GÖSTERİM FIX ==== */
+/* ==== v3.0.24 Sheets Lisanslı STOK TAM SAYI GÖSTERİM FIX ==== */
 function stokTam(n){
   const x = Math.round(Number(n) || 0);
   return String(x);
@@ -3650,7 +3673,7 @@ initApp = function(){
 };
 
 
-/* ==== v3.0.9 Sheets Lisanslı STOK DÜZELTME ==== */
+/* ==== v3.0.24 Sheets Lisanslı STOK DÜZELTME ==== */
 function stokSelectleriDoldur(){
   const selects=['st-urun-sec','st-duz-urun'];
   selects.forEach(id=>{
@@ -3725,7 +3748,7 @@ initApp = function(){
 };
 
 
-/* ==== v3.0.9 Sheets Lisanslı STOK DURUM TABLOSUNDAN DÜZELTME ==== */
+/* ==== v3.0.24 Sheets Lisanslı STOK DURUM TABLOSUNDAN DÜZELTME ==== */
 function stokDuzeltModalAc(id){
   const u=DB.urunler.find(x=>String(x.id)===String(id));
   if(!u) return;
@@ -3835,7 +3858,7 @@ initApp = function(){
 };
 
 
-/* ==== v3.0.9 Sheets Lisanslı STOK HESAP KESİN FIX + GELİŞMİŞ DÜZELTME ==== */
+/* ==== v3.0.24 Sheets Lisanslı STOK HESAP KESİN FIX + GELİŞMİŞ DÜZELTME ==== */
 function stokSayi(n){ return Math.round(Number(n)||0); }
 
 /* ÖNEMLİ: Stok artık hareketleri tekrar toplayarak değil, ürünün gerçek stok alanından okunur.
@@ -4031,7 +4054,7 @@ initApp = function(){
 };
 
 
-/* ==== v3.0.9 Sheets Lisanslı STOK LİSTESİNDEN DİREKT DÜZELTME ==== */
+/* ==== v3.0.24 Sheets Lisanslı STOK LİSTESİNDEN DİREKT DÜZELTME ==== */
 function stokSayiV247(n){
   return Math.round(Number(n) || 0);
 }
@@ -4148,7 +4171,7 @@ initApp = function(){
 };
 
 
-/* ==== v3.0.9 Sheets Lisanslı SİPARİŞTE VARSAYILAN BİRİM KOLİ ==== */
+/* ==== v3.0.24 Sheets Lisanslı SİPARİŞTE VARSAYILAN BİRİM KOLİ ==== */
 function urunBirimSecenekleri(u){
   const opts=[];
   // Sipariş eklerken varsayılan Koli olsun diye Koli ilk sıraya alındı
@@ -4198,7 +4221,7 @@ favoriSepeteEkle = function(id){
 };
 
 
-/* ==== v3.0.9 Sheets Lisanslı FATURA FİRMA BİLGİLERİ + SEVKİYAT ADRESİ ==== */
+/* ==== v3.0.24 Sheets Lisanslı FATURA FİRMA BİLGİLERİ + SEVKİYAT ADRESİ ==== */
 function firmaTeslimatAlaniniBagla(){
   // Eski kayıtlarda alan yoksa boş bırakır
   if(!Array.isArray(DB.firmalar)) return;
@@ -4394,7 +4417,7 @@ initApp = function(){
 };
 
 
-/* ==== v3.0.9 Sheets Lisanslı JSON YEDEK SADECE YEDEK SAYFASINDA GÖRÜNSÜN ==== */
+/* ==== v3.0.24 Sheets Lisanslı JSON YEDEK SADECE YEDEK SAYFASINDA GÖRÜNSÜN ==== */
 function jsonYedekKartlariniDuzenle(){
   document.querySelectorAll('.card').forEach(card=>{
     const text = (card.textContent || '').toUpperCase();
@@ -4426,7 +4449,7 @@ initApp = function(){
 document.addEventListener('DOMContentLoaded',()=>setTimeout(jsonYedekKartlariniDuzenle,200));
 
 
-/* ==== v3.0.9 Sheets Lisanslı KULLANICI SAYFA GÖRME YETKİLERİ ==== */
+/* ==== v3.0.24 Sheets Lisanslı KULLANICI SAYFA GÖRME YETKİLERİ ==== */
 const PAGE_LIST_V252 = [
   ['dashboard','Dashboard'],
   ['firmalar','Firmalar'],
@@ -4475,10 +4498,11 @@ function sayfaYetkiUIRender(selectedPages){
   if(!box) return;
   selectedPages = selectedPages || sayfaYetkiVarsayilan(val('ku-role') || 'personel');
   const roleName = val('ku-role') || 'personel';
+  if(roleName === 'admin') selectedPages = sayfaYetkiVarsayilan('admin');
   box.innerHTML = PAGE_LIST_V252.map(([id,label])=>{
     const adminOnly = ['kullanicilar','yedek'].includes(id);
     const disabled = adminOnly && roleName !== 'admin';
-    const checked = selectedPages.includes(id) && !disabled;
+    const checked = roleName === 'admin' ? true : (selectedPages.includes(id) && !disabled);
     return `<label class="page-perm-item ${disabled?'disabled':''}">
       <input type="checkbox" class="ku-page-check" value="${id}" ${checked?'checked':''} ${disabled?'disabled':''}>
       <span>${label}</span>
@@ -4486,7 +4510,7 @@ function sayfaYetkiUIRender(selectedPages){
   }).join('');
 }
 function rolSayfaYetkiHazirla(roleName, reset){
-  const pages = reset ? sayfaYetkiVarsayilan(roleName) : getKuPagesFromUI();
+  const pages = roleName === 'admin' ? sayfaYetkiVarsayilan('admin') : (reset ? sayfaYetkiVarsayilan(roleName) : getKuPagesFromUI());
   sayfaYetkiUIRender(pages);
 }
 function getKuPagesFromUI(){
@@ -4641,7 +4665,7 @@ initApp = function(){
 };
 
 
-/* ==== v3.0.9 Sheets Lisanslı ŞEHİR / İLÇE OTOMATİK LİSTE ==== */
+/* ==== v3.0.24 Sheets Lisanslı ŞEHİR / İLÇE OTOMATİK LİSTE ==== */
 const IL_LISTESI_V254 = [
   'Adana','Adıyaman','Afyonkarahisar','Ağrı','Amasya','Ankara','Antalya','Artvin','Aydın','Balıkesir',
   'Bilecik','Bingöl','Bitlis','Bolu','Burdur','Bursa','Çanakkale','Çankırı','Çorum','Denizli',
@@ -4818,7 +4842,7 @@ initApp = function(){
 };
 
 
-/* ==== v3.0.9 Sheets Lisanslı STOK TOPLU KAYDET + SON STOK KİLİTLİ + KATEGORİ DÜZENLEME ==== */
+/* ==== v3.0.24 Sheets Lisanslı STOK TOPLU KAYDET + SON STOK KİLİTLİ + KATEGORİ DÜZENLEME ==== */
 function stokInt(n){ return Math.round(Number(n)||0); }
 
 function stokInputDegisti(el){
@@ -5071,6 +5095,393 @@ initApp = function(){
 
 
 
+
+<script>
+/* ==== v3.0.24 MASTER API + OTOMATİK BULUT KAYIT FIX ====
+   - Müşteri tarafında Apps Script /exec linki kullanılmaz/görünmez.
+   - Tek sabit MASTER API kullanılır.
+   - Hangi müşteri Sheet'ine yazılacağı lisans kodundan bulunur.
+   - dbSave() çağrılan her işlem otomatik buluta gönderilir.
+   - Manuel yedek mantığı devre dışıdır. */
+(function(){
+  'use strict';
+
+  var MASTER_API_URL = 'https://script.google.com/macros/s/AKfycbxBKCDmaT9Q3L-jLhrXlRvouKac-8z9nwJeHVkjmAHmT84w7VwHHQRl2463yotRvlUH/exec';
+  var saveTimer = null;
+  var saving = false;
+  var lastSent = '';
+
+  function el(id){ return document.getElementById(id); }
+
+  function licenseKey(){
+    if(typeof window.cloudLicenseKey === 'function') return window.cloudLicenseKey() || '';
+    return localStorage.getItem('ct_cloud_license_key') || '';
+  }
+
+  function deviceId(){
+    if(typeof window.cloudDeviceId === 'function') return window.cloudDeviceId() || '';
+    var id = localStorage.getItem('ct_cloud_device_id');
+    if(!id){
+      id = 'dev_' + (Date.now() + '_' + Math.random().toString(16).slice(2));
+      localStorage.setItem('ct_cloud_device_id', id);
+    }
+    return id;
+  }
+
+  function status(text, color){
+    var s = el('auto-son');
+    if(s){
+      s.textContent = text;
+      if(color) s.style.color = color;
+    }
+  }
+
+  function storageKey(){
+    try{
+      if(typeof window.ctStorageKey === 'function') return window.ctStorageKey();
+    }catch(e){}
+    return 'cari_pro_v3_LISANS_' + String(licenseKey() || 'NO_LICENSE').replace(/[^A-Za-z0-9_-]/g,'_');
+  }
+
+  function saveLocal(){
+    if(!window.DB) return;
+    DB.ts = new Date().toISOString();
+    localStorage.setItem(storageKey(), JSON.stringify(DB));
+  }
+
+  async function autoCloudSave(){
+    var key = licenseKey();
+    if(!key){
+      status('Otomatik kayıt bekliyor: lisans yok', '#991b1b');
+      return false;
+    }
+    if(!window.DB) return false;
+    if(saving) return false;
+
+    var payload = {
+      action: 'save',
+      licenseKey: key,
+      deviceId: deviceId(),
+      data: DB
+    };
+
+    var json = JSON.stringify(payload);
+    if(json === lastSent) return true;
+    lastSent = json;
+    saving = true;
+
+    try{
+      await fetch(MASTER_API_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: {'Content-Type':'text/plain;charset=utf-8'},
+        body: json
+      });
+      status('Otomatik bulut kayıt gönderildi: ' + new Date().toLocaleString('tr-TR'), '#166534');
+      try{ if(typeof window.markSaved === 'function') window.markSaved(); }catch(e){}
+      return true;
+    }catch(err){
+      status('Otomatik bulut kayıt hatası: ' + (err.message || err), '#991b1b');
+      return false;
+    }finally{
+      saving = false;
+    }
+  }
+
+  function planAutoCloudSave(){
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(autoCloudSave, 900);
+  }
+
+  window.cloudApiUrl = function(){ return MASTER_API_URL; };
+  window.gsUrl = function(){ return MASTER_API_URL; };
+  window.gsToken = function(){ return ''; };
+  window.cloudSaveToCustomerSheet = autoCloudSave;
+  window.ctpForceCloudSave = autoCloudSave;
+  window.bulutKaydetPlanla = planAutoCloudSave;
+  window.bulutKaydet = function(){ return autoCloudSave(); };
+  window.manuelYedekle = function(){ return autoCloudSave(); };
+  window.gsBaglantiKaydet = function(){ status('API linki sistem tarafından otomatik kullanılır. Müşteri link girmez.', '#166534'); return true; };
+
+  window.dbSave = function(){
+    try{ if(typeof window.cloudNormalizeUsers === 'function') window.cloudNormalizeUsers(); }catch(e){}
+    try{ saveLocal(); }catch(e){}
+    try{ window.hasUnsaved = true; var ub=el('unsaved-bar'); if(ub) ub.classList.add('show'); }catch(e){}
+    try{ if(typeof window.renderDashboard === 'function') window.renderDashboard(); }catch(e){}
+    planAutoCloudSave();
+  };
+
+  function hideOldManualCloudUI(){
+    var u = el('gs-url');
+    var t = el('gs-token');
+    if(u){
+      var fg = u.closest ? u.closest('.fg') : null;
+      if(fg) fg.style.display = 'none';
+      u.value = MASTER_API_URL;
+      u.type = 'hidden';
+    }
+    if(t){
+      var fg2 = t.closest ? t.closest('.fg') : null;
+      if(fg2) fg2.style.display = 'none';
+      t.value = '';
+      t.type = 'hidden';
+    }
+    document.querySelectorAll('button').forEach(function(b){
+      var txt = (b.textContent || '').trim();
+      if(txt.indexOf('Bağlantıyı Kaydet') > -1 || txt === 'Buluta Kaydet'){
+        b.style.display = 'none';
+      }
+    });
+    status('Otomatik bulut kayıt aktif. API linki müşteriye gösterilmez.', '#166534');
+  }
+
+  document.addEventListener('DOMContentLoaded', function(){ setTimeout(hideOldManualCloudUI, 300); });
+  window.addEventListener('load', function(){ setTimeout(hideOldManualCloudUI, 600); });
+})();
+</script>
+
+
+<script>
+/* ==== v3.0.24 E-POSTA ÖNCE GİRİŞ + LİSANSSIZ PERSONEL GİRİŞİ ====
+   Canlı test/önizleme yok. Bu blok en sonda eski lisans ekranını ezer.
+   Akış: E-posta -> kayıtlıysa şifre -> değilse lisans + şifre ile admin kurulum. */
+(function(){
+  'use strict';
+
+  function el(id){ return document.getElementById(id); }
+  function showCloud(){ var s=el('cloud-license-screen'); if(s) s.style.display='flex'; }
+  function hideCloud(){ var s=el('cloud-license-screen'); if(s) s.style.display='none'; }
+  function msg(t,ok){ var m=el('ctp-email-msg'); if(m){ m.textContent=t||''; m.className='cloud-license-msg '+(ok?'cloud-ok':'cloud-err'); } }
+  function emailVal(){ return String((el('ctp-email')||{}).value||'').trim().toLowerCase(); }
+  function passVal(){ return String((el('ctp-pass')||{}).value||''); }
+  function licenseVal(){ return String((el('ctp-license')||{}).value||'').trim(); }
+  function lk(){ return localStorage.getItem('ct_cloud_license_key') || ''; }
+  function dev(){
+    var id=localStorage.getItem('ct_cloud_device_id');
+    if(!id){ id='dev_'+(Date.now()+'_'+Math.random().toString(16).slice(2)); localStorage.setItem('ct_cloud_device_id',id); }
+    return id;
+  }
+  function jsonp(params){
+    if(typeof window.cloudJsonp==='function') return window.cloudJsonp(params);
+    return Promise.reject(new Error('Cloud bağlantısı bulunamadı'));
+  }
+  function copyDb(data){
+    if(!data || typeof data!=='object') return;
+    try{
+      Object.keys(DB).forEach(function(k){ delete DB[k]; });
+      Object.assign(DB, data);
+      if(typeof ensureUsers==='function') ensureUsers();
+      if(typeof ctSaveLocal==='function') ctSaveLocal();
+      if(typeof ctRenderAll==='function') ctRenderAll();
+    }catch(e){}
+  }
+  function autoLogin(username, password){
+    var u=el('l-user'), p=el('l-pass');
+    if(u) u.value=username;
+    if(p) p.value=password;
+    setTimeout(function(){ try{ if(typeof login==='function') login(); }catch(e){} }, 100);
+  }
+  function renderEmailBox(){
+    var box=document.querySelector('#cloud-license-screen .cloud-license-box');
+    if(!box) return;
+    box.innerHTML = ''+
+      '<h2>Cari Takip Pro Cloud</h2>'+
+      '<p>Önce e-posta adresinizi girin. E-posta kayıtlıysa şifreyle giriş yapılır; kayıtlı değilse lisansla ilk kurulum yapılır.</p>'+
+      '<label>E-posta / Kullanıcı</label>'+
+      '<input id="ctp-email" placeholder="ornek@firma.com" autocomplete="username">'+
+      '<div id="ctp-pass-area" style="display:none">'+
+        '<label>Şifre</label>'+
+        '<input id="ctp-pass" type="password" placeholder="Şifre" autocomplete="current-password">'+
+      '</div>'+
+      '<div id="ctp-license-area" style="display:none">'+
+        '<label>Lisans Anahtarı</label>'+
+        '<input id="ctp-license" placeholder="CTP-XXXX-XXXX" autocomplete="off">'+
+        '<div style="font-size:11px;color:#6b7280;margin:-4px 0 10px">Bu e-posta lisans sahibi admin olarak kaydedilir.</div>'+
+      '</div>'+
+      '<button type="button" class="btn btn-g" id="ctp-next" style="width:100%;justify-content:center">Devam Et</button>'+
+      '<button type="button" class="btn" id="ctp-reset" style="width:100%;justify-content:center;margin-top:8px">Bu Cihazdaki Girişi Sıfırla</button>'+
+      '<div class="cloud-license-msg" id="ctp-email-msg"></div>';
+    el('ctp-next').onclick=next;
+    el('ctp-reset').onclick=function(){
+      ['ct_cloud_license_key','ct_cloud_login_email','ct_cloud_tenant_name','ct_cloud_expires_at','ct_cloud_activated','ct_cloud_last_ok'].forEach(function(k){localStorage.removeItem(k);});
+      var e=el('ctp-email'); if(e) e.value='';
+      showStep('email'); msg('Cihaz girişi sıfırlandı.', true);
+    };
+    ['ctp-email','ctp-pass','ctp-license'].forEach(function(id){ var x=el(id); if(x) x.onkeydown=function(ev){ if(ev.key==='Enter') next(); }; });
+    var savedEmail=localStorage.getItem('ct_cloud_login_email')||''; if(savedEmail && el('ctp-email')) el('ctp-email').value=savedEmail;
+  }
+  var mode='email';
+  function showStep(m){
+    mode=m;
+    var pa=el('ctp-pass-area'), la=el('ctp-license-area'), b=el('ctp-next');
+    if(pa) pa.style.display=(m==='login'||m==='setup')?'block':'none';
+    if(la) la.style.display=(m==='setup')?'block':'none';
+    if(b) b.textContent = m==='email' ? 'Devam Et' : (m==='login' ? 'Giriş Yap' : 'Lisansla Kurulumu Tamamla');
+  }
+  async function next(){
+    var email=emailVal();
+    if(!email){ msg('E-posta zorunlu.', false); return; }
+    var btn=el('ctp-next');
+    try{
+      if(btn){btn.disabled=true;}
+      if(mode==='email'){
+        msg('E-posta kontrol ediliyor...', true);
+        var r=await jsonp({action:'checkEmail', email:email, deviceId:dev()});
+        if(!r || !r.ok) throw new Error((r&&r.error)||'E-posta kontrol edilemedi');
+        if(r.exists){ showStep('login'); msg('Kayıt bulundu. Şifrenizi girin.', true); setTimeout(function(){var p=el('ctp-pass'); if(p)p.focus();},50); }
+        else { showStep('setup'); msg('Bu e-posta kayıtlı değil. İlk kurulum için lisans ve şifre girin.', true); setTimeout(function(){var p=el('ctp-pass'); if(p)p.focus();},50); }
+        return;
+      }
+      if(mode==='login'){
+        var pass=passVal(); if(!pass){ msg('Şifre zorunlu.', false); return; }
+        msg('Giriş yapılıyor...', true);
+        var lr=await jsonp({action:'userLogin', email:email, passwordHash:passHash(pass), deviceId:dev()});
+        if(!lr || !lr.ok) throw new Error((lr&&lr.error)||'Giriş başarısız');
+        localStorage.setItem('ct_cloud_license_key', lr.licenseKey||'');
+        localStorage.setItem('ct_cloud_login_email', email);
+        localStorage.setItem('ct_cloud_activated','1');
+        copyDb(lr.data);
+        hideCloud();
+        autoLogin(email, pass);
+        return;
+      }
+      if(mode==='setup'){
+        var pass2=passVal(), key=licenseVal();
+        if(!pass2){ msg('Admin şifresi zorunlu.', false); return; }
+        if(!key){ msg('Lisans anahtarı zorunlu.', false); return; }
+        msg('Lisans doğrulanıyor ve admin kuruluyor...', true);
+        var sr=await jsonp({action:'setupLicenseAdmin', email:email, passwordHash:passHash(pass2), licenseKey:key, deviceId:dev()});
+        if(!sr || !sr.ok) throw new Error((sr&&sr.error)||'Kurulum başarısız');
+        localStorage.setItem('ct_cloud_license_key', key);
+        localStorage.setItem('ct_cloud_login_email', email);
+        localStorage.setItem('ct_cloud_activated','1');
+        copyDb(sr.data);
+        hideCloud();
+        autoLogin(email, pass2);
+      }
+    }catch(e){ msg(e.message||String(e), false); }
+    finally{ if(btn){btn.disabled=false;} }
+  }
+
+  // Demo kullanıcıları geri basan eski ensureUsers mantığını ezer. Admin/1234 acil giriş kalır ama demo kullanıcılar eklenmez.
+  var oldEnsure=window.ensureUsers;
+  window.ensureUsers = ensureUsers = function(){
+    if(!Array.isArray(DB.users)) DB.users=[];
+    var admin=DB.users.find(function(u){return String(u&&u.username||'').toLowerCase()==='admin';});
+    if(!admin){ DB.users.unshift({id:1, username:'admin', pass:passHash('1234'), role:'admin', active:true, lastLogin:''}); }
+    DB.users.forEach(function(u){
+      if(!u) return;
+      if(u.pass && !String(u.pass).startsWith('h')) u.pass=passHash(u.pass);
+      if(!u.role) u.role='personel';
+      if(u.active===undefined) u.active=true;
+    });
+  };
+
+  // Kullanıcı kaydedilince merkezi USERS_INDEX'e de yaz.
+  var oldKullaniciKaydet=window.kullaniciKaydet;
+  window.kullaniciKaydet = kullaniciKaydet = function(){
+    var username=(el('ku-user')&&el('ku-user').value||'').trim().toLowerCase();
+    var pass=(el('ku-pass')&&el('ku-pass').value||'');
+    var role=(el('ku-role')&&el('ku-role').value||'personel');
+    var active=(el('ku-active')&&el('ku-active').value)!=='0';
+    var before=JSON.stringify((DB.users||[]).map(function(u){return [u.username,u.pass,u.role,u.active];}));
+    var ret=oldKullaniciKaydet ? oldKullaniciKaydet() : undefined;
+    setTimeout(function(){
+      try{
+        var u=(DB.users||[]).find(function(x){return String(x.username||'').toLowerCase()===username;});
+        if(!u || !lk()) return;
+        jsonp({action:'syncUser', licenseKey:lk(), email:u.username, passwordHash:u.pass, role:u.role||role, active:u.active!==false, deviceId:dev()}).catch(function(){});
+      }catch(e){}
+    },300);
+    return ret;
+  };
+
+  window.cloudShowLicenseIfNeeded=function(){
+    renderEmailBox();
+    var key=lk();
+    if(!key){ showCloud(); showStep('email'); msg('E-posta ile devam edin.', true); return; }
+    // kayıtlı lisans varsa buluttan yüklemeyi dene, ama e-posta giriş ekranını ancak lisans geçersizse göster
+    if(typeof window.bulutYukle==='function'){
+      window.bulutYukle(false).then(function(){ hideCloud(); }).catch(function(){ showCloud(); showStep('email'); msg('Oturum yenilemek için e-posta ile giriş yapın.', false); });
+    }else{ hideCloud(); }
+  };
+  window.cloudClearLicense=function(){
+    ['ct_cloud_license_key','ct_cloud_login_email','ct_cloud_tenant_name','ct_cloud_expires_at','ct_cloud_activated','ct_cloud_last_ok'].forEach(function(k){localStorage.removeItem(k);});
+    renderEmailBox(); showCloud(); showStep('email'); msg('Bu cihazdaki giriş sıfırlandı.', true);
+  };
+
+  function boot(){ renderEmailBox(); setTimeout(window.cloudShowLicenseIfNeeded, 250); }
+  document.addEventListener('DOMContentLoaded', boot);
+  window.addEventListener('load', function(){ setTimeout(boot,350); });
+})();
+</script>
+
+
+
+<script>
+/* ==== v3.0.24 AÇILIŞTA OTOMATİK BULUTTAN YÜKLEME FIX ==== */
+(function(){
+  'use strict';
+  var autoLoadRunning=false;
+  var autoLoadDoneForKey='';
+  function el(id){return document.getElementById(id);}
+  function licenseKey(){
+    try{ if(typeof window.cloudLicenseKey==='function') return window.cloudLicenseKey()||''; }catch(e){}
+    return localStorage.getItem('ct_cloud_license_key')||'';
+  }
+  function setStatus(txt,color){
+    var s=el('auto-son');
+    if(s){ s.textContent=txt; if(color) s.style.color=color; }
+  }
+  function renderAllSafe(){
+    ['renderDashboard','renderF','renderU','renderStok','renderKategoriler','renderKu','renderKategoriSelects'].forEach(function(fn){
+      try{ if(typeof window[fn]==='function') window[fn](); }catch(e){}
+    });
+  }
+  async function autoCloudLoad(reason){
+    var key=licenseKey();
+    if(!key || typeof window.bulutYukle!=='function') return false;
+    if(autoLoadRunning) return false;
+    if(autoLoadDoneForKey===key) return true;
+    autoLoadRunning=true;
+    setStatus('Buluttan otomatik yükleniyor...', '#166534');
+    try{
+      var ok=await window.bulutYukle(false);
+      autoLoadDoneForKey=key;
+      renderAllSafe();
+      setStatus(ok===false ? 'Buluttan yükleme yapılamadı; yerel veri korunuyor.' : 'Buluttan otomatik yüklendi: '+new Date().toLocaleString('tr-TR'), ok===false ? '#e08c00' : '#166534');
+      return ok;
+    }catch(e){
+      setStatus('Buluttan otomatik yükleme hatası: '+(e.message||e), '#991b1b');
+      return false;
+    }finally{
+      autoLoadRunning=false;
+    }
+  }
+  window.ctpAutoCloudLoad=autoCloudLoad;
+
+  var oldLogin=window.login;
+  if(typeof oldLogin==='function'){
+    window.login=function(){
+      var r=oldLogin.apply(this,arguments);
+      setTimeout(function(){ autoCloudLoad('login'); }, 700);
+      return r;
+    };
+  }
+
+  var oldInit=window.initApp;
+  if(typeof oldInit==='function'){
+    window.initApp=function(){
+      var r=oldInit.apply(this,arguments);
+      setTimeout(function(){ autoCloudLoad('initApp'); }, 700);
+      return r;
+    };
+  }
+
+  document.addEventListener('DOMContentLoaded',function(){ setTimeout(function(){ autoCloudLoad('DOMContentLoaded'); },1200); });
+  window.addEventListener('load',function(){ setTimeout(function(){ autoCloudLoad('windowLoad'); },1800); });
+})();
+</script>
 </body>
 </html>
 
@@ -5078,13 +5489,16 @@ initApp = function(){
 /* ==== v3.0.4 SHEETS LİSANSLI BULUT SİSTEMİ - TEST EDİLDİ ==== */
 (function(){
   'use strict';
-  window.CLOUD_APP_VERSION='v3.0.9 Sheets Lisanslı';
+  window.CLOUD_APP_VERSION='v3.0.24 Sheets Lisanslı';
   function el(id){return document.getElementById(id);} 
   function setMsg(text,ok){var m=el('cloud-license-msg'); if(m){m.textContent=text; m.className='cloud-license-msg '+(ok?'cloud-ok':'cloud-err');}}
   window.cloudMsg=setMsg;
+  var CLOUD_API_URL='https://script.google.com/macros/s/AKfycbxBKCDmaT9Q3L-jLhrXlRvouKac-8z9nwJeHVkjmAHmT84w7VwHHQRl2463yotRvlUH/exec';
+  // API linki müşteriye gösterilmez; sistem içinden sabit kullanılır.
+  try{localStorage.removeItem('ct_cloud_api_url');}catch(e){}
   function deviceId(){var id=localStorage.getItem('ct_cloud_device_id'); if(!id){id='dev_'+((window.crypto&&crypto.randomUUID)?crypto.randomUUID():(Date.now()+'_'+Math.random().toString(16).slice(2))); localStorage.setItem('ct_cloud_device_id',id);} return id;}
   window.cloudDeviceId=deviceId;
-  function apiUrl(){return localStorage.getItem('ct_cloud_api_url')||'';} window.cloudApiUrl=apiUrl;
+  function apiUrl(){return CLOUD_API_URL;} window.cloudApiUrl=apiUrl;
   function licenseKey(){return localStorage.getItem('ct_cloud_license_key')||'';} window.cloudLicenseKey=licenseKey;
   function show(){var s=el('cloud-license-screen'); if(s){var a=el('cloud-api-url'), k=el('cloud-license-key'); if(a)a.value=apiUrl(); if(k)k.value=licenseKey(); s.style.display='flex';}}
   function hide(){var s=el('cloud-license-screen'); if(s)s.style.display='none';}
@@ -5108,7 +5522,7 @@ initApp = function(){
       var r=await jsonp({action:'load',licenseKey:licenseKey(),deviceId:deviceId()});
       if(!r.ok){if(showAlert)alert(r.error||'Buluttan yükleme hatası'); return false;}
 
-      // v3.0.9: Bulutta müşteri verisi yoksa eski tarayıcı verisini taşımıyoruz; tertemiz DB açıyoruz.
+      // v3.0.14: Bulutta müşteri verisi yoksa eski tarayıcı verisini taşımıyoruz; tertemiz DB açıyoruz.
       if(r.data && typeof r.data==='object' && (Array.isArray(r.data.firmalar)||Array.isArray(r.data.hareketler)||Array.isArray(r.data.urunler))){
         Object.keys(DB).forEach(function(k){delete DB[k];});
         Object.assign(DB,r.data);
@@ -5126,14 +5540,14 @@ initApp = function(){
   window.cloudLoadFromCustomerSheet=loadData;
   async function saveData(showAlert){try{if(!apiUrl()){if(showAlert)alert('Cloud API linki yok'); return false;} normalizeUsers(); var res=await fetch(apiUrl(),{method:'POST',body:JSON.stringify({action:'save',licenseKey:licenseKey(),deviceId:deviceId(),data:window.DB})}); var text=await res.text(); var r={ok:true}; try{r=JSON.parse(text);}catch(e){} if(!r.ok){if(showAlert)alert(r.error||'Buluta kaydetme hatası'); return false;} if(showAlert)alert('Müşteri bulutuna kaydedildi.'); return true;}catch(e){if(showAlert)alert('Buluta kaydedilemedi: '+e.message); return false;}}
   window.cloudSaveToCustomerSheet=saveData;
-  window.cloudActivateLicense=async function(){var a=el('cloud-api-url'), k=el('cloud-license-key'), btn=el('cloud-activate-btn'); var api=(a&&a.value||'').trim(), key=(k&&k.value||'').trim(); if(!api||!key){setMsg('API linki ve lisans anahtarı zorunlu.',false); return;} localStorage.setItem('ct_cloud_api_url',api); localStorage.setItem('ct_cloud_license_key',key); try{if(btn){btn.disabled=true;btn.textContent='Kontrol ediliyor...';} setMsg('Lisans kontrol ediliyor...',true); var r=await check(); if(!r||!r.ok){setMsg((r&&r.error)||'Lisans geçersiz.',false); return;} localStorage.setItem('ct_cloud_tenant_name',r.customerName||''); localStorage.setItem('ct_cloud_expires_at',r.expiresAt||''); localStorage.setItem('ct_cloud_activated','1'); localStorage.setItem('ct_cloud_last_ok',new Date().toISOString()); setMsg('Lisans aktif. Müşteri verisi hazırlanıyor...',true); await loadData(false); hide();}catch(e){setMsg(e.message||'Lisans kontrol hatası.',false);}finally{if(btn){btn.disabled=false;btn.textContent='Lisansı Aktifleştir';}}};
-  window.cloudTestApi=async function(){var a=el('cloud-api-url'), k=el('cloud-license-key'); var api=(a&&a.value||'').trim(), key=(k&&k.value||'').trim(); if(!api||!key){setMsg('Test için API linki ve lisans gir.',false);return;} localStorage.setItem('ct_cloud_api_url',api); localStorage.setItem('ct_cloud_license_key',key); try{setMsg('API test ediliyor...',true); var r=await check(); if(r&&r.ok)setMsg('API tamam, lisans geçerli: '+(r.customerName||''),true); else setMsg((r&&r.error)||'API cevap verdi ama lisans geçersiz.',false);}catch(e){setMsg(e.message||'API test hatası.',false);}};
+  window.cloudActivateLicense=async function(){var a=el('cloud-api-url'), k=el('cloud-license-key'), btn=el('cloud-activate-btn'); var api=apiUrl(), key=(k&&k.value||'').trim(); if(a)a.value=api; if(!key){setMsg('Lisans anahtarı zorunlu.',false); return;} localStorage.removeItem('ct_cloud_api_url'); localStorage.setItem('ct_cloud_license_key',key); try{if(btn){btn.disabled=true;btn.textContent='Kontrol ediliyor...';} setMsg('Lisans kontrol ediliyor...',true); var r=await check(); if(!r||!r.ok){setMsg((r&&r.error)||'Lisans geçersiz.',false); return;} localStorage.setItem('ct_cloud_tenant_name',r.customerName||''); localStorage.setItem('ct_cloud_expires_at',r.expiresAt||''); localStorage.setItem('ct_cloud_activated','1'); localStorage.setItem('ct_cloud_last_ok',new Date().toISOString()); setMsg('Lisans aktif. Müşteri verisi hazırlanıyor...',true); await loadData(false); hide();}catch(e){setMsg(e.message||'Lisans kontrol hatası.',false);}finally{if(btn){btn.disabled=false;btn.textContent='Lisansı Aktifleştir';}}};
+  window.cloudTestApi=async function(){var a=el('cloud-api-url'), k=el('cloud-license-key'); var api=apiUrl(), key=(k&&k.value||'').trim(); if(a)a.value=api; if(!key){setMsg('Test için lisans gir.',false);return;} localStorage.removeItem('ct_cloud_api_url'); localStorage.setItem('ct_cloud_license_key',key); try{setMsg('API test ediliyor...',true); var r=await check(); if(r&&r.ok)setMsg('API tamam, lisans geçerli: '+(r.customerName||''),true); else setMsg((r&&r.error)||'API cevap verdi ama lisans geçersiz.',false);}catch(e){setMsg(e.message||'API test hatası.',false);}};
   window.cloudClearLicense=function(){['ct_cloud_api_url','ct_cloud_license_key','ct_cloud_tenant_name','ct_cloud_expires_at','ct_cloud_activated','ct_cloud_last_ok'].forEach(function(x){localStorage.removeItem(x);}); var a=el('cloud-api-url'), k=el('cloud-license-key'); if(a)a.value=''; if(k)k.value=''; show(); setMsg('Lisans bilgileri sıfırlandı. Tekrar aktivasyon gerekli.',true);};
   window.cloudShowLicenseIfNeeded=function(){var a=el('cloud-api-url'), k=el('cloud-license-key'); if(a)a.value=apiUrl(); if(k)k.value=licenseKey(); if(!apiUrl()||!licenseKey()){show(); setMsg('İlk kurulum için lisans bilgilerini gir.',true); return;} hide(); check().then(async function(r){if(!r||!r.ok){show(); setMsg((r&&r.error)||'Lisans geçersiz veya süresi dolmuş.',false);}else{localStorage.setItem('ct_cloud_activated','1'); localStorage.setItem('ct_cloud_last_ok',new Date().toISOString()); await loadData(false); hide();}}).catch(function(err){show(); setMsg(err.message||'Lisans kontrol edilemedi. İnternet/API bağlantısını kontrol et.',false);});};
   var saveTimer=null; window.cloudAutoSave=function(){if(!apiUrl()||!licenseKey())return; clearTimeout(saveTimer); saveTimer=setTimeout(function(){saveData(false);},1500);};
   var oldDbSave=window.dbSave; window.dbSave=function(){normalizeUsers(); if(oldDbSave)oldDbSave(); window.cloudAutoSave();};
   var oldLogin=window.login; window.login=function(){normalizeUsers(); if(oldLogin)return oldLogin();};
-  // v3.0.9 FIX: Eski v3 bulut interval sistemi yeni lisanslı müşteri Sheet sisteminde kapatıldı.
+  // v3.0.14 FIX: Eski v3 bulut interval sistemi yeni lisanslı müşteri Sheet sisteminde kapatıldı.
   // Sorun: Eski kod 30 sn'de bir bulutYukle(false) çağırıyordu; alttaki override parametreyi yok sayıp alert açıyordu.
   try{
     if(window.autoYedekInterval){ clearInterval(window.autoYedekInterval); window.autoYedekInterval=null; }
@@ -5146,9 +5560,867 @@ initApp = function(){
 
   window.manuelYedekle=function(){saveData(true);};
   window.bulutYukle=function(showAlert){return loadData(showAlert===true);};
+
+  window.cloudResetDevices=async function(showAlert){
+    try{
+      if(!licenseKey()){ if(showAlert) alert('Lisans anahtarı yok.'); return false; }
+      var r=await jsonp({action:'customerResetDevices',licenseKey:licenseKey(),deviceId:deviceId()});
+      if(!r||!r.ok){ if(showAlert) alert((r&&r.error)||'Cihazlar sıfırlanamadı.'); return false; }
+      if(showAlert) alert('Bu lisansa bağlı tüm cihaz kayıtları sıfırlandı. Diğer cihazlar tekrar lisans doğrulaması yapmadan giremez.');
+      return true;
+    }catch(e){ if(showAlert) alert('Cihaz sıfırlama hatası: '+e.message); return false; }
+  };
+
+  function musteriAdminMi(){return (typeof isAdmin==='function') ? isAdmin() : !!(window.currentUser && currentUser.role==='admin');}
+  function trDate(x){try{return x?new Date(x).toLocaleString('tr-TR'):'-';}catch(e){return x||'-';}}
+  window.cloudListDevices=async function(){
+    return await jsonp({action:'customerListDevices',licenseKey:licenseKey(),deviceId:deviceId()});
+  };
+  window.cloudRemoveDevice=async function(removeDeviceId){
+    return await jsonp({action:'customerRemoveDevice',licenseKey:licenseKey(),deviceId:deviceId(),removeDeviceId:removeDeviceId});
+  };
+  window.musteriCihazlariListele=async function(){
+    if(!musteriAdminMi()){ if(typeof permissionError==='function') return permissionError('Cihaz yönetimi sadece admin içindir.'); alert('Cihaz yönetimi sadece admin içindir.'); return false; }
+    var tb=el('musteri-cihaz-tb'), al=el('musteri-cihaz-al');
+    if(tb)tb.innerHTML='<tr><td colspan="5" style="color:#6b7280">Cihazlar yükleniyor...</td></tr>';
+    try{
+      var r=await window.cloudListDevices();
+      if(!r||!r.ok){ if(al)al.innerHTML='<div class="al al-e">'+(((r&&r.error)==='Geçersiz işlem')?'Apps Script eski sürüm. v3.1.4 kodunu dağıtıp tekrar deneyin.':((r&&r.error)||'Cihaz listesi alınamadı'))+'</div>'; return false; }
+      var list=r.devices||[];
+      if(al)al.innerHTML='<div class="al al-s">Kayıtlı cihaz: '+list.length+' / Limit: '+(r.maxDevices||'-')+'</div>';
+      if(!tb)return true;
+      if(!list.length){tb.innerHTML='<tr><td colspan="5" style="color:#9ca3af">Kayıtlı cihaz yok.</td></tr>'; return true;}
+      tb.innerHTML=list.map(function(d){
+        var isThis = String(d.device_id)===String(deviceId());
+        var shortId = String(d.device_id||'').replace(/^dev_/,'');
+        if(shortId.length>28) shortId=shortId.slice(0,28)+'...';
+        return '<tr>'+
+          '<td><strong title="'+String(d.device_id||'').replace(/"/g,'&quot;')+'">'+shortId+(isThis?' <span class="badge b-blue">Bu cihaz</span>':'')+'</strong><div style="font-size:10px;color:#9ca3af;max-width:260px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+(d.user_agent||'')+'</div></td>'+
+          '<td>'+trDate(d.first_seen)+'</td>'+
+          '<td>'+trDate(d.last_seen)+'</td>'+
+          '<td>'+(d.allowed?'<span class="badge b-p">Aktif</span>':'<span class="badge b-x">Pasif</span>')+'</td>'+
+          '<td><button class="btn btn-sm btn-r" onclick="musteriCihazKaldir(\''+String(d.device_id||'').replace(/'/g,"\\'")+'\')"><i class="ti ti-trash"></i> Kaldır</button></td>'+
+        '</tr>';
+      }).join('');
+      return true;
+    }catch(e){ if(al)al.innerHTML='<div class="al al-e">Cihaz listesi hatası: '+e.message+'</div>'; return false; }
+  };
+  window.musteriCihazKaldir=async function(removeDeviceId){
+    if(!musteriAdminMi()){ if(typeof permissionError==='function') return permissionError('Cihaz kaldırma sadece admin içindir.'); alert('Cihaz kaldırma sadece admin içindir.'); return false; }
+    if(!removeDeviceId)return false;
+    if(!confirm('Bu cihaz lisans kaydından kaldırılsın mı?'))return false;
+    try{
+      var r=await window.cloudRemoveDevice(removeDeviceId);
+      if(!r||!r.ok){alert((r&&r.error)||'Cihaz kaldırılamadı.'); return false;}
+      await window.musteriCihazlariListele();
+      alert('Cihaz kaldırıldı.');
+      return true;
+    }catch(e){alert('Cihaz kaldırma hatası: '+e.message); return false;}
+  };
+  window.musteriCihazlariSifirla=async function(){
+    if(!musteriAdminMi()){ if(typeof permissionError==='function') return permissionError('Tüm cihazlardan çıkış verme sadece admin içindir.'); alert('Tüm cihazlardan çıkış verme sadece admin içindir.'); return false; }
+    if(!confirm('Bu lisansa bağlı TÜM cihaz kayıtları silinsin mi? Mevcut cihaz dahil herkes tekrar lisans doğrulaması yapacak.'))return false;
+    var ok=await window.cloudResetDevices(true);
+    if(ok) await window.musteriCihazlariListele();
+    return ok;
+  };
+  window.musteriVerileriniSifirla=async function(){
+    if(!musteriAdminMi()){ if(typeof permissionError==='function') return permissionError('Müşteri verilerini sıfırlama sadece admin içindir.'); alert('Müşteri verilerini sıfırlama sadece admin içindir.'); return false; }
+    if(!confirm('Müşteri verileri sıfırlansın mı? Firmalar, hareketler, ürünler, kategoriler ve stok kayıtları temizlenir.'))return false;
+    if(!confirm('Emin misin? Bu işlem buluta da temiz veri kaydeder.'))return false;
+    try{
+      if(typeof ctResetDB==='function')ctResetDB();
+      if(typeof ctRenderAll==='function')ctRenderAll();
+      await saveData(true);
+      return true;
+    }catch(e){alert('Veri sıfırlama hatası: '+e.message); return false;}
+  };
   function bind(){var a=el('cloud-activate-btn'), t=el('cloud-test-btn'), c=el('cloud-clear-btn'); if(a&&!a.dataset.bound){a.dataset.bound='1'; a.onclick=function(ev){ev.preventDefault(); window.cloudActivateLicense();};} if(t&&!t.dataset.bound){t.dataset.bound='1'; t.onclick=function(ev){ev.preventDefault(); window.cloudTestApi();};} if(c&&!c.dataset.bound){c.dataset.bound='1'; c.onclick=function(ev){ev.preventDefault(); window.cloudClearLicense();};}}
   var licenseBootDone=false;
   function bootLicenseOnce(){bind(); if(licenseBootDone)return; licenseBootDone=true; setTimeout(window.cloudShowLicenseIfNeeded,300);}
   document.addEventListener('DOMContentLoaded',bootLicenseOnce); window.addEventListener('load',bootLicenseOnce);
 })();
 </script>
+
+
+<script>
+/* ==== v3.0.18 TEMİZ KATEGORİ KALICI FIX ====
+   Lisans ekranı çalışan v3.0.15 temelinden korundu.
+   Hazır kategori basılmaz; kategori silme buluta kalıcı kaydedilir. */
+(function(){
+  'use strict';
+
+  function cleanKatDB(){
+    if(!window.DB) return;
+    if(!Array.isArray(DB.kategoriler)) DB.kategoriler=[];
+    if(!DB.katRenkler || typeof DB.katRenkler!=='object' || Array.isArray(DB.katRenkler)) DB.katRenkler={};
+  }
+  window.ensureCleanCategoryDB=cleanKatDB;
+
+  function renderKatAll(){
+    try{ if(typeof renderKategoriler==='function') renderKategoriler(); }catch(e){}
+    try{ if(typeof renderKategoriSelects==='function') renderKategoriSelects(); }catch(e){}
+    try{ if(typeof renderKatSelect==='function') renderKatSelect(); }catch(e){}
+    try{ if(typeof renderU==='function') renderU(); }catch(e){}
+  }
+
+  async function saveKatCloud(){
+    try{ if(typeof dbSave==='function') dbSave(); }catch(e){}
+    try{
+      if(typeof window.cloudSaveToCustomerSheet==='function'){
+        await window.cloudSaveToCustomerSheet(false);
+      }else if(typeof window.cloudSaveData==='function'){
+        await window.cloudSaveData(false);
+      }else if(typeof window.manuelYedekle==='function'){
+        await window.manuelYedekle(false);
+      }
+    }catch(e){ console.warn('Kategori bulut kaydı yapılamadı:', e); }
+  }
+
+  const eskiKategoriKaydet=window.kategoriKaydet;
+  window.kategoriKaydet=async function(){
+    cleanKatDB();
+    let r;
+    if(typeof eskiKategoriKaydet==='function') r=eskiKategoriKaydet.apply(this,arguments);
+    await saveKatCloud();
+    renderKatAll();
+    return r;
+  };
+
+  window.kategoriSil=async function(iOrAd){
+    cleanKatDB();
+    let i=-1, k='';
+    if(typeof iOrAd==='number'){
+      i=iOrAd; k=DB.kategoriler[i];
+    }else{
+      k=String(iOrAd||''); i=DB.kategoriler.indexOf(k);
+    }
+    if(i<0 || !k) return false;
+    if(!confirm(k+' kategorisi silinsin mi?')) return false;
+    DB.kategoriler.splice(i,1);
+    if(DB.katRenkler) delete DB.katRenkler[k];
+    (DB.urunler||[]).forEach(function(u){ if(u && u.kat===k) u.kat=''; });
+    await saveKatCloud();
+    try{ if(typeof showA==='function') showA('kat-al','Kategori silindi.'); }catch(e){}
+    renderKatAll();
+    return true;
+  };
+
+  const eskiDuzenleKaydet=window.kategoriDuzenleKaydet;
+  window.kategoriDuzenleKaydet=async function(){
+    cleanKatDB();
+    let r;
+    if(typeof eskiDuzenleKaydet==='function') r=eskiDuzenleKaydet.apply(this,arguments);
+    await saveKatCloud();
+    renderKatAll();
+    return r;
+  };
+
+  const eskiInitApp=window.initApp;
+  window.initApp=function(){
+    cleanKatDB();
+    if(typeof eskiInitApp==='function') eskiInitApp.apply(this,arguments);
+    cleanKatDB();
+    setTimeout(renderKatAll,150);
+  };
+
+  document.addEventListener('DOMContentLoaded',function(){
+    setTimeout(function(){ cleanKatDB(); renderKatAll(); },700);
+  });
+})();
+</script>
+
+<script>
+/* ==== v3.0.19 BULUT KAYIT KESİN FIX ====
+   Canlı test/önizleme değildir. Sadece müşteri uygulaması içinde kayıt düzeltmesidir.
+   Amaç: dbSave() çağrılan her yerde müşteri lisansına ait Google Sheet'e otomatik kayıt göndermek. */
+(function(){
+  'use strict';
+
+  var CLOUD_API_URL_FIXED = 'https://script.google.com/macros/s/AKfycbxBKCDmaT9Q3L-jLhrXlRvouKac-8z9nwJeHVkjmAHmT84w7VwHHQRl2463yotRvlUH/exec';
+  var __ctpCloudTimer = null;
+  var __ctpCloudBusy = false;
+  var __ctpCloudLastJson = '';
+
+  function getApi(){
+    if(typeof window.cloudApiUrl === 'function') return window.cloudApiUrl() || CLOUD_API_URL_FIXED;
+    return CLOUD_API_URL_FIXED;
+  }
+  function getLicense(){
+    if(typeof window.cloudLicenseKey === 'function') return window.cloudLicenseKey() || '';
+    return localStorage.getItem('ct_cloud_license_key') || '';
+  }
+  function getDevice(){
+    if(typeof window.cloudDeviceId === 'function') return window.cloudDeviceId() || '';
+    var id = localStorage.getItem('ct_cloud_device_id');
+    if(!id){
+      id='dev_'+(Date.now()+'_'+Math.random().toString(16).slice(2));
+      localStorage.setItem('ct_cloud_device_id', id);
+    }
+    return id;
+  }
+  function status(txt, renk){
+    try{
+      var el=document.getElementById('auto-son');
+      if(el){ el.textContent=txt; if(renk) el.style.color=renk; }
+    }catch(e){}
+  }
+  function localSaveOnly(){
+    try{
+      if(window.DB){
+        DB.ts = new Date().toISOString();
+        if(typeof window.ctStorageKey === 'function') localStorage.setItem(window.ctStorageKey(), JSON.stringify(DB));
+        else localStorage.setItem('cari_pro_v3_LISANS_'+String(getLicense()||'NO_LICENSE').replace(/[^A-Za-z0-9_-]/g,'_'), JSON.stringify(DB));
+      }
+    }catch(e){}
+  }
+  async function cloudSave(showAlert){
+    var api=getApi(), key=getLicense();
+    if(!api || !key){
+      status('Bulut kayıt bekliyor: lisans yok', '#991b1b');
+      if(showAlert) alert('Lisans yok. Önce lisansı aktifleştir.');
+      return false;
+    }
+    if(__ctpCloudBusy) return false;
+    __ctpCloudBusy = true;
+    try{
+      if(typeof window.cloudNormalizeUsers === 'function') window.cloudNormalizeUsers();
+      if(window.DB) DB.ts = new Date().toISOString();
+      var payload = {
+        action:'save',
+        licenseKey:key,
+        deviceId:getDevice(),
+        data:window.DB || {}
+      };
+      var json = JSON.stringify(payload);
+
+      // Aynı veri arka arkaya boşuna basılmasın ama manuel kayıtta yine gönderilsin.
+      if(!showAlert && json === __ctpCloudLastJson){ __ctpCloudBusy=false; return true; }
+      __ctpCloudLastJson = json;
+
+      await fetch(api, {
+        method:'POST',
+        mode:'no-cors',
+        headers:{'Content-Type':'text/plain;charset=utf-8'},
+        body:json
+      });
+
+      var now = new Date().toLocaleString('tr-TR');
+      status('Buluta kaydedildi: '+now, '#166534');
+      try{ if(typeof window.markSaved === 'function') window.markSaved(); }catch(e){}
+      if(showAlert) alert('Veriler buluta gönderildi.');
+      return true;
+    }catch(e){
+      status('Bulut kayıt hatası: '+(e.message||e), '#991b1b');
+      if(showAlert) alert('Buluta kaydedilemedi: '+(e.message||e));
+      return false;
+    }finally{
+      __ctpCloudBusy = false;
+    }
+  }
+  function planCloudSave(){
+    clearTimeout(__ctpCloudTimer);
+    __ctpCloudTimer = setTimeout(function(){ cloudSave(false); }, 900);
+  }
+
+  window.ctpForceCloudSave = cloudSave;
+  window.cloudSaveToCustomerSheet = cloudSave;
+  window.manuelYedekle = function(){ return cloudSave(true); };
+
+  // Eski karışık Google Sheets yedek sistemi lisanslı müşteri kaydını bozmasın.
+  window.bulutKaydetPlanla = function(){ planCloudSave(); };
+  window.bulutKaydet = function(silent, force){ return cloudSave(!silent); };
+
+  var originalDbSave = window.dbSave;
+  window.dbSave = function(){
+    try{
+      if(typeof window.cloudNormalizeUsers === 'function') window.cloudNormalizeUsers();
+      if(originalDbSave && originalDbSave !== window.dbSave){
+        originalDbSave.apply(this, arguments);
+      }else{
+        localSaveOnly();
+      }
+    }catch(e){
+      localSaveOnly();
+    }
+    planCloudSave();
+  };
+
+  document.addEventListener('DOMContentLoaded', function(){
+    status('Bulut kayıt sistemi hazır', '#166534');
+  });
+})();
+</script>
+
+
+
+<script>
+/* ==== v3.0.24 TEK BULUT MOTORU - BOŞ JSON EZME FIX ====
+   Canlı test yok. Bu blok en sonda çalışır ve eski bulut kayıtlarını ezer.
+   - window.DB kullanmaz; gerçek global DB değişkenini okur.
+   - Açılışta buluttan yükleme bitmeden kayıt atmaz.
+   - {} gibi boş veri ile müşteri Sheet'ini ezmez.
+   - save/load tamamen JSONP ile yapılır, no-cors fetch kullanılmaz. */
+(function(){
+  'use strict';
+  var MASTER_API_URL = 'https://script.google.com/macros/s/AKfycbxBKCDmaT9Q3L-jLhrXlRvouKac-8z9nwJeHVkjmAHmT84w7VwHHQRl2463yotRvlUH/exec';
+  var saveTimer = null;
+  var saving = false;
+  var cloudLoaded = false;
+  var userChangedAfterLoad = false;
+  var lastPayload = '';
+
+  function el(id){ return document.getElementById(id); }
+  function status(msg,color){
+    var s=el('auto-son');
+    if(s){ s.textContent=msg; if(color) s.style.color=color; }
+  }
+  function getDB(){
+    try{ if(typeof DB !== 'undefined' && DB) return DB; }catch(e){}
+    return window.DB || null;
+  }
+  function hasRealDB(db){
+    if(!db || typeof db !== 'object') return false;
+    if(Object.keys(db).length === 0) return false;
+    return Array.isArray(db.firmalar) || Array.isArray(db.hareketler) || Array.isArray(db.urunler) || Array.isArray(db.users);
+  }
+  function hasBusinessData(db){
+    if(!hasRealDB(db)) return false;
+    return (db.firmalar&&db.firmalar.length) || (db.hareketler&&db.hareketler.length) || (db.urunler&&db.urunler.length) || (db.kategoriler&&db.kategoriler.length) || (db.stokHareketler&&db.stokHareketler.length);
+  }
+  function licenseKey(){ return localStorage.getItem('ct_cloud_license_key') || ''; }
+  function deviceId(){
+    var id=localStorage.getItem('ct_cloud_device_id');
+    if(!id){ id='dev_'+(Date.now()+'_'+Math.random().toString(16).slice(2)); localStorage.setItem('ct_cloud_device_id',id); }
+    return id;
+  }
+  function storageKey(){ return 'cari_pro_v3_LISANS_'+String(licenseKey()||'NO_LICENSE').replace(/[^A-Za-z0-9_-]/g,'_'); }
+  function saveLocal(){
+    var db=getDB();
+    if(!hasRealDB(db)) return;
+    db.ts=new Date().toISOString();
+    localStorage.setItem(storageKey(), JSON.stringify(db));
+  }
+  function renderAll(){
+    ['ensureUsers','renderDashboard','renderF','renderU','renderHF','renderSF','renderCF','renderStok','renderKullanicilar','renderKatSelect','renderKategoriSelects','renderKategoriler','yedekBilgi'].forEach(function(fn){
+      try{ if(typeof window[fn]==='function') window[fn](); }catch(e){}
+    });
+  }
+  function jsonp(params){
+    return new Promise(function(resolve,reject){
+      var cb='ctp_cb_'+Date.now()+'_'+Math.random().toString(16).slice(2);
+      params.callback=cb;
+      params._t=Date.now();
+      var script=document.createElement('script');
+      var done=false;
+      var timer=setTimeout(function(){
+        if(done) return;
+        done=true;
+        try{ delete window[cb]; script.remove(); }catch(e){}
+        reject(new Error('API cevap vermedi'));
+      }, 20000);
+      window[cb]=function(res){
+        if(done) return;
+        done=true;
+        clearTimeout(timer);
+        try{ delete window[cb]; script.remove(); }catch(e){}
+        resolve(res);
+      };
+      script.onerror=function(){
+        if(done) return;
+        done=true;
+        clearTimeout(timer);
+        try{ delete window[cb]; script.remove(); }catch(e){}
+        reject(new Error('API bağlantısı kurulamadı'));
+      };
+      script.src=MASTER_API_URL + '?' + new URLSearchParams(params).toString();
+      document.body.appendChild(script);
+    });
+  }
+
+  async function cloudLoad(showAlert){
+    var key=licenseKey();
+    if(!key){ if(showAlert) alert('Lisans yok.'); return false; }
+    try{
+      status('Buluttan veri yükleniyor...', '#1a2744');
+      var r=await jsonp({action:'load', licenseKey:key, deviceId:deviceId()});
+      if(!r || !r.ok) throw new Error((r&&r.error)||'Buluttan yüklenemedi');
+      var db=getDB();
+      if(!db) throw new Error('Uygulama DB bulunamadı');
+      if(r.data && typeof r.data === 'object' && hasRealDB(r.data)){
+        Object.keys(db).forEach(function(k){ delete db[k]; });
+        Object.assign(db, r.data);
+        try{ if(typeof ensureUsers==='function') ensureUsers(); }catch(e){}
+        saveLocal();
+        renderAll();
+        status('Buluttan yüklendi: '+new Date().toLocaleString('tr-TR'), '#166534');
+      }else{
+        // Bulut boşsa mevcut lokal DB korunur. Boş {} buluta geri basılmaz.
+        status('Bulutta veri yok; yerel veri korunuyor.', '#e08c00');
+      }
+      cloudLoaded=true;
+      userChangedAfterLoad=false;
+      if(showAlert) alert('Buluttan yükleme tamam.');
+      return true;
+    }catch(e){
+      status('Bulut yükleme hatası: '+(e.message||e), '#991b1b');
+      if(showAlert) alert('Buluttan yüklenemedi: '+(e.message||e));
+      cloudLoaded=true; // bağlantı hatasında uygulama kilitlenmesin, sonraki kullanıcı değişikliği kayıt planlayabilir
+      return false;
+    }
+  }
+
+  async function cloudSave(showAlert, force){
+    var key=licenseKey();
+    var db=getDB();
+    if(!key){ if(showAlert) alert('Lisans yok.'); return false; }
+    if(!hasRealDB(db)){ status('Buluta kayıt iptal: DB boş/yanlış.', '#991b1b'); return false; }
+    if(!cloudLoaded && !force){ status('Önce buluttan yükleme bekleniyor; boş kayıt engellendi.', '#e08c00'); return false; }
+    if(!force && !userChangedAfterLoad){ status('Kayıt yok: kullanıcı değişikliği bekleniyor.', '#6b7280'); return true; }
+    // Gerçekten bomboş {} veya sadece kırık DB asla gönderilmez. Yeni müşteri boş DB'si bile array yapısıyla gider.
+    try{ if(typeof ensureUsers==='function') ensureUsers(); }catch(e){}
+    db.ts=new Date().toISOString();
+    var dataJson=JSON.stringify(db);
+    if(dataJson === '{}'){ status('Buluta kayıt iptal: {} gönderilmeyecek.', '#991b1b'); return false; }
+    var payload=dataJson;
+    if(!force && payload===lastPayload) return true;
+    if(saving) return false;
+    saving=true;
+    try{
+      var r=await jsonp({action:'save', licenseKey:key, deviceId:deviceId(), data:dataJson});
+      if(!r || !r.ok) throw new Error((r&&r.error)||'Buluta kaydedilemedi');
+      lastPayload=payload;
+      userChangedAfterLoad=false;
+      saveLocal();
+      status('Otomatik buluta kaydedildi: '+new Date().toLocaleString('tr-TR'), '#166534');
+      try{ if(typeof markSaved==='function') markSaved(); }catch(e){}
+      if(showAlert) alert('Buluta kaydedildi.');
+      return true;
+    }catch(e){
+      status('Bulut kayıt hatası: '+(e.message||e), '#991b1b');
+      if(showAlert) alert('Buluta kaydedilemedi: '+(e.message||e));
+      return false;
+    }finally{ saving=false; }
+  }
+  function planSave(){
+    userChangedAfterLoad=true;
+    clearTimeout(saveTimer);
+    saveTimer=setTimeout(function(){ cloudSave(false,false); }, 1000);
+  }
+
+  window.cloudApiUrl=function(){return MASTER_API_URL;};
+  window.gsUrl=function(){return MASTER_API_URL;};
+  window.cloudJsonp=jsonp;
+  window.bulutYukle=function(showAlert){ return cloudLoad(showAlert===true); };
+  window.cloudLoadFromCustomerSheet=function(showAlert){ return cloudLoad(showAlert===true); };
+  window.ctpForceCloudSave=function(){ userChangedAfterLoad=true; return cloudSave(true,true); };
+  window.cloudSaveToCustomerSheet=function(showAlert){ userChangedAfterLoad=true; return cloudSave(showAlert===true,true); };
+  window.bulutKaydetPlanla=planSave;
+  window.bulutKaydet=function(){ userChangedAfterLoad=true; return cloudSave(false,true); };
+  window.manuelYedekle=function(){ userChangedAfterLoad=true; return cloudSave(true,true); };
+  window.gsBaglantiKaydet=function(){ status('API linki sistem tarafından sabit kullanılır.', '#166534'); return true; };
+
+  window.dbSave=function(){
+    try{ saveLocal(); }catch(e){}
+    try{ window.hasUnsaved=true; var ub=el('unsaved-bar'); if(ub) ub.classList.add('show'); }catch(e){}
+    try{ if(typeof renderDashboard==='function') renderDashboard(); }catch(e){}
+    planSave();
+  };
+
+  document.addEventListener('DOMContentLoaded', function(){
+    try{
+      var u=el('gs-url'), t=el('gs-token');
+      if(u){ var f=u.closest&&u.closest('.fg'); if(f) f.style.display='none'; u.type='hidden'; u.value=MASTER_API_URL; }
+      if(t){ var f2=t.closest&&t.closest('.fg'); if(f2) f2.style.display='none'; t.type='hidden'; t.value=''; }
+    }catch(e){}
+    if(licenseKey()) setTimeout(function(){ cloudLoad(false); }, 500);
+  });
+})();
+</script>
+
+
+<script>
+/* ==== v3.0.27 FINAL GİRİŞ + ADMIN ADI FIX / CALL STACK DÜZELTİLDİ ==== */
+(function(){
+  'use strict';
+
+  var MASTER_API_URL = 'https://script.google.com/macros/s/AKfycbxBKCDmaT9Q3L-jLhrXlRvouKac-8z9nwJeHVkjmAHmT84w7VwHHQRl2463yotRvlUH/exec';
+  var loginMode = 'email';
+
+  function el(id){ return document.getElementById(id); }
+  function showCloud(){ var s=el('cloud-license-screen'); if(s) s.style.display='flex'; }
+  function hideCloud(){ var s=el('cloud-license-screen'); if(s) s.style.display='none'; }
+  function msg(t,ok){
+    var m=el('ctp-email-msg');
+    if(m){ m.textContent=t||''; m.className='cloud-license-msg '+(ok?'cloud-ok':'cloud-err'); }
+  }
+
+  function hashPass(s){
+    if(typeof passHash === 'function') return passHash(s);
+    s=String(s||'');
+    var h=2166136261;
+    for(var i=0;i<s.length;i++){h^=s.charCodeAt(i);h+=(h<<1)+(h<<4)+(h<<7)+(h<<8)+(h<<24);}
+    return 'h'+(h>>>0).toString(16);
+  }
+
+  function deviceId(){
+    var id=localStorage.getItem('ct_cloud_device_id');
+    if(!id){
+      id='dev_'+(Date.now()+'_'+Math.random().toString(16).slice(2));
+      localStorage.setItem('ct_cloud_device_id',id);
+    }
+    return id;
+  }
+
+  function emailVal(){ return String((el('ctp-email')||{}).value||'').trim().toLowerCase(); }
+  function passVal(){ return String((el('ctp-pass')||{}).value||''); }
+  function licenseVal(){ return String((el('ctp-license')||{}).value||'').trim(); }
+  function licenseKey(){ return localStorage.getItem('ct_cloud_license_key') || ''; }
+
+  function ctpJsonp(params){
+    return new Promise(function(resolve,reject){
+      var cb='ctp_cb_'+Date.now()+'_'+Math.random().toString(16).slice(2);
+      params.callback=cb;
+      params._t=Date.now();
+
+      var script=document.createElement('script');
+      var done=false;
+
+      var timer=setTimeout(function(){
+        if(done) return;
+        done=true;
+        try{ delete window[cb]; script.remove(); }catch(e){}
+        reject(new Error('API cevap vermedi'));
+      },25000);
+
+      window[cb]=function(res){
+        if(done) return;
+        done=true;
+        clearTimeout(timer);
+        try{ delete window[cb]; script.remove(); }catch(e){}
+        resolve(res);
+      };
+
+      script.onerror=function(){
+        if(done) return;
+        done=true;
+        clearTimeout(timer);
+        try{ delete window[cb]; script.remove(); }catch(e){}
+        reject(new Error('API bağlantısı kurulamadı'));
+      };
+
+      script.src=MASTER_API_URL + '?' + new URLSearchParams(params).toString();
+      document.body.appendChild(script);
+    });
+  }
+
+  window.cloudJsonp = ctpJsonp;
+  window.cloudApiUrl = function(){ return MASTER_API_URL; };
+  window.gsUrl = function(){ return MASTER_API_URL; };
+
+  function renderLoginBox(){
+    var box=document.querySelector('#cloud-license-screen .cloud-license-box');
+    if(!box) return;
+
+    box.innerHTML =
+      '<h2>Cari Takip Pro Cloud</h2>'+
+      '<p>Önce e-posta adresinizi girin. E-posta kayıtlıysa şifreyle giriş yapılır; kayıtlı değilse lisansla ilk kurulum yapılır.</p>'+
+
+      '<label>E-posta / Kullanıcı</label>'+
+      '<input id="ctp-email" placeholder="ornek@firma.com" autocomplete="username">'+
+
+      '<div id="ctp-pass-area" style="display:none">'+
+        '<label>Şifre</label>'+
+        '<input id="ctp-pass" type="password" placeholder="Şifre" autocomplete="current-password">'+
+      '</div>'+
+
+      '<div id="ctp-license-area" style="display:none">'+
+        '<label>Lisans Anahtarı</label>'+
+        '<input id="ctp-license" placeholder="CTP-XXXX-XXXX" autocomplete="off">'+
+        '<div style="font-size:11px;color:#6b7280;margin:-4px 0 10px">Bu e-posta bu lisansın admin kullanıcısı olarak kaydedilir.</div>'+
+      '</div>'+
+
+      '<button type="button" class="btn btn-g" id="ctp-next" style="width:100%;justify-content:center;margin-top:4px">Devam Et</button>'+
+      '<button type="button" class="btn" id="ctp-reset" style="width:100%;justify-content:center;margin-top:8px">Bu Cihazdaki Girişi Sıfırla</button>'+
+      '<div class="cloud-license-msg" id="ctp-email-msg"></div>';
+
+    var savedEmail=localStorage.getItem('ct_cloud_login_email') || '';
+    if(savedEmail) el('ctp-email').value=savedEmail;
+
+    el('ctp-next').onclick=nextStep;
+    el('ctp-reset').onclick=function(){
+      ['ct_cloud_license_key','ct_cloud_login_email','ct_cloud_tenant_name','ct_cloud_expires_at','ct_cloud_activated','ct_cloud_last_ok'].forEach(function(k){ localStorage.removeItem(k); });
+      renderLoginBox();
+      showStep('email');
+      showCloud();
+      msg('Bu cihazdaki giriş sıfırlandı.', true);
+    };
+
+    ['ctp-email','ctp-pass','ctp-license'].forEach(function(id){
+      var x=el(id);
+      if(x) x.onkeydown=function(ev){ if(ev.key==='Enter') nextStep(); };
+    });
+
+    showStep('email');
+  }
+
+  function showStep(mode){
+    loginMode=mode;
+    var pa=el('ctp-pass-area'), la=el('ctp-license-area'), b=el('ctp-next');
+    if(pa) pa.style.display=(mode==='login'||mode==='setup')?'block':'none';
+    if(la) la.style.display=(mode==='setup')?'block':'none';
+    if(b) b.textContent = mode==='email' ? 'Devam Et' : (mode==='login' ? 'Giriş Yap' : 'Lisansla Kurulumu Tamamla');
+  }
+
+  function setLoginInputs(username,password){
+    var u=el('l-user'), p=el('l-pass');
+    if(u) u.value=username;
+    if(p) p.value=password;
+  }
+
+  function copyDb(data){
+    if(!data || typeof data !== 'object') return;
+    try{
+      if(typeof DB !== 'undefined' && DB){
+        Object.keys(DB).forEach(function(k){ delete DB[k]; });
+        Object.assign(DB, data);
+      }
+    }catch(e){}
+  }
+
+  function upsertLocalUser(username, password, role, active){
+    try{
+      if(typeof DB === 'undefined' || !DB) return;
+      if(!Array.isArray(DB.users)) DB.users=[];
+      username=String(username||'').trim().toLowerCase();
+      if(!username) return;
+
+      var u=DB.users.find(function(x){ return String(x.username||'').toLowerCase()===username; });
+      if(!u){
+        u={id:Date.now(), username:username, pass:hashPass(password), role:role||'personel', active:active!==false, lastLogin:''};
+        DB.users.push(u);
+      }else{
+        u.username=username;
+        if(password) u.pass=hashPass(password);
+        if(role) u.role=role;
+        u.active=active!==false;
+        if(u.lastLogin===undefined) u.lastLogin='';
+      }
+    }catch(e){}
+  }
+
+  async function finishLogin(email,password,res){
+    var key=(res && (res.licenseKey || res.license_key)) || licenseKey();
+    if(!key) throw new Error('Lisans bilgisi alınamadı.');
+
+    localStorage.setItem('ct_cloud_license_key', key);
+    localStorage.setItem('ct_cloud_login_email', email);
+    localStorage.setItem('ct_cloud_activated','1');
+    localStorage.setItem('ct_cloud_last_ok', new Date().toISOString());
+
+    if(res && res.data) copyDb(res.data);
+
+    var role='personel';
+    try{ role=(res.user && (res.user.role || res.user.yetki)) || res.role || role; }catch(e){}
+    upsertLocalUser(email,password,role,true);
+
+    try{ if(typeof ensureUsers==='function') ensureUsers(); }catch(e){}
+    try{ if(typeof ctSaveLocal==='function') ctSaveLocal(); }catch(e){}
+    try{ if(typeof ctRenderAll==='function') ctRenderAll(); }catch(e){}
+
+    hideCloud();
+    setLoginInputs(email,password);
+
+    setTimeout(function(){
+      try{ if(typeof login==='function') login(); }catch(e){}
+    },120);
+
+    setTimeout(function(){
+      try{ if(typeof bulutYukle==='function') bulutYukle(false); }catch(e){}
+    },900);
+  }
+
+  async function nextStep(){
+    var email=emailVal();
+    if(!email){ msg('E-posta zorunlu.', false); return; }
+
+    var btn=el('ctp-next');
+
+    try{
+      if(btn) btn.disabled=true;
+
+      if(loginMode==='email'){
+        msg('E-posta kontrol ediliyor...', true);
+        var r=await ctpJsonp({action:'checkEmail', email:email, username:email, deviceId:deviceId()});
+        if(!r || !r.ok) throw new Error((r&&r.error)||'E-posta kontrol edilemedi.');
+
+        if(r.exists || r.found){
+          showStep('login');
+          msg('Kayıt bulundu. Şifrenizi girin.', true);
+          setTimeout(function(){ var p=el('ctp-pass'); if(p) p.focus(); },80);
+        }else{
+          showStep('setup');
+          msg('Bu e-posta kayıtlı değil. Lisans anahtarı ve admin şifresi girin.', true);
+          setTimeout(function(){ var p=el('ctp-pass'); if(p) p.focus(); },80);
+        }
+        return;
+      }
+
+      if(loginMode==='login'){
+        var pass=passVal();
+        if(!pass){ msg('Şifre zorunlu.', false); return; }
+
+        msg('Giriş yapılıyor...', true);
+        var lr=await ctpJsonp({
+          action:'userLogin',
+          email:email,
+          username:email,
+          passwordHash:hashPass(pass),
+          passHash:hashPass(pass),
+          deviceId:deviceId()
+        });
+        if(!lr || !lr.ok) throw new Error((lr&&lr.error)||'Giriş başarısız.');
+
+        await finishLogin(email,pass,lr);
+        return;
+      }
+
+      if(loginMode==='setup'){
+        var pass2=passVal(), key=licenseVal();
+        if(!pass2){ msg('Admin şifresi zorunlu.', false); return; }
+        if(!key){ msg('Lisans anahtarı zorunlu.', false); return; }
+
+        msg('Lisans doğrulanıyor...', true);
+        var sr=await ctpJsonp({
+          action:'setupLicenseAdmin',
+          email:email,
+          username:email,
+          passwordHash:hashPass(pass2),
+          passHash:hashPass(pass2),
+          licenseKey:key,
+          deviceId:deviceId()
+        });
+        if(!sr || !sr.ok) throw new Error((sr&&sr.error)||'Kurulum başarısız.');
+
+        sr.licenseKey=sr.licenseKey || key;
+        sr.role='admin';
+        sr.user=sr.user || {username:email, role:'admin'};
+
+        await finishLogin(email,pass2,sr);
+        return;
+      }
+    }catch(e){
+      msg(e.message || String(e), false);
+    }finally{
+      if(btn) btn.disabled=false;
+    }
+  }
+
+  window.ensureUsers = ensureUsers = function(){
+    try{
+      if(typeof DB === 'undefined' || !DB) return;
+      if(!Array.isArray(DB.users)) DB.users=[];
+
+      DB.users.forEach(function(u){
+        if(!u) return;
+        if(u.username) u.username=String(u.username).trim();
+        if(u.pass && !String(u.pass).startsWith('h')) u.pass=hashPass(u.pass);
+        if(!u.role) u.role='personel';
+        if(u.active===undefined) u.active=true;
+        if(u.lastLogin===undefined) u.lastLogin='';
+      });
+
+      var activeAdmins=DB.users.filter(function(u){ return u && u.role==='admin' && u.active!==false; });
+      if(activeAdmins.length===0){
+        if(DB.users.length){
+          DB.users[0].role='admin';
+          DB.users[0].active=true;
+        }else{
+          DB.users.push({id:Date.now(), username:'admin', pass:hashPass('1234'), role:'admin', active:true, lastLogin:''});
+        }
+      }
+    }catch(e){}
+  };
+
+  window.cloudNormalizeUsers=function(){ try{ ensureUsers(); }catch(e){} };
+
+  var oldKullaniciKaydet=window.kullaniciKaydet;
+  if(typeof oldKullaniciKaydet==='function'){
+    window.kullaniciKaydet=function(){
+      var ret=oldKullaniciKaydet.apply(this,arguments);
+
+      setTimeout(function(){
+        try{
+          ensureUsers();
+          if(typeof ctSaveLocal==='function') ctSaveLocal();
+          if(typeof renderKullanicilar==='function') renderKullanicilar();
+
+          var key=licenseKey();
+          if(!key) return;
+
+          (DB.users||[]).forEach(function(u){
+            if(!u || !u.username || !u.pass) return;
+            ctpJsonp({
+              action:'syncUser',
+              licenseKey:key,
+              email:String(u.username).trim().toLowerCase(),
+              username:String(u.username).trim().toLowerCase(),
+              passwordHash:u.pass,
+              passHash:u.pass,
+              role:u.role||'personel',
+              active:u.active!==false,
+              deviceId:deviceId()
+            }).catch(function(){});
+          });
+        }catch(e){}
+      },250);
+
+      return ret;
+    };
+  }
+
+  window.cloudShowLicenseIfNeeded=function(){
+    renderLoginBox();
+
+    if(!licenseKey()){
+      showCloud();
+      showStep('email');
+      msg('E-posta ile devam edin.', true);
+      return;
+    }
+
+    hideCloud();
+
+    setTimeout(function(){
+      try{ if(typeof bulutYukle==='function') bulutYukle(false); }catch(e){}
+    },500);
+  };
+
+  window.cloudClearLicense=function(){
+    ['ct_cloud_license_key','ct_cloud_login_email','ct_cloud_tenant_name','ct_cloud_expires_at','ct_cloud_activated','ct_cloud_last_ok'].forEach(function(k){ localStorage.removeItem(k); });
+    renderLoginBox();
+    showCloud();
+    showStep('email');
+    msg('Bu cihazdaki giriş sıfırlandı.', true);
+  };
+
+  window.cloudShowLicense=showCloud;
+
+  function bootFinal(){
+    renderLoginBox();
+
+    try{
+      var u=el('gs-url'), t=el('gs-token');
+      if(u){ var f=u.closest && u.closest('.fg'); if(f) f.style.display='none'; u.type='hidden'; u.value=MASTER_API_URL; }
+      if(t){ var f2=t.closest && t.closest('.fg'); if(f2) f2.style.display='none'; t.type='hidden'; t.value=''; }
+    }catch(e){}
+
+    setTimeout(window.cloudShowLicenseIfNeeded,100);
+  }
+
+  document.addEventListener('DOMContentLoaded', bootFinal);
+  window.addEventListener('load', function(){ setTimeout(bootFinal,300); });
+  setTimeout(bootFinal,800);
+})();
+</script>
+
