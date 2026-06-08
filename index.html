@@ -251,68 +251,6 @@ tr:hover td{background:#fafafa}
 #cloud-license-screen{position:fixed;inset:0;background:linear-gradient(135deg,#1a2744,#1d6f42);z-index:999999;display:none;align-items:center;justify-content:center;padding:16px}
 .cloud-license-box{background:#fff;width:430px;max-width:96vw;border-radius:18px;padding:24px;box-shadow:0 25px 80px rgba(0,0,0,.35)}
 .cloud-license-box h2{margin:0 0 6px;font-size:22px;color:#111827}.cloud-license-box p{font-size:12px;color:#6b7280;margin:0 0 14px;line-height:1.5}.cloud-license-box input{width:100%;margin-bottom:10px}.cloud-license-msg{font-size:12px;margin-top:10px;font-weight:700;min-height:18px}.cloud-ok{color:#166534}.cloud-err{color:#991b1b}.cloud-badge{position:fixed;right:10px;bottom:42px;z-index:900;background:#1d6f42;color:#fff;font-size:10px;font-weight:800;padding:4px 9px;border-radius:999px;opacity:.75}@media(max-width:780px){.cloud-badge{bottom:96px}}
-
-
-/* ==== v3.1.13 GERCEK MOBIL SIPARIS EKRANI ==== */
-.mobile-only{display:none!important}
-@media(max-width:780px){
-  .desktop-only{display:none!important}
-  .mobile-only{display:block!important}
-  body.modal-open #mobile-nav{display:none!important}
-  body.modal-open .cloud-badge, body.modal-open .app-version-fixed{display:none!important}
-
-  /* Sipariş sayfası telefonda uygulama ekranı gibi */
-  #page-siparis .page-title{position:sticky;top:0;z-index:50;background:#f3f4f6;padding:10px 2px 8px;margin:-2px 0 10px}
-  #page-siparis>.g2{display:block!important}
-  #page-siparis .card{border-radius:18px!important;padding:12px!important;margin-bottom:10px!important}
-  #page-siparis .card-head{margin-bottom:10px!important}
-  #page-siparis .flist{max-height:170px!important;border-radius:16px!important}
-  #page-siparis .fi{padding:12px!important;border-radius:12px;margin:4px;border:1px solid #eef2f7;background:#fff}
-  #page-siparis .fi.sel{background:#eaf8ef!important;border-color:#1d6f42!important;border-left:4px solid #1d6f42!important}
-  #page-siparis .sc.show{display:block!important;border-radius:16px!important;padding:12px!important}
-  #page-siparis #sepet-list .tw{overflow:visible!important}
-  #page-siparis #sepet-list table{min-width:0!important;width:100%!important}
-
-  .mobil-siparis-quickbar{position:sticky;bottom:78px;z-index:200;background:#111827;color:#fff;border-radius:18px;padding:12px;display:flex!important;align-items:center;justify-content:space-between;gap:10px;box-shadow:0 10px 35px rgba(0,0,0,.24);margin-top:10px}
-  .mobil-siparis-quickbar strong{font-size:17px;color:#fff}
-  .mobil-siparis-quickbar span{font-size:11px;color:#d1d5db;display:block;margin-top:2px}
-  .mobil-siparis-quickbar .btn{background:#1d6f42!important;color:#fff!important;border:0!important;min-height:42px!important;padding:8px 12px!important;width:auto!important}
-
-  /* Ürün modalı artık tam ekran */
-  #urun-modal{align-items:stretch!important;justify-content:stretch!important;padding:0!important;background:#f3f4f6!important}
-  #urun-modal .modal{width:100%!important;height:100dvh!important;max-height:100dvh!important;border-radius:0!important;padding:0!important;display:flex!important;flex-direction:column!important;box-shadow:none!important;overflow:hidden!important;background:#f3f4f6!important}
-  #urun-modal .modal-head{background:#fff!important;border-bottom:1px solid #e5e7eb!important;padding:12px 12px!important;margin:0!important;align-items:center!important;position:sticky;top:0;z-index:30}
-  #urun-modal .modal-title{font-size:16px!important;color:#111827!important;font-weight:900!important;text-transform:none!important;letter-spacing:0!important}
-  #urun-modal .mobil-urun-search{background:#fff;padding:10px 12px;border-bottom:1px solid #eef2f7;position:sticky;top:57px;z-index:25}
-  #urun-modal .mobil-urun-search .sb-inp input{min-height:46px!important;border-radius:15px!important;background:#f9fafb!important;font-size:16px!important}
-  #urun-modal #um-kat-bar{background:#fff;display:flex!important;gap:7px!important;overflow-x:auto!important;flex-wrap:nowrap!important;padding:8px 12px 10px!important;margin:0!important;border-bottom:1px solid #eef2f7!important;position:sticky;top:114px;z-index:24;-webkit-overflow-scrolling:touch}
-  #urun-modal #um-kat-bar .btn{white-space:nowrap!important;min-height:34px!important;border-radius:999px!important;padding:6px 12px!important;font-size:12px!important;width:auto!important;flex-shrink:0}
-  .mobil-urun-list{flex:1;overflow-y:auto;padding:10px 10px 112px!important;-webkit-overflow-scrolling:touch}
-  .mobil-urun-card{background:#fff;border:1px solid #e5e7eb;border-radius:18px;padding:12px;margin-bottom:10px;box-shadow:0 4px 14px rgba(0,0,0,.04)}
-  .mobil-urun-card.secili{border-color:#1d6f42;background:#f0fdf4}
-  .mobil-urun-top{display:flex;gap:10px;align-items:flex-start;justify-content:space-between}
-  .mobil-urun-ad{font-size:14px;font-weight:900;color:#111827;line-height:1.25}
-  .mobil-urun-kat{font-size:11px;color:#6b7280;margin-top:4px}
-  .mobil-urun-fiyat{font-size:15px;font-weight:900;color:#1d6f42;white-space:nowrap;text-align:right}
-  .mobil-urun-alt{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:12px}
-  .mobil-mik{display:flex;align-items:center;gap:6px;background:#f9fafb;border-radius:14px;padding:4px;border:1px solid #e5e7eb}
-  .mobil-mik button{width:34px;height:34px;border-radius:11px;border:0;background:#e5e7eb;color:#111827;font-weight:900;font-size:18px;display:flex;align-items:center;justify-content:center}
-  .mobil-mik input{width:62px!important;min-height:34px!important;text-align:center!important;border:0!important;background:transparent!important;padding:0!important;font-size:16px!important;font-weight:800!important}
-  .mobil-urun-ekle{background:#1d6f42!important;color:#fff!important;border:0!important;border-radius:14px!important;min-height:42px!important;padding:8px 13px!important;font-size:13px!important;font-weight:900!important;width:auto!important}
-  .mobil-urun-footer{position:fixed;left:0;right:0;bottom:0;z-index:60;background:#fff;border-top:1px solid #e5e7eb;padding:10px 12px calc(10px + env(safe-area-inset-bottom));display:flex;align-items:center;justify-content:space-between;gap:10px;box-shadow:0 -8px 30px rgba(0,0,0,.10)}
-  .mobil-urun-footer .info{font-size:12px;color:#6b7280;line-height:1.25}
-  .mobil-urun-footer .info strong{display:block;color:#111827;font-size:16px;margin-top:2px}
-  .mobil-urun-footer .btn{background:#1d6f42!important;color:#fff!important;border:0!important;min-height:44px!important;padding:8px 13px!important;width:auto!important}
-
-  .mobil-sepet-item{background:#fff;border:1px solid #e5e7eb;border-radius:16px;padding:11px;margin-bottom:8px}
-  .mobil-sepet-top{display:flex;justify-content:space-between;gap:8px;align-items:flex-start}
-  .mobil-sepet-ad{font-size:13px;font-weight:900;color:#111827;line-height:1.25}
-  .mobil-sepet-tutar{font-size:14px;font-weight:900;color:#1d6f42;white-space:nowrap}
-  .mobil-sepet-alt{display:flex;align-items:center;justify-content:space-between;margin-top:10px;gap:8px}
-  .mobil-sepet-alt .mobil-mik input{width:58px!important}
-  .mobil-sepet-sil{background:#fee2e2!important;color:#991b1b!important;border:0!important;width:40px!important;min-height:38px!important;border-radius:13px!important;padding:0!important}
-}
-
 </style>
 </head>
 <body>
@@ -337,11 +275,11 @@ tr:hover td{background:#fafafa}
       <div class="ic"><i class="ti ti-building-store"></i></div>
       <div><span>Cari Takip Pro</span><div class="login-sub">Şarküteri & Market Cari Sistemi</div></div>
     </div>
-    <div class="fg"><label>Kullanıcı Adı</label><input id="l-user" placeholder="Kullanıcı adı veya e-posta" autocomplete="username" onkeydown="if(event.key==='Enter')login()"></div>
-    <div class="fg"><label>Şifre</label><input id="l-pass" type="password" placeholder="Şifre" autocomplete="current-password" onkeydown="if(event.key==='Enter')login()"></div>
+    <div class="fg"><label>Kullanıcı Adı</label><input id="l-user" value="admin" onkeydown="if(event.key==='Enter')login()"></div>
+    <div class="fg"><label>Şifre</label><input id="l-pass" type="password" value="1234" onkeydown="if(event.key==='Enter')login()"></div>
     <div class="login-err" id="l-err"><i class="ti ti-alert-circle"></i> Hatalı kullanıcı adı veya şifre</div>
     <button class="btn btn-g" onclick="login()" style="width:100%;margin-top:14px;justify-content:center;padding:10px"><i class="ti ti-login"></i> Giriş Yap</button>
-    <p style="font-size:11px;color:#9ca3af;margin-top:12px;text-align:center">Yetkili kullanıcı bilgilerinizle giriş yapın.</p>
+    <p style="font-size:11px;color:#9ca3af;margin-top:12px;text-align:center">Varsayılan: admin / 1234</p>
   </div>
 </div>
 
@@ -943,23 +881,27 @@ tr:hover td{background:#fafafa}
 </div>
 
 
-<!-- Ürün Seçme - v3.1.13 Mobil Uyumlu -->
+<!-- Ürün Seçme -->
 <div class="modal-overlay" id="urun-modal">
-  <div class="modal" style="max-width:760px">
+  <div class="modal" style="max-width:660px">
     <div class="modal-head">
-      <span class="modal-title"><i class="ti ti-package"></i> Ürün Ekle</span>
+      <span class="modal-title"><i class="ti ti-package"></i> Ürün Seç</span>
       <button class="btn btn-sm" onclick="closeModal('urun-modal')"><i class="ti ti-x"></i></button>
     </div>
-    <div class="mobil-urun-search">
-      <div class="sb-inp" style="margin:0"><i class="ti ti-search"></i><input id="um-ara" placeholder="Ürün ara..." oninput="renderUModal()"></div>
+    <div style="display:flex;gap:8px;margin-bottom:8px;align-items:center">
+      <div class="sb-inp" style="flex:1;margin:0"><i class="ti ti-search"></i><input id="um-ara" placeholder="Ürün ara..." oninput="renderUModal()"></div>
+      <button class="btn btn-sm" onclick="umTumSec()" id="um-hep-btn" title="Tümünü Seç"><i class="ti ti-checkbox"></i></button>
     </div>
-    <div id="um-kat-bar"></div>
-    <div class="mobil-urun-list" id="um-mobile-list">
-      <div style="text-align:center;padding:20px;color:#9ca3af">Ürünler yükleniyor...</div>
-    </div>
-    <div class="mobil-urun-footer">
-      <div class="info" id="um-sec-info">Sepet boş<strong>₺0,00</strong></div>
-      <button class="btn btn-g" onclick="closeModal('urun-modal')"><i class="ti ti-shopping-cart"></i> Sepete Dön</button>
+    <!-- KATEGORİ FİLTRE BUTONLARI -->
+    <div id="um-kat-bar" style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:10px;padding-bottom:10px;border-bottom:1px solid #f3f4f6"></div>
+    <div class="tw" style="max-height:300px;overflow-y:auto"><table><thead><tr><th style="width:32px"><input type="checkbox" id="um-hep" onchange="umHepDeg(this)"></th><th>Ürün</th><th>Birim</th><th class="num">Fiyat</th><th style="width:80px">Miktar</th></tr></thead>
+    <tbody id="um-tb"></tbody></table></div>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-top:10px;padding-top:8px;border-top:1px solid var(--br)">
+      <span style="font-size:12px;color:#6b7280" id="um-sec-info">0 ürün seçili</span>
+      <div style="display:flex;gap:8px">
+        <button class="btn btn-sm" onclick="closeModal('urun-modal')">İptal</button>
+        <button class="btn btn-sm btn-g" onclick="sepetTopluEkle()"><i class="ti ti-shopping-cart"></i> Sepete Ekle</button>
+      </div>
     </div>
   </div>
 </div>
@@ -5540,163 +5482,6 @@ initApp = function(){
   window.addEventListener('load',function(){ setTimeout(function(){ autoCloudLoad('windowLoad'); },1800); });
 })();
 </script>
-
-<!-- ==== v3.1.14 MOBIL URUN LISTESI + LOGIN FIX ==== -->
-<style>
-@media(max-width:780px){
-  #urun-modal.open{display:flex!important;z-index:100000!important;align-items:stretch!important;justify-content:stretch!important;}
-  #urun-modal.open .modal{display:flex!important;}
-  #urun-modal .mobil-urun-list{display:block!important;min-height:0!important;}
-  #urun-modal .mobil-urun-card{display:block!important;}
-  #urun-modal .mobil-urun-alt{display:flex!important;}
-  #urun-modal .mobil-urun-ekle{
-    display:inline-flex!important;align-items:center!important;justify-content:center!important;
-    visibility:visible!important;opacity:1!important;position:relative!important;z-index:5!important;
-    background:#1d6f42!important;color:#fff!important;border:0!important;border-radius:14px!important;
-    min-height:44px!important;min-width:92px!important;padding:8px 14px!important;font-size:14px!important;font-weight:900!important;
-  }
-  #urun-modal .mobil-urun-fiyat{min-width:84px!important;}
-  #urun-modal .mobil-urun-footer{display:flex!important;}
-  body.modal-open #mobile-nav{display:none!important;}
-  .login-box #l-user,.login-box #l-pass{font-weight:600;}
-}
-</style>
-<script>
-(function(){
-  function money(n){try{return tl(+n||0)}catch(e){return '₺'+(+n||0).toLocaleString('tr-TR',{minimumFractionDigits:2,maximumFractionDigits:2});}}
-  function htmlEsc(v){try{return esc(v)}catch(e){return String(v??'').replace(/[&<>'"]/g,function(m){return {'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[m]})}}
-  function getProducts(){
-    try{
-      if((!DB.urunler || !DB.urunler.length) && typeof ctLoadLocal==='function') ctLoadLocal();
-    }catch(e){}
-    return Array.isArray(DB.urunler) ? DB.urunler.filter(function(u){return u && (u.ad || u.name || u.urunAdi)}) : [];
-  }
-  function pName(u){return u.ad || u.name || u.urunAdi || 'Ürün';}
-  function pCat(u){return u.kat || u.kategori || 'Genel';}
-  function pUnit(u){return u.bir || u.birim || 'Adet';}
-  function pId(u,i){return u.id!=null ? u.id : (u.uid!=null ? u.uid : i);}
-  function pNoDisc(u){return !!(u.noIskonto || u.iskontoHaric);}
-  function pVat(u){return +(u.kdv ?? u.kdvOrani ?? 0) || 0;}
-  function fiyatSecenekleri(u){
-    var opts=[];
-    var adet=+(u.fiyAdet ?? u.adetFiyat ?? u.fiyatAdet ?? 0) || 0;
-    var kg=+(u.fiyKg ?? u.kgFiyat ?? u.fiyatKg ?? 0) || 0;
-    var koli=+(u.fiyKoli ?? u.koliFiyat ?? u.fiyatKoli ?? 0) || 0;
-    var ana=+(u.fiy ?? u.fiyat ?? u.satisFiyati ?? 0) || 0;
-    if(adet) opts.push({bir:'Adet',fiyat:adet});
-    if(kg) opts.push({bir:'Kg',fiyat:kg});
-    if(koli) opts.push({bir:'Koli',fiyat:koli});
-    if(!opts.length) opts.push({bir:pUnit(u),fiyat:ana});
-    return opts;
-  }
-  function seciliBirim(id){
-    var sel=document.getElementById('mob-bir-'+id);
-    if(!sel) return null;
-    var opt=sel.options[sel.selectedIndex];
-    return {bir:sel.value, fiyat:+(opt&&opt.dataset?opt.dataset.fiyat:0)||0};
-  }
-  window.umKatBarRender=function(){
-    var bar=document.getElementById('um-kat-bar'); if(!bar) return;
-    var urunler=getProducts();
-    var katlar=['Tümü'].concat(Array.from(new Set(urunler.map(pCat).filter(Boolean))));
-    var aktif=window.umAktifKat || '';
-    bar.innerHTML=katlar.map(function(k){
-      var val=k==='Tümü'?'':k;
-      var safe=String(val).replace(/'/g,"\\'");
-      var st=(val===aktif)?'background:var(--g);color:#fff;border-color:var(--g)':'';
-      return '<button type="button" onclick="umKatSec(\''+safe+'\')" class="btn btn-sm" style="'+st+'">'+htmlEsc(k)+'</button>';
-    }).join('');
-  };
-  window.umKatSec=function(kat){window.umAktifKat=kat||'';umKatBarRender();renderUModal();};
-  window.mobilQtyDeg=function(id,delta){
-    var el=document.getElementById('umik-'+id); if(!el) return;
-    var v=parseFloat(el.value||'1')||1;
-    el.value=Math.max(0.01, +(v+delta).toFixed(2));
-  };
-  window.sepetUrunEkleMobil=function(id){
-    var urunler=getProducts();
-    var u=urunler.find(function(x,i){return String(pId(x,i))===String(id)});
-    if(!u){alert('Ürün bulunamadı. Sayfayı yenileyip tekrar deneyin.');return;}
-    var sec=seciliBirim(id) || fiyatSecenekleri(u)[0];
-    var mik=+(document.getElementById('umik-'+id)?.value)||1;
-    var mevcut=sepet.find(function(s){return String(s.uid ?? s.id)===String(pId(u,urunler.indexOf(u))) && String(s.bir)===String(sec.bir) && +((s.fiy??s.fiyat)||0)===+sec.fiyat});
-    if(mevcut){mevcut.mik=+((+(mevcut.mik??mevcut.miktar)||0)+mik).toFixed(4); mevcut.miktar=mevcut.mik;}
-    else sepet.push({uid:pId(u,urunler.indexOf(u)),id:pId(u,urunler.indexOf(u)),ad:pName(u),bir:sec.bir,fiy:+sec.fiyat||0,fiyat:+sec.fiyat||0,kdv:pVat(u),mik:mik,miktar:mik,noIskonto:pNoDisc(u),iskontoHaric:pNoDisc(u)});
-    if(typeof renderSepet==='function') renderSepet();
-    if(typeof renderUModal==='function') renderUModal();
-  };
-  window.renderUModal=function(){
-    var box=document.getElementById('um-mobile-list'); if(!box) return;
-    var q=(document.getElementById('um-ara')?.value||'').toLocaleLowerCase('tr-TR');
-    var aktif=window.umAktifKat || '';
-    var urunler=getProducts();
-    var list=urunler.filter(function(u){
-      var ad=pName(u).toLocaleLowerCase('tr-TR');
-      var barkod=String(u.bkod||u.barkod||'').toLocaleLowerCase('tr-TR');
-      return (!q || ad.includes(q) || barkod.includes(q)) && (!aktif || pCat(u)===aktif);
-    });
-    list.sort(function(a,b){return (b.favori?1:0)-(a.favori?1:0) || pName(a).localeCompare(pName(b),'tr')});
-    if(!list.length){
-      box.innerHTML='<div style="background:#fff;border:1px solid #e5e7eb;border-radius:18px;padding:18px;color:#6b7280;text-align:center">Ürün bulunamadı.<br><small>Ürünler sayfasında ürün kaydı olduğundan emin olun. Kayıt varsa sayfayı yenileyin.</small></div>';
-      var info=document.getElementById('um-sec-info'); if(info) info.innerHTML='Ürün yok<strong>₺0,00</strong>';
-      return;
-    }
-    box.innerHTML=list.map(function(u){
-      var realIndex=urunler.indexOf(u);
-      var id=pId(u,realIndex);
-      var opts=fiyatSecenekleri(u);
-      var first=opts[0] || {bir:pUnit(u),fiyat:0};
-      var inCart=sepet.some(function(s){return String(s.uid ?? s.id)===String(id)});
-      return '<div class="mobil-urun-card '+(inCart?'secili':'')+'">'+
-        '<div class="mobil-urun-top"><div style="min-width:0;flex:1">'+
-        '<div class="mobil-urun-ad">'+(u.favori?'★ ':'')+htmlEsc(pName(u))+'</div>'+
-        '<div class="mobil-urun-kat">'+htmlEsc(pCat(u))+(pNoDisc(u)?' <span class="badge b-o">İsk. Yok</span>':'')+'</div></div>'+
-        '<div class="mobil-urun-fiyat" id="mob-fiyat-'+id+'">'+money(first.fiyat)+'</div></div>'+
-        '<div class="mobil-urun-alt"><div class="mobil-mik">'+
-        '<button type="button" onclick="mobilQtyDeg(\''+id+'\',-1)">−</button>'+
-        '<input id="umik-'+id+'" type="number" value="1" min="0.01" step="0.01">'+
-        '<button type="button" onclick="mobilQtyDeg(\''+id+'\',1)">+</button></div>'+
-        '<select id="mob-bir-'+id+'" class="unit-select" onchange="(function(s){var o=s.options[s.selectedIndex];var f=document.getElementById(\'mob-fiyat-'+id+'\'); if(f) f.textContent=money(+(o.dataset.fiyat||0));})(this)">'+
-        opts.map(function(o){return '<option value="'+htmlEsc(o.bir)+'" data-fiyat="'+(+o.fiyat||0)+'">'+htmlEsc(o.bir)+'</option>'}).join('')+'</select>'+
-        '<button type="button" class="mobil-urun-ekle" onclick="sepetUrunEkleMobil(\''+id+'\')"><i class="ti ti-plus"></i> Ekle</button></div></div>';
-    }).join('');
-    var info=document.getElementById('um-sec-info');
-    if(info){
-      var toplam=sepet.reduce(function(a,x){return a+(+((x.fiy??x.fiyat)||0))*(+((x.mik??x.miktar)||0))},0);
-      info.innerHTML=(sepet.length?sepet.length+' kalem':'Sepet boş')+'<strong>'+money(toplam)+'</strong>';
-    }
-  };
-  var oldOpen=window.openModal;
-  window.openModal=function(id){
-    if(oldOpen) oldOpen(id); else document.getElementById(id)?.classList.add('open');
-    if(id==='urun-modal'){
-      document.body.classList.add('modal-open');
-      setTimeout(function(){try{umKatBarRender();renderUModal();}catch(e){console.error(e);}},80);
-    }
-  };
-  var oldClose=window.closeModal;
-  window.closeModal=function(id){
-    if(oldClose) oldClose(id); else document.getElementById(id)?.classList.remove('open');
-    if(id==='urun-modal') document.body.classList.remove('modal-open');
-  };
-  var oldRenderSepet=window.renderSepet;
-  window.renderSepet=function(){
-    sepet.forEach(function(x){
-      if(x.fiy==null) x.fiy=+(x.fiyat||0)||0;
-      if(x.fiyat==null) x.fiyat=+(x.fiy||0)||0;
-      if(x.mik==null) x.mik=+(x.miktar||1)||1;
-      if(x.miktar==null) x.miktar=+(x.mik||1)||1;
-      if(x.noIskonto==null) x.noIskonto=!!x.iskontoHaric;
-    });
-    if(oldRenderSepet) oldRenderSepet();
-  };
-  document.addEventListener('DOMContentLoaded',function(){
-    var lu=document.getElementById('l-user'); if(lu && lu.value==='admin') lu.value='';
-    var lp=document.getElementById('l-pass'); if(lp && lp.value==='1234') lp.value='';
-  });
-})();
-</script>
-
 </body>
 </html>
 
@@ -7043,312 +6828,6 @@ initApp = function(){
     const row=e.target.closest && e.target.closest('#urun-modal tr.mobile-urun-card');
     if(!row || e.target.matches('input,select,button,option')) return;
     const chk=row.querySelector('.um-chk'); if(chk){ chk.checked=!chk.checked; selectedInfo(); }
-  });
-})();
-
-
-/* ==== v3.1.13 MOBIL SIPARIS SISTEMI PATCH ==== */
-(function(){
-  function isMobile(){return window.matchMedia && window.matchMedia('(max-width:780px)').matches;}
-  function safeTl(n){try{return tl(n||0)}catch(e){return '₺'+Number(n||0).toFixed(2)}}
-  function sepetOzet(){
-    try{return sepetIskontoOzet(sepet, (typeof selSiparisF!=='undefined' && selSiparisF ? selSiparisF.iskonto : (typeof selF!=='undefined'&&selF?selF.iskonto:'0')) || '0')}
-    catch(e){return {netTop:(sepet||[]).reduce((a,x)=>a+(+x.fiy||0)*(+x.mik||0),0), iskTutar:0, araTop:0}}
-  }
-  function updateMobilFooter(){
-    const oz=sepetOzet();
-    const adet=(sepet||[]).reduce((a,x)=>a+(+x.mik||0),0);
-    const info=document.getElementById('um-sec-info');
-    if(info) info.innerHTML=(sepet.length?`${sepet.length} kalem / ${adet.toLocaleString('tr-TR')} miktar`:'Sepet boş')+`<strong>${safeTl(oz.netTop)}</strong>`;
-    const q=document.getElementById('mobil-siparis-quickbar');
-    if(q){
-      q.querySelector('.mqs-count').textContent=sepet.length?`${sepet.length} kalem`:'Sepet boş';
-      q.querySelector('strong').textContent=safeTl(oz.netTop);
-      q.style.display=isMobile()&&sepet.length?'flex':'none';
-    }
-  }
-
-  const oldOpen=window.openModal;
-  window.openModal=function(id){
-    if(oldOpen) oldOpen(id); else document.getElementById(id)?.classList.add('open');
-    if(id==='urun-modal'){
-      document.body.classList.add('modal-open');
-      setTimeout(()=>{try{umKatBarRender();renderUModal();updateMobilFooter();document.getElementById('um-ara')?.focus()}catch(e){}},0);
-    }
-  };
-  const oldClose=window.closeModal;
-  window.closeModal=function(id){
-    if(oldClose) oldClose(id); else document.getElementById(id)?.classList.remove('open');
-    if(id==='urun-modal') document.body.classList.remove('modal-open');
-  };
-
-  window.umKatBarRender=function(){
-    const bar=document.getElementById('um-kat-bar'); if(!bar) return;
-    const katlar=['Tümü',...new Set((DB.urunler||[]).map(u=>u.kat).filter(Boolean))];
-    bar.innerHTML=katlar.map(k=>{
-      const val=k==='Tümü'?'':k;
-      const active=(val===(window.umAktifKat||''));
-      return `<button onclick="umKatSec('${String(val).replace(/'/g,"\\'")}')" class="btn btn-sm" style="${active?'background:var(--g);color:#fff;border-color:var(--g)':''}">${k}</button>`;
-    }).join('');
-  };
-
-  window.umKatSec=function(kat){window.umAktifKat=kat||'';umKatBarRender();renderUModal();};
-
-  window.mobilQtyDeg=function(uid,delta){
-    const el=document.getElementById('umik-'+uid); if(!el) return;
-    let v=parseFloat(el.value||'1')||1; v=Math.max(0.01, +(v+delta).toFixed(2)); el.value=v;
-  };
-
-  window.sepetUrunEkleMobil=function(uid){
-    const u=(DB.urunler||[]).find(x=>String(x.id)===String(uid)); if(!u) return;
-    const input=document.getElementById('umik-'+uid);
-    const mik=+(input?.value)||1;
-    const mev=sepet.find(s=>String(s.uid)===String(uid));
-    if(mev) mev.mik=+(mev.mik+mik).toFixed(4);
-    else sepet.push({uid:u.id,ad:u.ad,bir:u.bir,fiy:+u.fiy||0,kdv:+u.kdv||0,mik,noIskonto:!!u.noIskonto});
-    renderSepet(); renderUModal(); updateMobilFooter();
-  };
-
-  window.renderUModal=function(){
-    const q=(document.getElementById('um-ara')?.value||'').toLowerCase();
-    let list=(DB.urunler||[]).filter(u=>!q||String(u.ad||'').toLowerCase().includes(q));
-    if(window.umAktifKat) list=list.filter(u=>u.kat===window.umAktifKat);
-    const box=document.getElementById('um-mobile-list'); if(!box) return;
-    box.innerHTML=list.length?list.map(u=>{
-      const exists=sepet.find(s=>String(s.uid)===String(u.id));
-      const fiyat=+u.fiy||0;
-      return `<div class="mobil-urun-card ${exists?'secili':''}">
-        <div class="mobil-urun-top">
-          <div style="min-width:0;flex:1">
-            <div class="mobil-urun-ad">${esc(u.ad||'')}</div>
-            <div class="mobil-urun-kat">${esc(u.kat||'-')} · ${esc(u.bir||'Birim')} ${u.noIskonto?'<span class="badge b-o">İsk. Yok</span>':''}</div>
-          </div>
-          <div class="mobil-urun-fiyat">${safeTl(fiyat)}</div>
-        </div>
-        <div class="mobil-urun-alt">
-          <div class="mobil-mik">
-            <button type="button" onclick="mobilQtyDeg(${u.id},-1)">−</button>
-            <input id="umik-${u.id}" type="number" value="1" min="0.01" step="0.01">
-            <button type="button" onclick="mobilQtyDeg(${u.id},1)">+</button>
-          </div>
-          <button class="mobil-urun-ekle" onclick="sepetUrunEkleMobil(${u.id})"><i class="ti ti-plus"></i> Ekle</button>
-        </div>
-      </div>`;
-    }).join(''):`<div style="text-align:center;padding:24px;color:#9ca3af">Ürün bulunamadı</div>`;
-    updateMobilFooter();
-  };
-
-  window.sepetTopluEkle=function(){
-    alert('Mobilde artık ürün kartındaki Ekle butonunu kullan.');
-  };
-
-  window.sepetMikArtir=function(i,d){
-    if(!sepet[i]) return;
-    sepet[i].mik=Math.max(0.01, +((+sepet[i].mik||1)+d).toFixed(2));
-    renderSepet();
-  };
-
-  window.renderSepet=function(){
-    const isk=(typeof selSiparisF!=='undefined'&&selSiparisF?selSiparisF.iskonto:(typeof selF!=='undefined'&&selF?selF.iskonto:'0'))||'0';
-    const oz=sepetIskontoOzet(sepet,isk);
-    const top=document.getElementById('sepet-top'); if(top) top.textContent=safeTl(oz.netTop);
-    let iskEl=document.getElementById('sepet-isk');
-    if(!iskEl && top){const d=document.createElement('div');d.id='sepet-isk';top.parentNode.parentNode.insertBefore(d,top.parentNode);iskEl=d;}
-    if(iskEl){
-      iskEl.innerHTML=(isk&&isk!=='0'&&oz.iskTutar>0)?`<div style="display:flex;justify-content:space-between;align-items:center;margin-top:4px"><span style="font-size:12px;color:#e08c00;font-weight:700">İSKONTO (%${isk})</span><span style="font-size:14px;font-weight:900;color:#e08c00">-${safeTl(oz.iskTutar)}</span></div>`:'';
-    }
-    const list=document.getElementById('sepet-list'); if(!list) return;
-    if(!sepet.length){list.innerHTML='<div style="text-align:center;padding:16px;font-size:12px;color:#9ca3af">Henüz ürün eklenmedi</div>';updateMobilFooter();return;}
-    list.innerHTML=sepet.map((x,i)=>`<div class="mobil-sepet-item">
-      <div class="mobil-sepet-top">
-        <div class="mobil-sepet-ad">${esc(x.ad)}${x.noIskonto?' <span class="badge b-o">İsk. Yok</span>':''}</div>
-        <div class="mobil-sepet-tutar">${safeTl((+x.fiy||0)*(+x.mik||0))}</div>
-      </div>
-      <div class="mobil-sepet-alt">
-        <div class="mobil-mik">
-          <button type="button" onclick="sepetMikArtir(${i},-1)">−</button>
-          <input type="number" min="0.01" step="0.01" value="${x.mik}" onchange="sepetMikDeg(${i},this.value)">
-          <button type="button" onclick="sepetMikArtir(${i},1)">+</button>
-        </div>
-        <span style="font-size:12px;color:#6b7280;font-weight:800">${esc(x.bir||'')}</span>
-        <button class="mobil-sepet-sil" onclick="sepetCikar(${i})"><i class="ti ti-trash"></i></button>
-      </div>
-    </div>`).join('');
-    updateMobilFooter();
-  };
-
-  function ensureQuickbar(){
-    if(document.getElementById('mobil-siparis-quickbar')) return;
-    const page=document.getElementById('page-siparis'); if(!page) return;
-    const div=document.createElement('div'); div.id='mobil-siparis-quickbar'; div.className='mobil-siparis-quickbar';
-    div.innerHTML='<div><div class="mqs-count">Sepet boş</div><strong>₺0,00</strong><span>Sipariş özeti</span></div><button class="btn" onclick="document.getElementById(\'sepet-list\')?.scrollIntoView({behavior:\'smooth\',block:\'center\'})"><i class="ti ti-shopping-cart"></i> Sepeti Gör</button>';
-    page.appendChild(div);
-  }
-
-  const oldGo=window.goPage;
-  window.goPage=function(id,el){
-    if(oldGo) oldGo(id,el);
-    if(id==='siparis'){ensureQuickbar();setTimeout(()=>{try{renderSepet();updateMobilFooter()}catch(e){}},0);}
-  };
-
-  document.addEventListener('DOMContentLoaded',()=>{ensureQuickbar();setTimeout(()=>{try{renderSepet();updateMobilFooter()}catch(e){}},500);});
-  window.addEventListener('resize',updateMobilFooter);
-})();
-</script>
-
-
-<!-- ==== v3.1.14 MOBIL URUN LISTESI + LOGIN FIX ==== -->
-<style>
-@media(max-width:780px){
-  #urun-modal.open{display:flex!important;z-index:100000!important;align-items:stretch!important;justify-content:stretch!important;}
-  #urun-modal.open .modal{display:flex!important;}
-  #urun-modal .mobil-urun-list{display:block!important;min-height:0!important;}
-  #urun-modal .mobil-urun-card{display:block!important;}
-  #urun-modal .mobil-urun-alt{display:flex!important;}
-  #urun-modal .mobil-urun-ekle{
-    display:inline-flex!important;align-items:center!important;justify-content:center!important;
-    visibility:visible!important;opacity:1!important;position:relative!important;z-index:5!important;
-    background:#1d6f42!important;color:#fff!important;border:0!important;border-radius:14px!important;
-    min-height:44px!important;min-width:92px!important;padding:8px 14px!important;font-size:14px!important;font-weight:900!important;
-  }
-  #urun-modal .mobil-urun-fiyat{min-width:84px!important;}
-  #urun-modal .mobil-urun-footer{display:flex!important;}
-  body.modal-open #mobile-nav{display:none!important;}
-  .login-box #l-user,.login-box #l-pass{font-weight:600;}
-}
-</style>
-<script>
-(function(){
-  function money(n){try{return tl(+n||0)}catch(e){return '₺'+(+n||0).toLocaleString('tr-TR',{minimumFractionDigits:2,maximumFractionDigits:2});}}
-  function htmlEsc(v){try{return esc(v)}catch(e){return String(v??'').replace(/[&<>'"]/g,function(m){return {'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[m]})}}
-  function getProducts(){
-    try{
-      if((!DB.urunler || !DB.urunler.length) && typeof ctLoadLocal==='function') ctLoadLocal();
-    }catch(e){}
-    return Array.isArray(DB.urunler) ? DB.urunler.filter(function(u){return u && (u.ad || u.name || u.urunAdi)}) : [];
-  }
-  function pName(u){return u.ad || u.name || u.urunAdi || 'Ürün';}
-  function pCat(u){return u.kat || u.kategori || 'Genel';}
-  function pUnit(u){return u.bir || u.birim || 'Adet';}
-  function pId(u,i){return u.id!=null ? u.id : (u.uid!=null ? u.uid : i);}
-  function pNoDisc(u){return !!(u.noIskonto || u.iskontoHaric);}
-  function pVat(u){return +(u.kdv ?? u.kdvOrani ?? 0) || 0;}
-  function fiyatSecenekleri(u){
-    var opts=[];
-    var adet=+(u.fiyAdet ?? u.adetFiyat ?? u.fiyatAdet ?? 0) || 0;
-    var kg=+(u.fiyKg ?? u.kgFiyat ?? u.fiyatKg ?? 0) || 0;
-    var koli=+(u.fiyKoli ?? u.koliFiyat ?? u.fiyatKoli ?? 0) || 0;
-    var ana=+(u.fiy ?? u.fiyat ?? u.satisFiyati ?? 0) || 0;
-    if(adet) opts.push({bir:'Adet',fiyat:adet});
-    if(kg) opts.push({bir:'Kg',fiyat:kg});
-    if(koli) opts.push({bir:'Koli',fiyat:koli});
-    if(!opts.length) opts.push({bir:pUnit(u),fiyat:ana});
-    return opts;
-  }
-  function seciliBirim(id){
-    var sel=document.getElementById('mob-bir-'+id);
-    if(!sel) return null;
-    var opt=sel.options[sel.selectedIndex];
-    return {bir:sel.value, fiyat:+(opt&&opt.dataset?opt.dataset.fiyat:0)||0};
-  }
-  window.umKatBarRender=function(){
-    var bar=document.getElementById('um-kat-bar'); if(!bar) return;
-    var urunler=getProducts();
-    var katlar=['Tümü'].concat(Array.from(new Set(urunler.map(pCat).filter(Boolean))));
-    var aktif=window.umAktifKat || '';
-    bar.innerHTML=katlar.map(function(k){
-      var val=k==='Tümü'?'':k;
-      var safe=String(val).replace(/'/g,"\\'");
-      var st=(val===aktif)?'background:var(--g);color:#fff;border-color:var(--g)':'';
-      return '<button type="button" onclick="umKatSec(\''+safe+'\')" class="btn btn-sm" style="'+st+'">'+htmlEsc(k)+'</button>';
-    }).join('');
-  };
-  window.umKatSec=function(kat){window.umAktifKat=kat||'';umKatBarRender();renderUModal();};
-  window.mobilQtyDeg=function(id,delta){
-    var el=document.getElementById('umik-'+id); if(!el) return;
-    var v=parseFloat(el.value||'1')||1;
-    el.value=Math.max(0.01, +(v+delta).toFixed(2));
-  };
-  window.sepetUrunEkleMobil=function(id){
-    var urunler=getProducts();
-    var u=urunler.find(function(x,i){return String(pId(x,i))===String(id)});
-    if(!u){alert('Ürün bulunamadı. Sayfayı yenileyip tekrar deneyin.');return;}
-    var sec=seciliBirim(id) || fiyatSecenekleri(u)[0];
-    var mik=+(document.getElementById('umik-'+id)?.value)||1;
-    var mevcut=sepet.find(function(s){return String(s.uid ?? s.id)===String(pId(u,urunler.indexOf(u))) && String(s.bir)===String(sec.bir) && +((s.fiy??s.fiyat)||0)===+sec.fiyat});
-    if(mevcut){mevcut.mik=+((+(mevcut.mik??mevcut.miktar)||0)+mik).toFixed(4); mevcut.miktar=mevcut.mik;}
-    else sepet.push({uid:pId(u,urunler.indexOf(u)),id:pId(u,urunler.indexOf(u)),ad:pName(u),bir:sec.bir,fiy:+sec.fiyat||0,fiyat:+sec.fiyat||0,kdv:pVat(u),mik:mik,miktar:mik,noIskonto:pNoDisc(u),iskontoHaric:pNoDisc(u)});
-    if(typeof renderSepet==='function') renderSepet();
-    if(typeof renderUModal==='function') renderUModal();
-  };
-  window.renderUModal=function(){
-    var box=document.getElementById('um-mobile-list'); if(!box) return;
-    var q=(document.getElementById('um-ara')?.value||'').toLocaleLowerCase('tr-TR');
-    var aktif=window.umAktifKat || '';
-    var urunler=getProducts();
-    var list=urunler.filter(function(u){
-      var ad=pName(u).toLocaleLowerCase('tr-TR');
-      var barkod=String(u.bkod||u.barkod||'').toLocaleLowerCase('tr-TR');
-      return (!q || ad.includes(q) || barkod.includes(q)) && (!aktif || pCat(u)===aktif);
-    });
-    list.sort(function(a,b){return (b.favori?1:0)-(a.favori?1:0) || pName(a).localeCompare(pName(b),'tr')});
-    if(!list.length){
-      box.innerHTML='<div style="background:#fff;border:1px solid #e5e7eb;border-radius:18px;padding:18px;color:#6b7280;text-align:center">Ürün bulunamadı.<br><small>Ürünler sayfasında ürün kaydı olduğundan emin olun. Kayıt varsa sayfayı yenileyin.</small></div>';
-      var info=document.getElementById('um-sec-info'); if(info) info.innerHTML='Ürün yok<strong>₺0,00</strong>';
-      return;
-    }
-    box.innerHTML=list.map(function(u){
-      var realIndex=urunler.indexOf(u);
-      var id=pId(u,realIndex);
-      var opts=fiyatSecenekleri(u);
-      var first=opts[0] || {bir:pUnit(u),fiyat:0};
-      var inCart=sepet.some(function(s){return String(s.uid ?? s.id)===String(id)});
-      return '<div class="mobil-urun-card '+(inCart?'secili':'')+'">'+
-        '<div class="mobil-urun-top"><div style="min-width:0;flex:1">'+
-        '<div class="mobil-urun-ad">'+(u.favori?'★ ':'')+htmlEsc(pName(u))+'</div>'+
-        '<div class="mobil-urun-kat">'+htmlEsc(pCat(u))+(pNoDisc(u)?' <span class="badge b-o">İsk. Yok</span>':'')+'</div></div>'+
-        '<div class="mobil-urun-fiyat" id="mob-fiyat-'+id+'">'+money(first.fiyat)+'</div></div>'+
-        '<div class="mobil-urun-alt"><div class="mobil-mik">'+
-        '<button type="button" onclick="mobilQtyDeg(\''+id+'\',-1)">−</button>'+
-        '<input id="umik-'+id+'" type="number" value="1" min="0.01" step="0.01">'+
-        '<button type="button" onclick="mobilQtyDeg(\''+id+'\',1)">+</button></div>'+
-        '<select id="mob-bir-'+id+'" class="unit-select" onchange="(function(s){var o=s.options[s.selectedIndex];var f=document.getElementById(\'mob-fiyat-'+id+'\'); if(f) f.textContent=money(+(o.dataset.fiyat||0));})(this)">'+
-        opts.map(function(o){return '<option value="'+htmlEsc(o.bir)+'" data-fiyat="'+(+o.fiyat||0)+'">'+htmlEsc(o.bir)+'</option>'}).join('')+'</select>'+
-        '<button type="button" class="mobil-urun-ekle" onclick="sepetUrunEkleMobil(\''+id+'\')"><i class="ti ti-plus"></i> Ekle</button></div></div>';
-    }).join('');
-    var info=document.getElementById('um-sec-info');
-    if(info){
-      var toplam=sepet.reduce(function(a,x){return a+(+((x.fiy??x.fiyat)||0))*(+((x.mik??x.miktar)||0))},0);
-      info.innerHTML=(sepet.length?sepet.length+' kalem':'Sepet boş')+'<strong>'+money(toplam)+'</strong>';
-    }
-  };
-  var oldOpen=window.openModal;
-  window.openModal=function(id){
-    if(oldOpen) oldOpen(id); else document.getElementById(id)?.classList.add('open');
-    if(id==='urun-modal'){
-      document.body.classList.add('modal-open');
-      setTimeout(function(){try{umKatBarRender();renderUModal();}catch(e){console.error(e);}},80);
-    }
-  };
-  var oldClose=window.closeModal;
-  window.closeModal=function(id){
-    if(oldClose) oldClose(id); else document.getElementById(id)?.classList.remove('open');
-    if(id==='urun-modal') document.body.classList.remove('modal-open');
-  };
-  var oldRenderSepet=window.renderSepet;
-  window.renderSepet=function(){
-    sepet.forEach(function(x){
-      if(x.fiy==null) x.fiy=+(x.fiyat||0)||0;
-      if(x.fiyat==null) x.fiyat=+(x.fiy||0)||0;
-      if(x.mik==null) x.mik=+(x.miktar||1)||1;
-      if(x.miktar==null) x.miktar=+(x.mik||1)||1;
-      if(x.noIskonto==null) x.noIskonto=!!x.iskontoHaric;
-    });
-    if(oldRenderSepet) oldRenderSepet();
-  };
-  document.addEventListener('DOMContentLoaded',function(){
-    var lu=document.getElementById('l-user'); if(lu && lu.value==='admin') lu.value='';
-    var lp=document.getElementById('l-pass'); if(lp && lp.value==='1234') lp.value='';
   });
 })();
 </script>
