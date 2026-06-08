@@ -2352,6 +2352,75 @@ function faturaYazdir() {
 }
 </style>
 
+
+<!-- CTP_MOBILE_SEPET_REMOVE_FIX_CSS_START -->
+<style id="ctp-mobile-sepet-remove-fix-css">
+@media(max-width:780px){
+  #sepet-list{overflow:visible!important}
+  #sepet-list .ctp-mobile-sepet-list{
+    display:flex!important;
+    flex-direction:column!important;
+    gap:10px!important;
+  }
+  #sepet-list .ctp-mobile-sepet-item{
+    background:#fff!important;
+    border:1px solid #e5e7eb!important;
+    border-radius:18px!important;
+    padding:13px!important;
+    box-shadow:0 5px 18px rgba(0,0,0,.05)!important;
+  }
+  #sepet-list .ctp-mobile-sepet-title{
+    font-size:14px!important;
+    font-weight:900!important;
+    color:#111827!important;
+    line-height:1.25!important;
+    margin-bottom:10px!important;
+  }
+  #sepet-list .ctp-mobile-sepet-grid{
+    display:grid!important;
+    grid-template-columns:1fr 1fr!important;
+    gap:8px!important;
+  }
+  #sepet-list .ctp-mobile-sepet-grid label{
+    display:block!important;
+    font-size:10px!important;
+    font-weight:900!important;
+    color:#6b7280!important;
+    margin-bottom:4px!important;
+  }
+  #sepet-list .ctp-mobile-sepet-grid input,
+  #sepet-list .ctp-mobile-sepet-grid select{
+    width:100%!important;
+    min-height:42px!important;
+    border-radius:12px!important;
+    font-size:16px!important;
+  }
+  #sepet-list .ctp-mobile-sepet-price{
+    margin-top:10px!important;
+    padding-top:10px!important;
+    border-top:1px solid #f1f5f9!important;
+    display:flex!important;
+    justify-content:space-between!important;
+    align-items:center!important;
+  }
+  #sepet-list .ctp-mobile-sepet-price strong{
+    color:#1d6f42!important;
+    font-size:17px!important;
+  }
+  #sepet-list .ctp-mobile-sepet-remove{
+    display:flex!important;
+    width:100%!important;
+    min-height:44px!important;
+    margin-top:10px!important;
+    border-radius:14px!important;
+    justify-content:center!important;
+    align-items:center!important;
+    font-size:14px!important;
+  }
+}
+</style>
+<!-- CTP_MOBILE_SEPET_REMOVE_FIX_CSS_END -->
+
 </body></html>`);
   win.document.close();
 }
@@ -3111,19 +3180,49 @@ function renderSepetEditable(){
     const topEl=document.getElementById('sepet-top'); if(topEl) topEl.textContent=tl(0);
     return;
   }
-  el.innerHTML=`<div class="tw"><table><thead><tr><th>Ürün</th><th>Miktar</th><th>Birim</th><th class="num">Fiyat</th><th class="num">Tutar</th><th></th></tr></thead><tbody>`+
-    sepet.map((x,i)=>{
+
+  const isMobile = window.innerWidth <= 780;
+
+  if(isMobile){
+    el.innerHTML = '<div class="ctp-mobile-sepet-list">' + sepet.map((x,i)=>{
       const tut=(+x.miktar||1)*(+x.fiyat||0);
-      return `<tr>
-        <td><strong>${x.ad}</strong></td>
-        <td><input id="sp-mik-${i}" type="number" min="1" step="1" value="${Math.round(+x.miktar||1)}" onchange="sepetSatirDegisti(${i})" oninput="sepetSatirDegisti(${i})" style="width:70px;padding:5px"></td>
-        <td><select id="sp-bir-${i}" class="unit-select" onchange="sepetSatirDegisti(${i})">${sepetBirimOptionHtml(i)}</select></td>
-        <td class="num">${tl(+x.fiyat||0)}</td>
-        <td class="num"><strong>${tl(tut)}</strong></td>
-        <td><button class="btn btn-sm btn-r" onclick="sepetSatirSil(${i})"><i class="ti ti-x"></i></button></td>
-      </tr>`;
-    }).join('')+
-    `</tbody></table></div>`;
+      return `<div class="ctp-mobile-sepet-item">
+        <div class="ctp-mobile-sepet-title">${x.ad}</div>
+        <div class="ctp-mobile-sepet-grid">
+          <div>
+            <label>Miktar</label>
+            <input id="sp-mik-${i}" type="number" min="1" step="1" value="${Math.round(+x.miktar||1)}" onchange="sepetSatirDegisti(${i})" oninput="sepetSatirDegisti(${i})">
+          </div>
+          <div>
+            <label>Birim</label>
+            <select id="sp-bir-${i}" onchange="sepetSatirDegisti(${i})">${sepetBirimOptionHtml(i)}</select>
+          </div>
+        </div>
+        <div class="ctp-mobile-sepet-price">
+          <span>${tl(+x.fiyat||0)}</span>
+          <strong>${tl(tut)}</strong>
+        </div>
+        <button class="btn btn-r ctp-mobile-sepet-remove" onclick="sepetSatirSil(${i})">
+          <i class="ti ti-trash"></i> Ürünü Çıkar
+        </button>
+      </div>`;
+    }).join('') + '</div>';
+  } else {
+    el.innerHTML=`<div class="tw"><table><thead><tr><th>Ürün</th><th>Miktar</th><th>Birim</th><th class="num">Fiyat</th><th class="num">Tutar</th><th></th></tr></thead><tbody>`+
+      sepet.map((x,i)=>{
+        const tut=(+x.miktar||1)*(+x.fiyat||0);
+        return `<tr>
+          <td><strong>${x.ad}</strong></td>
+          <td><input id="sp-mik-${i}" type="number" min="1" step="1" value="${Math.round(+x.miktar||1)}" onchange="sepetSatirDegisti(${i})" oninput="sepetSatirDegisti(${i})" style="width:70px;padding:5px"></td>
+          <td><select id="sp-bir-${i}" class="unit-select" onchange="sepetSatirDegisti(${i})">${sepetBirimOptionHtml(i)}</select></td>
+          <td class="num">${tl(+x.fiyat||0)}</td>
+          <td class="num"><strong>${tl(tut)}</strong></td>
+          <td><button class="btn btn-sm btn-r" onclick="sepetSatirSil(${i})"><i class="ti ti-x"></i></button></td>
+        </tr>`;
+      }).join('')+
+      `</tbody></table></div>`;
+  }
+
   const top=sepet.reduce((s,x)=>s+(+x.miktar||1)*(+x.fiyat||0),0);
   const topEl=document.getElementById('sepet-top'); if(topEl) topEl.textContent=tl(top);
 }
@@ -5879,6 +5978,75 @@ initApp = function(){
   }
 }
 </style>
+
+
+<!-- CTP_MOBILE_SEPET_REMOVE_FIX_CSS_START -->
+<style id="ctp-mobile-sepet-remove-fix-css">
+@media(max-width:780px){
+  #sepet-list{overflow:visible!important}
+  #sepet-list .ctp-mobile-sepet-list{
+    display:flex!important;
+    flex-direction:column!important;
+    gap:10px!important;
+  }
+  #sepet-list .ctp-mobile-sepet-item{
+    background:#fff!important;
+    border:1px solid #e5e7eb!important;
+    border-radius:18px!important;
+    padding:13px!important;
+    box-shadow:0 5px 18px rgba(0,0,0,.05)!important;
+  }
+  #sepet-list .ctp-mobile-sepet-title{
+    font-size:14px!important;
+    font-weight:900!important;
+    color:#111827!important;
+    line-height:1.25!important;
+    margin-bottom:10px!important;
+  }
+  #sepet-list .ctp-mobile-sepet-grid{
+    display:grid!important;
+    grid-template-columns:1fr 1fr!important;
+    gap:8px!important;
+  }
+  #sepet-list .ctp-mobile-sepet-grid label{
+    display:block!important;
+    font-size:10px!important;
+    font-weight:900!important;
+    color:#6b7280!important;
+    margin-bottom:4px!important;
+  }
+  #sepet-list .ctp-mobile-sepet-grid input,
+  #sepet-list .ctp-mobile-sepet-grid select{
+    width:100%!important;
+    min-height:42px!important;
+    border-radius:12px!important;
+    font-size:16px!important;
+  }
+  #sepet-list .ctp-mobile-sepet-price{
+    margin-top:10px!important;
+    padding-top:10px!important;
+    border-top:1px solid #f1f5f9!important;
+    display:flex!important;
+    justify-content:space-between!important;
+    align-items:center!important;
+  }
+  #sepet-list .ctp-mobile-sepet-price strong{
+    color:#1d6f42!important;
+    font-size:17px!important;
+  }
+  #sepet-list .ctp-mobile-sepet-remove{
+    display:flex!important;
+    width:100%!important;
+    min-height:44px!important;
+    margin-top:10px!important;
+    border-radius:14px!important;
+    justify-content:center!important;
+    align-items:center!important;
+    font-size:14px!important;
+  }
+}
+</style>
+<!-- CTP_MOBILE_SEPET_REMOVE_FIX_CSS_END -->
 
 </body>
 </html>
