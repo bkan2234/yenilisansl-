@@ -1228,9 +1228,111 @@ function login(){
     document.getElementById('sb-name').textContent=user.username+' — '+roleLabel(user.role);
     initApp();
     applyRoleUI();
+    if(document.getElementById('l-err')) document.getElementById('l-err').style.display='none';
+    ctpSessionSave();
   } else document.getElementById('l-err').style.display='flex';
 }
-function logout(){if(confirm('Çıkış yapmak istiyor musunuz?')){document.getElementById('app').style.display='none';document.getElementById('login-screen').style.display='flex';currentUser=null;}}
+function logout(){
+  if(confirm('Çıkış yapmak istiyor musunuz?')){
+    ctpSessionClear();
+    document.getElementById('app').style.display='none';
+    document.getElementById('login-screen').style.display='flex';
+    currentUser=null;
+  }
+}
+
+const CTP_SESSION_KEY='ctp_active_session_v319';
+const CTP_REMEMBER_USER_KEY='ctp_remember_user_v311';
+const CTP_REMEMBER_ON_KEY='ctp_remember_login_v311';
+const CTP_IDLE_MS=10*60*1000;
+
+function ctpSessionSave(){
+  try{
+    if(!currentUser || !currentUser.username) return;
+    var app=document.getElementById('app');
+    if(!app || app.style.display!=='block') return;
+    localStorage.setItem(CTP_SESSION_KEY, JSON.stringify({
+      username: currentUser.username,
+      last: Date.now()
+    }));
+    localStorage.setItem(CTP_REMEMBER_ON_KEY,'1');
+    localStorage.setItem(CTP_REMEMBER_USER_KEY,currentUser.username);
+  }catch(e){}
+}
+function ctpSessionClear(){
+  try{ localStorage.removeItem(CTP_SESSION_KEY); }catch(e){}
+}
+function ctpSessionRead(){
+  try{
+    var raw=localStorage.getItem(CTP_SESSION_KEY);
+    if(!raw) return null;
+    var data=JSON.parse(raw);
+    if(!data || !data.username || !data.last) return null;
+    if(Date.now()-(+data.last)>CTP_IDLE_MS){
+      ctpSessionClear();
+      return null;
+    }
+    return data;
+  }catch(e){
+    ctpSessionClear();
+    return null;
+  }
+}
+function ctpSessionRestore(){
+  try{
+    ensureUsers();
+    var uInput=document.getElementById('l-user');
+    var savedUser=localStorage.getItem(CTP_REMEMBER_USER_KEY)||'';
+    if(uInput && savedUser && !uInput.value) uInput.value=savedUser;
+
+    var data=ctpSessionRead();
+    if(!data) return false;
+
+    var user=(DB.users||[]).find(x=>String(x.username).toLowerCase()===String(data.username).toLowerCase() && x.active!==false);
+    if(!user){ ctpSessionClear(); return false; }
+
+    currentUser=user;
+    document.getElementById('login-screen').style.display='none';
+    document.getElementById('app').style.display='block';
+    document.getElementById('sb-av').textContent=user.username[0].toUpperCase();
+    document.getElementById('sb-name').textContent=user.username+' — '+roleLabel(user.role);
+    initApp();
+    applyRoleUI();
+    ctpSessionSave();
+    return true;
+  }catch(e){
+    return false;
+  }
+}
+function ctpForceIdleLogout(){
+  try{
+    ctpSessionClear();
+    currentUser=null;
+    document.getElementById('app').style.display='none';
+    document.getElementById('login-screen').style.display='flex';
+    var err=document.getElementById('l-err');
+    if(err){
+      err.style.display='flex';
+      err.innerHTML='<i class="ti ti-alert-circle"></i> 10 dakika işlem yapılmadığı için çıkış yapıldı';
+    }
+  }catch(e){}
+}
+function ctpSessionActivity(){
+  try{
+    var app=document.getElementById('app');
+    if(app && app.style.display==='block') ctpSessionSave();
+  }catch(e){}
+}
+['click','keydown','touchstart','mousemove','scroll'].forEach(function(ev){
+  window.addEventListener(ev,ctpSessionActivity,{passive:true});
+});
+setInterval(function(){
+  var app=document.getElementById('app');
+  if(!app || app.style.display!=='block') return;
+  if(!ctpSessionRead()) ctpForceIdleLogout();
+},15000);
+document.addEventListener('DOMContentLoaded',function(){setTimeout(ctpSessionRestore,300);});
+window.addEventListener('load',function(){setTimeout(ctpSessionRestore,700);});
 
 function goPage(id,el){
   if((id==='yedek'||id==='kullanicilar') && !isAdmin()) return permissionError('Bu bölüm sadece admin içindir.');
@@ -2249,305 +2351,6 @@ function faturaYazdir() {
   }
 }
 </style>
-
-
-<!-- CTP_V317_START -->
-<style id="ctp-v317-mobile-cart-remember">
-@media(max-width:780px){
-  #sepet-list .ctp-mobile-cart{display:flex;flex-direction:column;gap:10px}
-  #sepet-list .ctp-cart-item{
-    background:#fff;
-    border:1px solid #e5e7eb;
-    border-radius:18px;
-    padding:13px;
-    box-shadow:0 4px 14px rgba(0,0,0,.04);
-  }
-  #sepet-list .ctp-cart-title{
-    font-size:14px;
-    font-weight:900;
-    color:#111827;
-    line-height:1.25;
-    margin-bottom:10px;
-  }
-  #sepet-list .ctp-cart-grid{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:8px;
-    align-items:end;
-  }
-  #sepet-list .ctp-cart-field label{
-    display:block;
-    font-size:10px;
-    font-weight:900;
-    color:#6b7280;
-    margin-bottom:4px;
-    letter-spacing:.04em;
-  }
-  #sepet-list .ctp-cart-field input,
-  #sepet-list .ctp-cart-field select{
-    width:100%!important;
-    min-height:42px!important;
-    border-radius:12px!important;
-    font-size:16px!important;
-  }
-  #sepet-list .ctp-cart-total{
-    margin-top:10px;
-    padding-top:10px;
-    border-top:1px solid #f1f5f9;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    gap:8px;
-  }
-  #sepet-list .ctp-cart-total strong{
-    font-size:17px;
-    color:#1d6f42;
-  }
-  #sepet-list .ctp-cart-remove{
-    width:100%!important;
-    min-height:44px!important;
-    margin-top:10px!important;
-    border-radius:14px!important;
-    justify-content:center!important;
-  }
-  #sepet-list .tw{display:block!important;overflow:visible!important}
-  #page-siparis{padding-bottom:110px!important}
-  #ctp-remember-row,
-  #ctp-cloud-remember-row{
-    padding:4px 0;
-  }
-}
-</style>
-
-<script id="ctp-v317-mobile-cart-remember-js">
-(function(){
-  'use strict';
-
-  function $(id){return document.getElementById(id)}
-  function mobile(){return window.innerWidth<=780}
-  function money(n){
-    try{ if(typeof tl==='function') return tl(n); }catch(e){}
-    return new Intl.NumberFormat('tr-TR',{style:'currency',currency:'TRY'}).format(+n||0);
-  }
-  function getQty(x){return +(x.miktar ?? x.mik ?? 1) || 1}
-  function setQty(x,v){
-    v=Math.max(0, +v || 0);
-    if('miktar' in x) x.miktar=v;
-    else x.mik=v;
-  }
-  function getPrice(x){return +(x.fiyat ?? x.fiy ?? 0) || 0}
-  function setPrice(x,v){
-    v=+v||0;
-    if('fiyat' in x) x.fiyat=v;
-    else x.fiy=v;
-  }
-  function getUnit(x){return x.bir || x.birim || 'Adet'}
-  function setUnit(x,v){x.bir=v; if('birim' in x) x.birim=v}
-  function getId(x){return x.id ?? x.uid ?? x.uId ?? ''}
-  function getProduct(x){
-    try{
-      if(typeof DB!=='undefined' && DB && Array.isArray(DB.urunler)){
-        return DB.urunler.find(u => String(u.id)===String(getId(x)) || String(u.uid)===String(getId(x)) || u.ad===x.ad);
-      }
-    }catch(e){}
-    return null;
-  }
-  function priceForUnit(u,bir,oldPrice){
-    if(!u) return +oldPrice||0;
-    try{
-      if(typeof kesinUrunFiyati==='function'){
-        const v=kesinUrunFiyati(u,bir);
-        if(+v>0) return +v;
-      }
-    }catch(e){}
-    try{
-      if(typeof urunFiyatiniBul==='function'){
-        const v=urunFiyatiniBul(u,bir);
-        if(+v>0) return +v;
-      }
-    }catch(e){}
-    if(bir==='Kg' && +u.fiyKg>0) return +u.fiyKg;
-    if(bir==='Adet' && +u.fiyAdet>0) return +u.fiyAdet;
-    if(bir==='Koli' && +u.fiyKoli>0) return +u.fiyKoli;
-    return +(u.fiy || u.fiyat || oldPrice || 0);
-  }
-  function unitOptions(x,i){
-    const u=getProduct(x);
-    const current=getUnit(x);
-    let opts=[];
-    try{
-      if(u && typeof urunBirimSecenekleri==='function'){
-        opts=urunBirimSecenekleri(u).map(o=>o.bir || o.birim).filter(Boolean);
-      }
-    }catch(e){}
-    if(!opts.length && u){
-      if(+u.fiyKoli>0) opts.push('Koli');
-      if(+u.fiyKg>0) opts.push('Kg');
-      if(+u.fiyAdet>0) opts.push('Adet');
-      if(u.bir && !opts.includes(u.bir)) opts.push(u.bir);
-    }
-    if(!opts.includes(current)) opts.unshift(current);
-    opts=[...new Set(opts)];
-    return opts.map(o=>'<option value="'+String(o).replace(/"/g,'&quot;')+'" '+(o===current?'selected':'')+'>'+o+'</option>').join('');
-  }
-
-  window.ctpSepetDegistirV317=function(i){
-    const x=sepet[i]; if(!x) return;
-    const q=$('ctp-cart-mik-'+i);
-    const b=$('ctp-cart-bir-'+i);
-    const qty=Math.max(0, +(q && q.value || 0));
-    const bir=(b && b.value) || getUnit(x);
-    const u=getProduct(x);
-    setQty(x, qty);
-    setUnit(x, bir);
-    setPrice(x, priceForUnit(u,bir,getPrice(x)));
-    if(qty<=0) sepet.splice(i,1);
-    ctpRenderSepetV317();
-  }
-
-  window.ctpSepetSilV317=function(i){
-    if(!Array.isArray(sepet)) return;
-    sepet.splice(i,1);
-    ctpRenderSepetV317();
-  }
-
-  window.ctpRenderSepetV317=function(){
-    if(typeof sepet==='undefined' || !Array.isArray(sepet)) return;
-    const el=$('sepet-list'); if(!el) return;
-
-    if(!sepet.length){
-      el.innerHTML='<div style="text-align:center;padding:12px;font-size:12px;color:#9ca3af">Henüz ürün eklenmedi</div>';
-      const topEl=$('sepet-top'); if(topEl) topEl.textContent=money(0);
-      return;
-    }
-
-    let top=0;
-    sepet.forEach(x=>{
-      const u=getProduct(x);
-      const bir=getUnit(x);
-      const fiyat=priceForUnit(u,bir,getPrice(x));
-      setPrice(x,fiyat);
-      top += getQty(x)*fiyat;
-    });
-
-    const topEl=$('sepet-top'); if(topEl) topEl.textContent=money(top);
-
-    if(mobile()){
-      el.innerHTML='<div class="ctp-mobile-cart">'+sepet.map((x,i)=>{
-        const qty=getQty(x), bir=getUnit(x), price=getPrice(x), line=qty*price;
-        const name=String(x.ad || x.urun || x.name || 'Ürün');
-        return `
-          <div class="ctp-cart-item">
-            <div class="ctp-cart-title">${name}</div>
-            <div class="ctp-cart-grid">
-              <div class="ctp-cart-field">
-                <label>MİKTAR</label>
-                <input id="ctp-cart-mik-${i}" type="number" min="0" step="1" value="${Math.round(qty)}" onchange="ctpSepetDegistirV317(${i})" oninput="ctpSepetDegistirV317(${i})">
-              </div>
-              <div class="ctp-cart-field">
-                <label>BİRİM</label>
-                <select id="ctp-cart-bir-${i}" onchange="ctpSepetDegistirV317(${i})">${unitOptions(x,i)}</select>
-              </div>
-            </div>
-            <div class="ctp-cart-total"><span>${money(price)} / ${bir}</span><strong>${money(line)}</strong></div>
-            <button class="btn btn-r ctp-cart-remove" onclick="ctpSepetSilV317(${i})"><i class="ti ti-trash"></i> Ürünü Çıkar</button>
-          </div>`;
-      }).join('')+'</div>';
-    }else{
-      el.innerHTML=`<div class="tw"><table><thead><tr><th>Ürün</th><th>Miktar</th><th>Birim</th><th class="num">Fiyat</th><th class="num">Tutar</th><th></th></tr></thead><tbody>`+
-        sepet.map((x,i)=>{
-          const qty=getQty(x), bir=getUnit(x), price=getPrice(x), line=qty*price;
-          const name=String(x.ad || x.urun || x.name || 'Ürün');
-          return `<tr>
-            <td><strong>${name}</strong></td>
-            <td><input id="ctp-cart-mik-${i}" type="number" min="0" step="1" value="${Math.round(qty)}" onchange="ctpSepetDegistirV317(${i})" style="width:70px;padding:5px"></td>
-            <td><select id="ctp-cart-bir-${i}" class="unit-select" onchange="ctpSepetDegistirV317(${i})">${unitOptions(x,i)}</select></td>
-            <td class="num">${money(price)}</td>
-            <td class="num"><strong>${money(line)}</strong></td>
-            <td><button class="btn btn-sm btn-r" onclick="ctpSepetSilV317(${i})"><i class="ti ti-x"></i></button></td>
-          </tr>`;
-        }).join('')+`</tbody></table></div>`;
-    }
-  }
-
-  const oldRenderSepet=window.renderSepet;
-  window.renderSepet=function(){
-    try{return ctpRenderSepetV317()}catch(e){
-      if(typeof oldRenderSepet==='function') return oldRenderSepet.apply(this,arguments);
-    }
-  };
-
-  const oldSepeteTutarAktar=window.sepeteTutarAktar;
-  window.sepeteTutarAktar=function(){
-    try{
-      ctpRenderSepetV317();
-      const top=(sepet||[]).reduce((s,x)=>s+(getQty(x)*getPrice(x)),0);
-      const h=$('h-tutar'); if(h) h.value=top.toFixed(2);
-      if(typeof kdvHesapla==='function') kdvHesapla();
-    }catch(e){
-      if(typeof oldSepeteTutarAktar==='function') return oldSepeteTutarAktar.apply(this,arguments);
-    }
-  };
-
-  function ensureRemember(){
-    const u=$('l-user');
-    const pass=$('l-pass');
-    if(pass && !$('ctp-remember-row')){
-      const row=document.createElement('label');
-      row.id='ctp-remember-row';
-      row.style.cssText='display:flex;align-items:center;gap:8px;text-transform:none;font-size:12px;color:#374151;font-weight:700;margin:8px 0;letter-spacing:0';
-      row.innerHTML='<input id="ctp-remember" type="checkbox" style="width:auto;min-height:auto"> Beni hatırla';
-      (pass.closest('.fg')||pass.parentNode).insertAdjacentElement('afterend',row);
-    }
-    const chk=$('ctp-remember');
-    const saved=localStorage.getItem('ctp_remember_user_v317') || localStorage.getItem('ctp_remember_user_v311') || '';
-    const enabled=localStorage.getItem('ctp_remember_login_v317')==='1' || localStorage.getItem('ctp_remember_login_v311')==='1';
-    if(chk){
-      chk.checked=enabled;
-      if(enabled && u && saved) u.value=saved;
-      chk.onchange=function(){
-        localStorage.setItem('ctp_remember_login_v317', chk.checked?'1':'0');
-        if(chk.checked && u) localStorage.setItem('ctp_remember_user_v317', u.value.trim());
-      };
-    }
-    if(u){
-      u.oninput=function(){
-        const c=$('ctp-remember');
-        if(c && c.checked) localStorage.setItem('ctp_remember_user_v317', u.value.trim());
-      };
-    }
-  }
-
-  const oldLogin=window.login;
-  window.login=function(){
-    const ret=oldLogin.apply(this,arguments);
-    setTimeout(function(){
-      const chk=$('ctp-remember');
-      const u=$('l-user');
-      const ok=$('app') && $('app').style.display==='block';
-      if(chk && chk.checked && ok && u){
-        localStorage.setItem('ctp_remember_login_v317','1');
-        localStorage.setItem('ctp_remember_user_v317',u.value.trim());
-      }
-      if(chk && !chk.checked){
-        localStorage.removeItem('ctp_remember_login_v317');
-        localStorage.removeItem('ctp_remember_user_v317');
-      }
-    },100);
-    return ret;
-  };
-
-  document.addEventListener('DOMContentLoaded',function(){
-    setTimeout(function(){ensureRemember(); ctpRenderSepetV317();},300);
-  });
-  window.addEventListener('resize',function(){
-    clearTimeout(window.__ctpResizeSepetV317);
-    window.__ctpResizeSepetV317=setTimeout(ctpRenderSepetV317,150);
-  });
-  setInterval(ensureRemember,2000);
-})();
-</script>
-<!-- CTP_V317_END -->
 
 </body></html>`);
   win.document.close();
@@ -6076,305 +5879,6 @@ initApp = function(){
   }
 }
 </style>
-
-
-<!-- CTP_V317_START -->
-<style id="ctp-v317-mobile-cart-remember">
-@media(max-width:780px){
-  #sepet-list .ctp-mobile-cart{display:flex;flex-direction:column;gap:10px}
-  #sepet-list .ctp-cart-item{
-    background:#fff;
-    border:1px solid #e5e7eb;
-    border-radius:18px;
-    padding:13px;
-    box-shadow:0 4px 14px rgba(0,0,0,.04);
-  }
-  #sepet-list .ctp-cart-title{
-    font-size:14px;
-    font-weight:900;
-    color:#111827;
-    line-height:1.25;
-    margin-bottom:10px;
-  }
-  #sepet-list .ctp-cart-grid{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:8px;
-    align-items:end;
-  }
-  #sepet-list .ctp-cart-field label{
-    display:block;
-    font-size:10px;
-    font-weight:900;
-    color:#6b7280;
-    margin-bottom:4px;
-    letter-spacing:.04em;
-  }
-  #sepet-list .ctp-cart-field input,
-  #sepet-list .ctp-cart-field select{
-    width:100%!important;
-    min-height:42px!important;
-    border-radius:12px!important;
-    font-size:16px!important;
-  }
-  #sepet-list .ctp-cart-total{
-    margin-top:10px;
-    padding-top:10px;
-    border-top:1px solid #f1f5f9;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    gap:8px;
-  }
-  #sepet-list .ctp-cart-total strong{
-    font-size:17px;
-    color:#1d6f42;
-  }
-  #sepet-list .ctp-cart-remove{
-    width:100%!important;
-    min-height:44px!important;
-    margin-top:10px!important;
-    border-radius:14px!important;
-    justify-content:center!important;
-  }
-  #sepet-list .tw{display:block!important;overflow:visible!important}
-  #page-siparis{padding-bottom:110px!important}
-  #ctp-remember-row,
-  #ctp-cloud-remember-row{
-    padding:4px 0;
-  }
-}
-</style>
-
-<script id="ctp-v317-mobile-cart-remember-js">
-(function(){
-  'use strict';
-
-  function $(id){return document.getElementById(id)}
-  function mobile(){return window.innerWidth<=780}
-  function money(n){
-    try{ if(typeof tl==='function') return tl(n); }catch(e){}
-    return new Intl.NumberFormat('tr-TR',{style:'currency',currency:'TRY'}).format(+n||0);
-  }
-  function getQty(x){return +(x.miktar ?? x.mik ?? 1) || 1}
-  function setQty(x,v){
-    v=Math.max(0, +v || 0);
-    if('miktar' in x) x.miktar=v;
-    else x.mik=v;
-  }
-  function getPrice(x){return +(x.fiyat ?? x.fiy ?? 0) || 0}
-  function setPrice(x,v){
-    v=+v||0;
-    if('fiyat' in x) x.fiyat=v;
-    else x.fiy=v;
-  }
-  function getUnit(x){return x.bir || x.birim || 'Adet'}
-  function setUnit(x,v){x.bir=v; if('birim' in x) x.birim=v}
-  function getId(x){return x.id ?? x.uid ?? x.uId ?? ''}
-  function getProduct(x){
-    try{
-      if(typeof DB!=='undefined' && DB && Array.isArray(DB.urunler)){
-        return DB.urunler.find(u => String(u.id)===String(getId(x)) || String(u.uid)===String(getId(x)) || u.ad===x.ad);
-      }
-    }catch(e){}
-    return null;
-  }
-  function priceForUnit(u,bir,oldPrice){
-    if(!u) return +oldPrice||0;
-    try{
-      if(typeof kesinUrunFiyati==='function'){
-        const v=kesinUrunFiyati(u,bir);
-        if(+v>0) return +v;
-      }
-    }catch(e){}
-    try{
-      if(typeof urunFiyatiniBul==='function'){
-        const v=urunFiyatiniBul(u,bir);
-        if(+v>0) return +v;
-      }
-    }catch(e){}
-    if(bir==='Kg' && +u.fiyKg>0) return +u.fiyKg;
-    if(bir==='Adet' && +u.fiyAdet>0) return +u.fiyAdet;
-    if(bir==='Koli' && +u.fiyKoli>0) return +u.fiyKoli;
-    return +(u.fiy || u.fiyat || oldPrice || 0);
-  }
-  function unitOptions(x,i){
-    const u=getProduct(x);
-    const current=getUnit(x);
-    let opts=[];
-    try{
-      if(u && typeof urunBirimSecenekleri==='function'){
-        opts=urunBirimSecenekleri(u).map(o=>o.bir || o.birim).filter(Boolean);
-      }
-    }catch(e){}
-    if(!opts.length && u){
-      if(+u.fiyKoli>0) opts.push('Koli');
-      if(+u.fiyKg>0) opts.push('Kg');
-      if(+u.fiyAdet>0) opts.push('Adet');
-      if(u.bir && !opts.includes(u.bir)) opts.push(u.bir);
-    }
-    if(!opts.includes(current)) opts.unshift(current);
-    opts=[...new Set(opts)];
-    return opts.map(o=>'<option value="'+String(o).replace(/"/g,'&quot;')+'" '+(o===current?'selected':'')+'>'+o+'</option>').join('');
-  }
-
-  window.ctpSepetDegistirV317=function(i){
-    const x=sepet[i]; if(!x) return;
-    const q=$('ctp-cart-mik-'+i);
-    const b=$('ctp-cart-bir-'+i);
-    const qty=Math.max(0, +(q && q.value || 0));
-    const bir=(b && b.value) || getUnit(x);
-    const u=getProduct(x);
-    setQty(x, qty);
-    setUnit(x, bir);
-    setPrice(x, priceForUnit(u,bir,getPrice(x)));
-    if(qty<=0) sepet.splice(i,1);
-    ctpRenderSepetV317();
-  }
-
-  window.ctpSepetSilV317=function(i){
-    if(!Array.isArray(sepet)) return;
-    sepet.splice(i,1);
-    ctpRenderSepetV317();
-  }
-
-  window.ctpRenderSepetV317=function(){
-    if(typeof sepet==='undefined' || !Array.isArray(sepet)) return;
-    const el=$('sepet-list'); if(!el) return;
-
-    if(!sepet.length){
-      el.innerHTML='<div style="text-align:center;padding:12px;font-size:12px;color:#9ca3af">Henüz ürün eklenmedi</div>';
-      const topEl=$('sepet-top'); if(topEl) topEl.textContent=money(0);
-      return;
-    }
-
-    let top=0;
-    sepet.forEach(x=>{
-      const u=getProduct(x);
-      const bir=getUnit(x);
-      const fiyat=priceForUnit(u,bir,getPrice(x));
-      setPrice(x,fiyat);
-      top += getQty(x)*fiyat;
-    });
-
-    const topEl=$('sepet-top'); if(topEl) topEl.textContent=money(top);
-
-    if(mobile()){
-      el.innerHTML='<div class="ctp-mobile-cart">'+sepet.map((x,i)=>{
-        const qty=getQty(x), bir=getUnit(x), price=getPrice(x), line=qty*price;
-        const name=String(x.ad || x.urun || x.name || 'Ürün');
-        return `
-          <div class="ctp-cart-item">
-            <div class="ctp-cart-title">${name}</div>
-            <div class="ctp-cart-grid">
-              <div class="ctp-cart-field">
-                <label>MİKTAR</label>
-                <input id="ctp-cart-mik-${i}" type="number" min="0" step="1" value="${Math.round(qty)}" onchange="ctpSepetDegistirV317(${i})" oninput="ctpSepetDegistirV317(${i})">
-              </div>
-              <div class="ctp-cart-field">
-                <label>BİRİM</label>
-                <select id="ctp-cart-bir-${i}" onchange="ctpSepetDegistirV317(${i})">${unitOptions(x,i)}</select>
-              </div>
-            </div>
-            <div class="ctp-cart-total"><span>${money(price)} / ${bir}</span><strong>${money(line)}</strong></div>
-            <button class="btn btn-r ctp-cart-remove" onclick="ctpSepetSilV317(${i})"><i class="ti ti-trash"></i> Ürünü Çıkar</button>
-          </div>`;
-      }).join('')+'</div>';
-    }else{
-      el.innerHTML=`<div class="tw"><table><thead><tr><th>Ürün</th><th>Miktar</th><th>Birim</th><th class="num">Fiyat</th><th class="num">Tutar</th><th></th></tr></thead><tbody>`+
-        sepet.map((x,i)=>{
-          const qty=getQty(x), bir=getUnit(x), price=getPrice(x), line=qty*price;
-          const name=String(x.ad || x.urun || x.name || 'Ürün');
-          return `<tr>
-            <td><strong>${name}</strong></td>
-            <td><input id="ctp-cart-mik-${i}" type="number" min="0" step="1" value="${Math.round(qty)}" onchange="ctpSepetDegistirV317(${i})" style="width:70px;padding:5px"></td>
-            <td><select id="ctp-cart-bir-${i}" class="unit-select" onchange="ctpSepetDegistirV317(${i})">${unitOptions(x,i)}</select></td>
-            <td class="num">${money(price)}</td>
-            <td class="num"><strong>${money(line)}</strong></td>
-            <td><button class="btn btn-sm btn-r" onclick="ctpSepetSilV317(${i})"><i class="ti ti-x"></i></button></td>
-          </tr>`;
-        }).join('')+`</tbody></table></div>`;
-    }
-  }
-
-  const oldRenderSepet=window.renderSepet;
-  window.renderSepet=function(){
-    try{return ctpRenderSepetV317()}catch(e){
-      if(typeof oldRenderSepet==='function') return oldRenderSepet.apply(this,arguments);
-    }
-  };
-
-  const oldSepeteTutarAktar=window.sepeteTutarAktar;
-  window.sepeteTutarAktar=function(){
-    try{
-      ctpRenderSepetV317();
-      const top=(sepet||[]).reduce((s,x)=>s+(getQty(x)*getPrice(x)),0);
-      const h=$('h-tutar'); if(h) h.value=top.toFixed(2);
-      if(typeof kdvHesapla==='function') kdvHesapla();
-    }catch(e){
-      if(typeof oldSepeteTutarAktar==='function') return oldSepeteTutarAktar.apply(this,arguments);
-    }
-  };
-
-  function ensureRemember(){
-    const u=$('l-user');
-    const pass=$('l-pass');
-    if(pass && !$('ctp-remember-row')){
-      const row=document.createElement('label');
-      row.id='ctp-remember-row';
-      row.style.cssText='display:flex;align-items:center;gap:8px;text-transform:none;font-size:12px;color:#374151;font-weight:700;margin:8px 0;letter-spacing:0';
-      row.innerHTML='<input id="ctp-remember" type="checkbox" style="width:auto;min-height:auto"> Beni hatırla';
-      (pass.closest('.fg')||pass.parentNode).insertAdjacentElement('afterend',row);
-    }
-    const chk=$('ctp-remember');
-    const saved=localStorage.getItem('ctp_remember_user_v317') || localStorage.getItem('ctp_remember_user_v311') || '';
-    const enabled=localStorage.getItem('ctp_remember_login_v317')==='1' || localStorage.getItem('ctp_remember_login_v311')==='1';
-    if(chk){
-      chk.checked=enabled;
-      if(enabled && u && saved) u.value=saved;
-      chk.onchange=function(){
-        localStorage.setItem('ctp_remember_login_v317', chk.checked?'1':'0');
-        if(chk.checked && u) localStorage.setItem('ctp_remember_user_v317', u.value.trim());
-      };
-    }
-    if(u){
-      u.oninput=function(){
-        const c=$('ctp-remember');
-        if(c && c.checked) localStorage.setItem('ctp_remember_user_v317', u.value.trim());
-      };
-    }
-  }
-
-  const oldLogin=window.login;
-  window.login=function(){
-    const ret=oldLogin.apply(this,arguments);
-    setTimeout(function(){
-      const chk=$('ctp-remember');
-      const u=$('l-user');
-      const ok=$('app') && $('app').style.display==='block';
-      if(chk && chk.checked && ok && u){
-        localStorage.setItem('ctp_remember_login_v317','1');
-        localStorage.setItem('ctp_remember_user_v317',u.value.trim());
-      }
-      if(chk && !chk.checked){
-        localStorage.removeItem('ctp_remember_login_v317');
-        localStorage.removeItem('ctp_remember_user_v317');
-      }
-    },100);
-    return ret;
-  };
-
-  document.addEventListener('DOMContentLoaded',function(){
-    setTimeout(function(){ensureRemember(); ctpRenderSepetV317();},300);
-  });
-  window.addEventListener('resize',function(){
-    clearTimeout(window.__ctpResizeSepetV317);
-    window.__ctpResizeSepetV317=setTimeout(ctpRenderSepetV317,150);
-  });
-  setInterval(ensureRemember,2000);
-})();
-</script>
-<!-- CTP_V317_END -->
 
 </body>
 </html>
