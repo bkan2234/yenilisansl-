@@ -1028,7 +1028,7 @@ tr:hover td{background:#fafafa}
   <button onclick="goPageMobile('firmalar',this)"><i class="ti ti-building"></i>Firma</button>
   <button onclick="goPageMobile('siparis',this)"><i class="ti ti-shopping-cart"></i>Sipariş</button>
   <button onclick="goPageMobile('stok',this)"><i class="ti ti-box-seam"></i>Stok</button>
-  <button onclick="goPageMobile('yedek',this)"><i class="ti ti-database"></i>Yedek</button>
+  <button onclick="goPageMobile('cari',this)"><i class="ti ti-list-details"></i>Cari</button>
 </div>
 
 <!-- Unsaved Bar -->
@@ -7092,3 +7092,177 @@ body.ctp-view-mobile #ctp-view-toggle .m,body.ctp-view-web #ctp-view-toggle .w{b
 })();
 </script>
 
+
+
+<!-- CTP MOBIL FINAL FIX: Yedek gizle + sepet sil + cari ödeme al -->
+<style id="ctp-mobile-final-fixes-css">
+@media(max-width:780px){
+  #mobile-nav button[onclick*="yedek"]{display:none!important}
+  .ctp-mobile-sepet-card{border:1px solid #e5e7eb;background:#fff;border-radius:16px;padding:11px;margin-bottom:9px;box-shadow:0 3px 12px rgba(0,0,0,.05)}
+  .ctp-mobile-sepet-head{display:flex;justify-content:space-between;gap:8px;align-items:flex-start;margin-bottom:8px}
+  .ctp-mobile-sepet-title{font-size:13px;font-weight:800;color:#111827;line-height:1.25;flex:1}
+  .ctp-mobile-sepet-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px;align-items:end}
+  .ctp-mobile-sepet-row input,.ctp-mobile-sepet-row select{min-height:40px!important;font-size:15px!important;width:100%!important}
+  .ctp-mobile-sepet-total{display:flex;justify-content:space-between;align-items:center;margin-top:10px;padding-top:8px;border-top:1px solid #f3f4f6;font-size:13px}
+  .ctp-mobile-sepet-remove{min-width:42px!important;width:42px!important;height:38px!important;padding:0!important;border-radius:12px!important}
+  .ctp-mobile-cari-odeme{width:100%;margin-top:8px;justify-content:center!important}
+  #page-cari .card:first-of-type .btn-row{display:grid!important;grid-template-columns:1fr!important;width:100%}
+}
+</style>
+<script id="ctp-mobile-final-fixes-js">
+(function(){
+  function isMobile(){ return window.matchMedia && window.matchMedia('(max-width: 780px)').matches; }
+  function moneyVal(x){ try{return tl(+x||0);}catch(e){ return '₺'+((+x||0).toFixed(2)); } }
+  function qty(x){ return +(x && (x.miktar ?? x.mik ?? 1)) || 1; }
+  function price(x){ return +(x && (x.fiyat ?? x.fiy ?? 0)) || 0; }
+  function ensureSepetFields(){
+    try{
+      if(!Array.isArray(sepet)) return;
+      sepet.forEach(function(s){
+        if(s.miktar == null && s.mik != null) s.miktar = +s.mik || 1;
+        if(s.fiyat == null && s.fiy != null) s.fiyat = +s.fiy || 0;
+        if(!s.bir && s.birim) s.bir = s.birim;
+      });
+      if(typeof sepetFiyatlariniOnar === 'function') sepetFiyatlariniOnar();
+    }catch(e){}
+  }
+  function unitOptions(i){
+    try{ if(typeof sepetBirimOptionHtml === 'function') return sepetBirimOptionHtml(i); }catch(e){}
+    var s=(Array.isArray(sepet)?sepet[i]:null)||{};
+    var b=s.bir||s.birim||'Adet';
+    return '<option value="'+String(b).replace(/"/g,'&quot;')+'">'+b+'</option>';
+  }
+  window.ctpMobileSepetSil=function(i){
+    try{
+      if(Array.isArray(sepet)){ sepet.splice(i,1); }
+      if(typeof renderSepet === 'function') renderSepet();
+      if(typeof siparisKdvHesapla === 'function') siparisKdvHesapla();
+      if(typeof tumTutarlarGuncelle === 'function') setTimeout(tumTutarlarGuncelle,0);
+    }catch(e){ alert('Ürün çıkarılamadı: '+(e.message||e)); }
+  };
+  window.ctpMobileSepetDegisti=function(i){
+    try{
+      ensureSepetFields();
+      var s=sepet[i]; if(!s) return;
+      var m=document.getElementById('msp-mik-'+i);
+      var b=document.getElementById('msp-bir-'+i);
+      s.miktar=Math.max(1, Math.round(+(m&&m.value)||1));
+      s.mik=s.miktar;
+      if(b){
+        s.bir=b.value;
+        var opt=b.options[b.selectedIndex];
+        var f=+(opt && opt.getAttribute('data-fiyat')) || 0;
+        if(f>0){ s.fiyat=f; s.fiy=f; }
+        else if(typeof kesinUrunFiyati === 'function'){
+          var u=(DB&&DB.urunler?DB.urunler:[]).find(function(x){return x.id==s.id || x.id==s.uid || x.ad===s.ad;});
+          var kf=kesinUrunFiyati(u,s.bir);
+          if(kf>0){ s.fiyat=kf; s.fiy=kf; }
+        }
+      }
+      if(typeof renderSepet === 'function') renderSepet();
+    }catch(e){}
+  };
+  function renderMobileSepet(){
+    ensureSepetFields();
+    var el=document.getElementById('sepet-list'); if(!el) return false;
+    if(!Array.isArray(sepet) || !sepet.length){
+      el.innerHTML='<div style="text-align:center;padding:12px;font-size:12px;color:#9ca3af">Henüz ürün eklenmedi</div>';
+      var zero=document.getElementById('sepet-top'); if(zero) zero.textContent=moneyVal(0);
+      if(typeof siparisKdvHesapla==='function') siparisKdvHesapla();
+      return true;
+    }
+    var total=0;
+    el.innerHTML=sepet.map(function(x,i){
+      var q=qty(x), f=price(x), t=q*f; total+=t;
+      return '<div class="ctp-mobile-sepet-card">'
+        +'<div class="ctp-mobile-sepet-head">'
+          +'<div class="ctp-mobile-sepet-title">'+(x.ad||x.urun||'Ürün')+'</div>'
+          +'<button type="button" class="btn btn-r ctp-mobile-sepet-remove" onclick="ctpMobileSepetSil('+i+')" title="Sepetten çıkar"><i class="ti ti-trash"></i></button>'
+        +'</div>'
+        +'<div class="ctp-mobile-sepet-row">'
+          +'<div><label>Miktar</label><input id="msp-mik-'+i+'" type="number" min="1" step="1" value="'+Math.round(q)+'" onchange="ctpMobileSepetDegisti('+i+')"></div>'
+          +'<div><label>Birim</label><select id="msp-bir-'+i+'" onchange="ctpMobileSepetDegisti('+i+')">'+unitOptions(i)+'</select></div>'
+        +'</div>'
+        +'<div class="ctp-mobile-sepet-total"><span>Birim: <strong>'+moneyVal(f)+'</strong></span><span>Toplam: <strong>'+moneyVal(t)+'</strong></span></div>'
+      +'</div>';
+    }).join('');
+    var topEl=document.getElementById('sepet-top'); if(topEl) topEl.textContent=moneyVal(total);
+    if(typeof siparisKdvHesapla==='function') siparisKdvHesapla();
+    return true;
+  }
+  var oldRender=typeof renderSepet==='function'?renderSepet:null;
+  window.ctpRenderMobileSepet=renderMobileSepet;
+  renderSepet=function(){
+    if(isMobile() && renderMobileSepet()){
+      if(typeof tumTutarlarGuncelle==='function') setTimeout(tumTutarlarGuncelle,0);
+      return;
+    }
+    if(oldRender) oldRender();
+  };
+  var oldSil=typeof sepetSatirSil==='function'?sepetSatirSil:null;
+  sepetSatirSil=function(i){
+    if(isMobile()) return window.ctpMobileSepetSil(i);
+    if(oldSil) oldSil(i); else { sepet.splice(i,1); if(typeof renderSepet==='function') renderSepet(); }
+  };
+  window.ctpCariOdemeAl=function(){
+    try{
+      if(typeof cSelF==='undefined' || !cSelF){ alert('Önce Cari Hesap ekranından firma seç.'); return; }
+      if(typeof goPageMobile==='function' && isMobile()) goPageMobile('hareket', null); else if(typeof goPage==='function') goPage('hareket', null);
+      setTimeout(function(){
+        if(typeof hFSec==='function') hFSec(cSelF.id);
+        var tur=document.getElementById('h-tur'); if(tur){ tur.value='ODEME'; if(typeof hTurDeg==='function') hTurDeg(); }
+        var trh=document.getElementById('h-tarih'); if(trh && !trh.value && typeof today==='function') trh.value=today();
+        var acik=document.getElementById('h-acik'); if(acik && !acik.value) acik.value='Cari ödeme / tahsilat';
+        var tutar=document.getElementById('h-tutar'); if(tutar) tutar.focus();
+      },80);
+    }catch(e){ alert('Ödeme ekranı açılamadı: '+(e.message||e)); }
+  };
+  function ensureCariOdemeButton(){
+    var actions=document.querySelector('#page-cari .btn-row');
+    if(actions && !document.getElementById('ctp-cari-odeme-al-btn')){
+      var btn=document.createElement('button');
+      btn.id='ctp-cari-odeme-al-btn';
+      btn.type='button';
+      btn.className='btn btn-g ctp-mobile-cari-odeme';
+      btn.innerHTML='<i class="ti ti-cash"></i> Seçili Cariden Ödeme Al';
+      btn.onclick=window.ctpCariOdemeAl;
+      actions.insertBefore(btn, actions.firstChild);
+    }
+  }
+  function ensureMobileNavNoBackup(){
+    var nav=document.getElementById('mobile-nav'); if(!nav) return;
+    var backup=nav.querySelector('button[onclick*="yedek"]'); if(backup) backup.remove();
+    if(!nav.querySelector('button[onclick*="cari"]')){
+      var btn=document.createElement('button');
+      btn.type='button';
+      btn.setAttribute('onclick',"goPageMobile('cari',this)");
+      btn.innerHTML='<i class="ti ti-list-details"></i>Cari';
+      nav.appendChild(btn);
+    }
+  }
+  var oldGoMobile=typeof goPageMobile==='function'?goPageMobile:null;
+  goPageMobile=function(id,el){
+    if(oldGoMobile) oldGoMobile(id,el); else if(typeof goPage==='function') goPage(id,null);
+    ensureMobileNavNoBackup();
+    document.querySelectorAll('#mobile-nav button').forEach(function(b){ b.classList.remove('active'); });
+    if(el) el.classList.add('active');
+    if(id==='siparis' && typeof renderSepet==='function') setTimeout(renderSepet,0);
+    if(id==='cari') setTimeout(ensureCariOdemeButton,0);
+  };
+  siparisTemizle=function(){
+    try{
+      if(Array.isArray(sepet)) sepet.length=0;
+      if(typeof selSiparisF!=='undefined') selSiparisF=null;
+      ['sf-ara','s-acik'].forEach(function(id){var e=document.getElementById(id); if(e)e.value='';});
+      var sc=document.getElementById('sf-sc'); if(sc) sc.classList.remove('show');
+      var d=document.getElementById('s-tarih'); if(d && typeof today==='function') d.value=today();
+      if(typeof genSiparisBelge==='function') genSiparisBelge();
+      if(typeof renderSF==='function') renderSF();
+      if(typeof renderSepet==='function') renderSepet();
+      if(typeof siparisKdvHesapla==='function') siparisKdvHesapla();
+    }catch(e){}
+  };
+  document.addEventListener('DOMContentLoaded',function(){ setTimeout(function(){ensureMobileNavNoBackup(); ensureCariOdemeButton(); if(typeof renderSepet==='function') renderSepet();},350); });
+  window.addEventListener('load',function(){ setTimeout(function(){ensureMobileNavNoBackup(); ensureCariOdemeButton(); if(typeof renderSepet==='function') renderSepet();},800); });
+})();
+</script>
