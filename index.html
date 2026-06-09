@@ -2254,86 +2254,7 @@ function faturaYazdir() {
   win.document.close();
 }
 
-window.addEventListener('beforeunload',e=>{if(hasUns
-<!-- CTP_SAFE_FIX_START -->
-<style id="ctp-safe-mobile-fixes-css">
-@media(max-width:780px){
-  #sepet-list{overflow:visible!important}
-  #sepet-list .ctp-mobile-sepet-list{display:flex!important;flex-direction:column!important;gap:10px!important}
-  #sepet-list .ctp-mobile-sepet-item{background:#fff!important;border:1px solid #e5e7eb!important;border-radius:18px!important;padding:13px!important;box-shadow:0 5px 18px rgba(0,0,0,.05)!important}
-  #sepet-list .ctp-mobile-sepet-title{font-size:14px!important;font-weight:900!important;color:#111827!important;line-height:1.25!important;margin-bottom:10px!important}
-  #sepet-list .ctp-mobile-sepet-grid{display:grid!important;grid-template-columns:1fr 1fr!important;gap:8px!important}
-  #sepet-list .ctp-mobile-sepet-grid label{display:block!important;font-size:10px!important;font-weight:900!important;color:#6b7280!important;margin-bottom:4px!important}
-  #sepet-list .ctp-mobile-sepet-grid input,#sepet-list .ctp-mobile-sepet-grid select{width:100%!important;min-height:42px!important;border-radius:12px!important;font-size:16px!important}
-  #sepet-list .ctp-mobile-sepet-price{margin-top:10px!important;padding-top:10px!important;border-top:1px solid #f1f5f9!important;display:flex!important;justify-content:space-between!important;align-items:center!important}
-  #sepet-list .ctp-mobile-sepet-price strong{color:#1d6f42!important;font-size:17px!important}
-  #sepet-list .ctp-mobile-sepet-remove{display:flex!important;width:100%!important;min-height:44px!important;margin-top:10px!important;border-radius:14px!important;justify-content:center!important;align-items:center!important;font-size:14px!important}
-  #ctp-cari-payment-card{display:block!important;background:#fff!important;border:1px solid #bbf7d0!important;border-radius:18px!important;padding:14px!important;margin:10px 0 12px!important;box-shadow:0 6px 20px rgba(0,0,0,.07)!important}
-  #ctp-cari-payment-card .ctp-pay-title{font-size:14px!important;font-weight:900!important;color:#1d6f42!important;display:flex!important;align-items:center!important;gap:6px!important;margin-bottom:8px!important}
-  #ctp-cari-payment-card .ctp-pay-company{font-size:12px!important;color:#6b7280!important;font-weight:700!important;margin-bottom:10px!important}
-  #ctp-cari-payment-card input,#ctp-cari-payment-card select{min-height:44px!important;font-size:16px!important;border-radius:12px!important}
-  #ctp-cari-payment-card .ctp-pay-grid{display:grid!important;grid-template-columns:1fr 1fr!important;gap:8px!important}
-  #ctp-cari-payment-card .ctp-pay-full{grid-column:1/-1!important}
-  #ctp-cari-payment-card .btn{width:100%!important;min-height:48px!important;border-radius:14px!important;justify-content:center!important;font-size:15px!important;font-weight:900!important}
-}
-@media(min-width:781px){#ctp-cari-payment-card{display:none!important}}
-</style>
-<script id="ctp-safe-cari-payment-js">
-(function(){
-  'use strict';
-  function $(id){return document.getElementById(id)}
-  function safeToday(){try{if(typeof today==='function') return today();}catch(e){} return new Date().toISOString().slice(0,10);}
-  function safeBelge(){try{if(typeof autoBelge==='function') return autoBelge();}catch(e){} return 'OD-'+Date.now();}
-  function safeMoney(v){try{if(typeof tl==='function') return tl(v);}catch(e){} return new Intl.NumberFormat('tr-TR',{style:'currency',currency:'TRY'}).format(+v||0);}
-  function showCariMsg(text, ok){var box=$('ctp-cari-pay-msg'); if(box){box.innerHTML='<div class="al '+(ok?'al-s':'al-e')+'" style="margin-top:10px">'+text+'</div>'; setTimeout(function(){if(box) box.innerHTML='';},3500);}else alert(text);}
-  function ensureCariPaymentCard(){
-    var cariPage=$('page-cari'); if(!cariPage || $('ctp-cari-payment-card')) return;
-    var card=document.createElement('div'); card.id='ctp-cari-payment-card';
-    card.innerHTML='<div class="ctp-pay-title"><i class="ti ti-cash"></i> Mobil Ödeme Al</div>'+
-      '<div class="ctp-pay-company" id="ctp-cari-pay-firma">Ödeme almak için önce firma seçin.</div>'+
-      '<div class="ctp-pay-grid">'+
-      '<div><label>Tarih</label><input id="ctp-cari-pay-date" type="date"></div>'+
-      '<div><label>Yöntem</label><select id="ctp-cari-pay-method"><option>Nakit</option><option>Havale / EFT</option><option>Kredi Kartı</option><option>Çek</option><option>Diğer</option></select></div>'+
-      '<div class="ctp-pay-full"><label>Tutar</label><input id="ctp-cari-pay-amount" type="number" step="0.01" placeholder="0.00"></div>'+
-      '<div class="ctp-pay-full"><label>Açıklama</label><input id="ctp-cari-pay-note" placeholder="Ödeme açıklaması"></div>'+
-      '<div class="ctp-pay-full"><button class="btn btn-g" onclick="ctpCariMobilOdemeKaydet()"><i class="ti ti-device-floppy"></i> Ödemeyi Kaydet</button></div>'+
-      '</div><div id="ctp-cari-pay-msg"></div>';
-    var ozet=$('c-ozet'); if(ozet) cariPage.insertBefore(card, ozet); else cariPage.appendChild(card);
-    var d=$('ctp-cari-pay-date'); if(d && !d.value) d.value=safeToday();
-  }
-  window.ctpCariMobilOdemeKartGuncelle=function(){
-    ensureCariPaymentCard();
-    var f=(typeof cSelF!=='undefined')?cSelF:null; var t=$('ctp-cari-pay-firma');
-    if(t){ if(f){var bakiye=''; try{if(typeof fbak==='function') bakiye=' • Bakiye: '+safeMoney(fbak(f.kod));}catch(e){} t.textContent=f.kod+' — '+f.ad+bakiye;} else t.textContent='Ödeme almak için önce firma seçin.'; }
-  };
-  window.ctpCariMobilOdemeKaydet=function(){
-    try{
-      ensureCariPaymentCard();
-      var f=(typeof cSelF!=='undefined')?cSelF:null; if(!f){showCariMsg('Önce firma seçin.',false);return;}
-      var amount=+($('ctp-cari-pay-amount')&&$('ctp-cari-pay-amount').value||0); if(!amount){showCariMsg('Tutar girin.',false);return;}
-      var tarih=$('ctp-cari-pay-date')&&$('ctp-cari-pay-date').value||safeToday();
-      var method=$('ctp-cari-pay-method')&&$('ctp-cari-pay-method').value||'Nakit';
-      var note=$('ctp-cari-pay-note')&&$('ctp-cari-pay-note').value||'Mobil cari ödeme';
-      if(!window.DB) window.DB={}; if(!Array.isArray(DB.hareketler)) DB.hareketler=[];
-      if(!DB.nextHId){DB.nextHId=DB.hareketler.reduce(function(m,h){return Math.max(m,+h.id||0);},0)+1;}
-      DB.hareketler.push({id:DB.nextHId++,fKod:f.kod,fAd:f.ad,tur:'ODEME',tarih:tarih,belge:safeBelge(),vade:'',tutar:amount.toFixed(2),kdv:0,acik:note,odm:method,dur:'KAPALI',urunler:[]});
-      if(typeof dbSave==='function') dbSave(); if(typeof cYukle==='function') cYukle();
-      try{if(typeof renderF==='function') renderF();}catch(e){} try{if(typeof dashboard==='function') dashboard();}catch(e){}
-      if($('ctp-cari-pay-amount')) $('ctp-cari-pay-amount').value=''; if($('ctp-cari-pay-note')) $('ctp-cari-pay-note').value='';
-      showCariMsg('Ödeme kaydedildi.',true); ctpCariMobilOdemeKartGuncelle();
-    }catch(e){showCariMsg('Ödeme kaydedilemedi: '+(e.message||e),false);}
-  };
-  var oldCSec=window.cSec;
-  if(typeof oldCSec==='function' && !window.__ctpCariPayPatchedSafe){
-    window.cSec=function(){var r=oldCSec.apply(this,arguments);setTimeout(window.ctpCariMobilOdemeKartGuncelle,50);return r;};
-    window.__ctpCariPayPatchedSafe=true;
-  }
-  document.addEventListener('DOMContentLoaded',function(){setTimeout(function(){ensureCariPaymentCard();ctpCariMobilOdemeKartGuncelle();},400);});
-})();
-</script>
-<!-- CTP_SAFE_FIX_END -->
-
-aved){e.preventDefault();e.returnValue='Kaydedilmemiş değişiklikler var. Sayfayı kapatmak istediğinizden emin misiniz?';}});
+window.addEventListener('beforeunload',e=>{if(hasUnsaved){e.preventDefault();e.returnValue='Kaydedilmemiş değişiklikler var. Sayfayı kapatmak istediğinizden emin misiniz?';}});
 
 // ══════════════════════════════════════════════════════════════
 // GOOGLE DRIVE OTOMATİK YEDEKLEME
@@ -3088,35 +3009,20 @@ function renderSepetEditable(){
     const topEl=document.getElementById('sepet-top'); if(topEl) topEl.textContent=tl(0);
     return;
   }
-  const isMobile = window.innerWidth <= 780;
-  if(isMobile){
-    el.innerHTML = '<div class="ctp-mobile-sepet-list">' + sepet.map(function(x,i){
+  el.innerHTML=`<div class="tw"><table><thead><tr><th>Ürün</th><th>Miktar</th><th>Birim</th><th class="num">Fiyat</th><th class="num">Tutar</th><th></th></tr></thead><tbody>`+
+    sepet.map((x,i)=>{
       const tut=(+x.miktar||1)*(+x.fiyat||0);
-      return '<div class="ctp-mobile-sepet-item">'+
-        '<div class="ctp-mobile-sepet-title">'+x.ad+'</div>'+
-        '<div class="ctp-mobile-sepet-grid">'+
-          '<div><label>Miktar</label><input id="sp-mik-'+i+'" type="number" min="1" step="1" value="'+Math.round(+x.miktar||1)+'" onchange="sepetSatirDegisti('+i+')" oninput="sepetSatirDegisti('+i+')"></div>'+
-          '<div><label>Birim</label><select id="sp-bir-'+i+'" onchange="sepetSatirDegisti('+i+')">'+sepetBirimOptionHtml(i)+'</select></div>'+
-        '</div>'+
-        '<div class="ctp-mobile-sepet-price"><span>'+tl(+x.fiyat||0)+'</span><strong>'+tl(tut)+'</strong></div>'+
-        '<button class="btn btn-r ctp-mobile-sepet-remove" onclick="sepetSatirSil('+i+')"><i class="ti ti-trash"></i> Ürünü Çıkar</button>'+
-      '</div>';
-    }).join('') + '</div>';
-  } else {
-    el.innerHTML='<div class="tw"><table><thead><tr><th>Ürün</th><th>Miktar</th><th>Birim</th><th class="num">Fiyat</th><th class="num">Tutar</th><th></th></tr></thead><tbody>'+
-      sepet.map(function(x,i){
-        const tut=(+x.miktar||1)*(+x.fiyat||0);
-        return '<tr>'+
-          '<td><strong>'+x.ad+'</strong></td>'+
-          '<td><input id="sp-mik-'+i+'" type="number" min="1" step="1" value="'+Math.round(+x.miktar||1)+'" onchange="sepetSatirDegisti('+i+')" oninput="sepetSatirDegisti('+i+')" style="width:70px;padding:5px"></td>'+
-          '<td><select id="sp-bir-'+i+'" class="unit-select" onchange="sepetSatirDegisti('+i+')">'+sepetBirimOptionHtml(i)+'</select></td>'+
-          '<td class="num">'+tl(+x.fiyat||0)+'</td>'+
-          '<td class="num"><strong>'+tl(tut)+'</strong></td>'+
-          '<td><button class="btn btn-sm btn-r" onclick="sepetSatirSil('+i+')"><i class="ti ti-x"></i></button></td>'+
-        '</tr>';
-      }).join('')+'</tbody></table></div>';
-  }
-  const top=sepet.reduce(function(sum,x){return sum+(+x.miktar||1)*(+x.fiyat||0);},0);
+      return `<tr>
+        <td><strong>${x.ad}</strong></td>
+        <td><input id="sp-mik-${i}" type="number" min="1" step="1" value="${Math.round(+x.miktar||1)}" onchange="sepetSatirDegisti(${i})" oninput="sepetSatirDegisti(${i})" style="width:70px;padding:5px"></td>
+        <td><select id="sp-bir-${i}" class="unit-select" onchange="sepetSatirDegisti(${i})">${sepetBirimOptionHtml(i)}</select></td>
+        <td class="num">${tl(+x.fiyat||0)}</td>
+        <td class="num"><strong>${tl(tut)}</strong></td>
+        <td><button class="btn btn-sm btn-r" onclick="sepetSatirSil(${i})"><i class="ti ti-x"></i></button></td>
+      </tr>`;
+    }).join('')+
+    `</tbody></table></div>`;
+  const top=sepet.reduce((s,x)=>s+(+x.miktar||1)*(+x.fiyat||0),0);
   const topEl=document.getElementById('sepet-top'); if(topEl) topEl.textContent=tl(top);
 }
 renderSepet = function(){
