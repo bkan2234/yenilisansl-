@@ -2421,6 +2421,229 @@ function faturaYazdir() {
 </style>
 <!-- CTP_MOBILE_SEPET_REMOVE_FIX_CSS_END -->
 
+
+<!-- CTP_MOBILE_CARI_PAYMENT_START -->
+<style id="ctp-mobile-cari-payment-css">
+@media(max-width:780px){
+  #ctp-cari-payment-card{
+    display:block!important;
+    background:#fff!important;
+    border:1px solid #bbf7d0!important;
+    border-radius:18px!important;
+    padding:14px!important;
+    margin:10px 0 12px!important;
+    box-shadow:0 6px 20px rgba(0,0,0,.07)!important;
+  }
+  #ctp-cari-payment-card .ctp-pay-head{
+    display:flex!important;
+    align-items:center!important;
+    justify-content:space-between!important;
+    gap:8px!important;
+    margin-bottom:10px!important;
+  }
+  #ctp-cari-payment-card .ctp-pay-title{
+    font-size:14px!important;
+    font-weight:900!important;
+    color:#1d6f42!important;
+    display:flex!important;
+    align-items:center!important;
+    gap:6px!important;
+  }
+  #ctp-cari-payment-card .ctp-pay-company{
+    font-size:12px!important;
+    color:#6b7280!important;
+    font-weight:700!important;
+    margin-bottom:10px!important;
+  }
+  #ctp-cari-payment-card input,
+  #ctp-cari-payment-card select{
+    min-height:44px!important;
+    font-size:16px!important;
+    border-radius:12px!important;
+  }
+  #ctp-cari-payment-card .ctp-pay-grid{
+    display:grid!important;
+    grid-template-columns:1fr 1fr!important;
+    gap:8px!important;
+  }
+  #ctp-cari-payment-card .ctp-pay-full{grid-column:1/-1!important}
+  #ctp-cari-payment-card .btn{
+    width:100%!important;
+    min-height:48px!important;
+    border-radius:14px!important;
+    justify-content:center!important;
+    font-size:15px!important;
+    font-weight:900!important;
+  }
+}
+@media(min-width:781px){
+  #ctp-cari-payment-card{display:none!important}
+}
+</style>
+
+<script id="ctp-mobile-cari-payment-js">
+(function(){
+  'use strict';
+
+  function $(id){return document.getElementById(id)}
+  function safeToday(){
+    try{ if(typeof today==='function') return today(); }catch(e){}
+    return new Date().toISOString().slice(0,10);
+  }
+  function safeBelge(){
+    try{ if(typeof autoBelge==='function') return autoBelge(); }catch(e){}
+    return 'OD-' + Date.now();
+  }
+  function safeMoney(v){
+    try{ if(typeof tl==='function') return tl(v); }catch(e){}
+    return new Intl.NumberFormat('tr-TR',{style:'currency',currency:'TRY'}).format(+v||0);
+  }
+  function showCariMsg(text, ok){
+    const box=$('ctp-cari-pay-msg');
+    if(box){
+      box.innerHTML='<div class="al '+(ok?'al-s':'al-e')+'" style="margin-top:10px">'+text+'</div>';
+      setTimeout(()=>{ if(box) box.innerHTML=''; }, 3500);
+    }else{
+      alert(text);
+    }
+  }
+
+  function ensureCariPaymentCard(){
+    const cariPage=$('page-cari');
+    if(!cariPage || $('ctp-cari-payment-card')) return;
+
+    const card=document.createElement('div');
+    card.id='ctp-cari-payment-card';
+    card.innerHTML=`
+      <div class="ctp-pay-head">
+        <div class="ctp-pay-title"><i class="ti ti-cash"></i> Mobil Ödeme Al</div>
+      </div>
+      <div class="ctp-pay-company" id="ctp-cari-pay-firma">Ödeme almak için önce firma seçin.</div>
+      <div class="ctp-pay-grid">
+        <div>
+          <label>Tarih</label>
+          <input id="ctp-cari-pay-date" type="date">
+        </div>
+        <div>
+          <label>Yöntem</label>
+          <select id="ctp-cari-pay-method">
+            <option>Nakit</option>
+            <option>Havale / EFT</option>
+            <option>Kredi Kartı</option>
+            <option>Çek</option>
+            <option>Diğer</option>
+          </select>
+        </div>
+        <div class="ctp-pay-full">
+          <label>Tutar</label>
+          <input id="ctp-cari-pay-amount" type="number" step="0.01" placeholder="0.00">
+        </div>
+        <div class="ctp-pay-full">
+          <label>Açıklama</label>
+          <input id="ctp-cari-pay-note" placeholder="Ödeme açıklaması">
+        </div>
+        <div class="ctp-pay-full">
+          <button class="btn btn-g" onclick="ctpCariMobilOdemeKaydet()"><i class="ti ti-device-floppy"></i> Ödemeyi Kaydet</button>
+        </div>
+      </div>
+      <div id="ctp-cari-pay-msg"></div>
+    `;
+
+    const ozet=$('c-ozet');
+    if(ozet) cariPage.insertBefore(card, ozet);
+    else cariPage.appendChild(card);
+
+    const d=$('ctp-cari-pay-date');
+    if(d && !d.value) d.value=safeToday();
+  }
+
+  window.ctpCariMobilOdemeKartGuncelle=function(){
+    ensureCariPaymentCard();
+    const f = (typeof cSelF !== 'undefined') ? cSelF : null;
+    const t=$('ctp-cari-pay-firma');
+    if(t){
+      if(f){
+        let bakiye='';
+        try{ if(typeof fbak==='function') bakiye=' • Bakiye: '+safeMoney(fbak(f.kod)); }catch(e){}
+        t.textContent = f.kod + ' — ' + f.ad + bakiye;
+      }else{
+        t.textContent='Ödeme almak için önce firma seçin.';
+      }
+    }
+  };
+
+  window.ctpCariMobilOdemeKaydet=function(){
+    try{
+      ensureCariPaymentCard();
+      const f = (typeof cSelF !== 'undefined') ? cSelF : null;
+      if(!f){ showCariMsg('Önce firma seçin.', false); return; }
+
+      const amount=+($('ctp-cari-pay-amount')?.value || 0);
+      if(!amount){ showCariMsg('Tutar girin.', false); return; }
+
+      const tarih=$('ctp-cari-pay-date')?.value || safeToday();
+      const method=$('ctp-cari-pay-method')?.value || 'Nakit';
+      const note=$('ctp-cari-pay-note')?.value || 'Mobil cari ödeme';
+
+      if(!window.DB) window.DB={};
+      if(!Array.isArray(DB.hareketler)) DB.hareketler=[];
+      if(!DB.nextHId){
+        DB.nextHId = DB.hareketler.reduce((m,h)=>Math.max(m,+h.id||0),0)+1;
+      }
+
+      DB.hareketler.push({
+        id: DB.nextHId++,
+        fKod: f.kod,
+        fAd: f.ad,
+        tur: 'ODEME',
+        tarih: tarih,
+        belge: safeBelge(),
+        vade: '',
+        tutar: amount.toFixed(2),
+        kdv: 0,
+        acik: note,
+        odm: method,
+        dur: 'KAPALI',
+        urunler: []
+      });
+
+      if(typeof dbSave==='function') dbSave();
+      if(typeof cYukle==='function') cYukle();
+      try{ if(typeof renderF==='function') renderF(); }catch(e){}
+      try{ if(typeof dashboard==='function') dashboard(); }catch(e){}
+
+      if($('ctp-cari-pay-amount')) $('ctp-cari-pay-amount').value='';
+      if($('ctp-cari-pay-note')) $('ctp-cari-pay-note').value='';
+      showCariMsg('Ödeme kaydedildi.', true);
+      ctpCariMobilOdemeKartGuncelle();
+    }catch(e){
+      showCariMsg('Ödeme kaydedilemedi: '+(e.message||e), false);
+    }
+  };
+
+  const oldCSec = window.cSec;
+  if(typeof oldCSec === 'function' && !window.__ctpCariMobilePayCSecPatched){
+    window.cSec=function(){
+      const r=oldCSec.apply(this, arguments);
+      setTimeout(window.ctpCariMobilOdemeKartGuncelle, 50);
+      return r;
+    };
+    window.__ctpCariMobilePayCSecPatched=true;
+  }
+
+  document.addEventListener('DOMContentLoaded',function(){
+    setTimeout(function(){
+      ensureCariPaymentCard();
+      ctpCariMobilOdemeKartGuncelle();
+    },400);
+  });
+  window.addEventListener('resize',function(){
+    setTimeout(ctpCariMobilOdemeKartGuncelle,100);
+  });
+})();
+</script>
+<!-- CTP_MOBILE_CARI_PAYMENT_END -->
+
 </body></html>`);
   win.document.close();
 }
@@ -6047,6 +6270,229 @@ initApp = function(){
 }
 </style>
 <!-- CTP_MOBILE_SEPET_REMOVE_FIX_CSS_END -->
+
+
+<!-- CTP_MOBILE_CARI_PAYMENT_START -->
+<style id="ctp-mobile-cari-payment-css">
+@media(max-width:780px){
+  #ctp-cari-payment-card{
+    display:block!important;
+    background:#fff!important;
+    border:1px solid #bbf7d0!important;
+    border-radius:18px!important;
+    padding:14px!important;
+    margin:10px 0 12px!important;
+    box-shadow:0 6px 20px rgba(0,0,0,.07)!important;
+  }
+  #ctp-cari-payment-card .ctp-pay-head{
+    display:flex!important;
+    align-items:center!important;
+    justify-content:space-between!important;
+    gap:8px!important;
+    margin-bottom:10px!important;
+  }
+  #ctp-cari-payment-card .ctp-pay-title{
+    font-size:14px!important;
+    font-weight:900!important;
+    color:#1d6f42!important;
+    display:flex!important;
+    align-items:center!important;
+    gap:6px!important;
+  }
+  #ctp-cari-payment-card .ctp-pay-company{
+    font-size:12px!important;
+    color:#6b7280!important;
+    font-weight:700!important;
+    margin-bottom:10px!important;
+  }
+  #ctp-cari-payment-card input,
+  #ctp-cari-payment-card select{
+    min-height:44px!important;
+    font-size:16px!important;
+    border-radius:12px!important;
+  }
+  #ctp-cari-payment-card .ctp-pay-grid{
+    display:grid!important;
+    grid-template-columns:1fr 1fr!important;
+    gap:8px!important;
+  }
+  #ctp-cari-payment-card .ctp-pay-full{grid-column:1/-1!important}
+  #ctp-cari-payment-card .btn{
+    width:100%!important;
+    min-height:48px!important;
+    border-radius:14px!important;
+    justify-content:center!important;
+    font-size:15px!important;
+    font-weight:900!important;
+  }
+}
+@media(min-width:781px){
+  #ctp-cari-payment-card{display:none!important}
+}
+</style>
+
+<script id="ctp-mobile-cari-payment-js">
+(function(){
+  'use strict';
+
+  function $(id){return document.getElementById(id)}
+  function safeToday(){
+    try{ if(typeof today==='function') return today(); }catch(e){}
+    return new Date().toISOString().slice(0,10);
+  }
+  function safeBelge(){
+    try{ if(typeof autoBelge==='function') return autoBelge(); }catch(e){}
+    return 'OD-' + Date.now();
+  }
+  function safeMoney(v){
+    try{ if(typeof tl==='function') return tl(v); }catch(e){}
+    return new Intl.NumberFormat('tr-TR',{style:'currency',currency:'TRY'}).format(+v||0);
+  }
+  function showCariMsg(text, ok){
+    const box=$('ctp-cari-pay-msg');
+    if(box){
+      box.innerHTML='<div class="al '+(ok?'al-s':'al-e')+'" style="margin-top:10px">'+text+'</div>';
+      setTimeout(()=>{ if(box) box.innerHTML=''; }, 3500);
+    }else{
+      alert(text);
+    }
+  }
+
+  function ensureCariPaymentCard(){
+    const cariPage=$('page-cari');
+    if(!cariPage || $('ctp-cari-payment-card')) return;
+
+    const card=document.createElement('div');
+    card.id='ctp-cari-payment-card';
+    card.innerHTML=`
+      <div class="ctp-pay-head">
+        <div class="ctp-pay-title"><i class="ti ti-cash"></i> Mobil Ödeme Al</div>
+      </div>
+      <div class="ctp-pay-company" id="ctp-cari-pay-firma">Ödeme almak için önce firma seçin.</div>
+      <div class="ctp-pay-grid">
+        <div>
+          <label>Tarih</label>
+          <input id="ctp-cari-pay-date" type="date">
+        </div>
+        <div>
+          <label>Yöntem</label>
+          <select id="ctp-cari-pay-method">
+            <option>Nakit</option>
+            <option>Havale / EFT</option>
+            <option>Kredi Kartı</option>
+            <option>Çek</option>
+            <option>Diğer</option>
+          </select>
+        </div>
+        <div class="ctp-pay-full">
+          <label>Tutar</label>
+          <input id="ctp-cari-pay-amount" type="number" step="0.01" placeholder="0.00">
+        </div>
+        <div class="ctp-pay-full">
+          <label>Açıklama</label>
+          <input id="ctp-cari-pay-note" placeholder="Ödeme açıklaması">
+        </div>
+        <div class="ctp-pay-full">
+          <button class="btn btn-g" onclick="ctpCariMobilOdemeKaydet()"><i class="ti ti-device-floppy"></i> Ödemeyi Kaydet</button>
+        </div>
+      </div>
+      <div id="ctp-cari-pay-msg"></div>
+    `;
+
+    const ozet=$('c-ozet');
+    if(ozet) cariPage.insertBefore(card, ozet);
+    else cariPage.appendChild(card);
+
+    const d=$('ctp-cari-pay-date');
+    if(d && !d.value) d.value=safeToday();
+  }
+
+  window.ctpCariMobilOdemeKartGuncelle=function(){
+    ensureCariPaymentCard();
+    const f = (typeof cSelF !== 'undefined') ? cSelF : null;
+    const t=$('ctp-cari-pay-firma');
+    if(t){
+      if(f){
+        let bakiye='';
+        try{ if(typeof fbak==='function') bakiye=' • Bakiye: '+safeMoney(fbak(f.kod)); }catch(e){}
+        t.textContent = f.kod + ' — ' + f.ad + bakiye;
+      }else{
+        t.textContent='Ödeme almak için önce firma seçin.';
+      }
+    }
+  };
+
+  window.ctpCariMobilOdemeKaydet=function(){
+    try{
+      ensureCariPaymentCard();
+      const f = (typeof cSelF !== 'undefined') ? cSelF : null;
+      if(!f){ showCariMsg('Önce firma seçin.', false); return; }
+
+      const amount=+($('ctp-cari-pay-amount')?.value || 0);
+      if(!amount){ showCariMsg('Tutar girin.', false); return; }
+
+      const tarih=$('ctp-cari-pay-date')?.value || safeToday();
+      const method=$('ctp-cari-pay-method')?.value || 'Nakit';
+      const note=$('ctp-cari-pay-note')?.value || 'Mobil cari ödeme';
+
+      if(!window.DB) window.DB={};
+      if(!Array.isArray(DB.hareketler)) DB.hareketler=[];
+      if(!DB.nextHId){
+        DB.nextHId = DB.hareketler.reduce((m,h)=>Math.max(m,+h.id||0),0)+1;
+      }
+
+      DB.hareketler.push({
+        id: DB.nextHId++,
+        fKod: f.kod,
+        fAd: f.ad,
+        tur: 'ODEME',
+        tarih: tarih,
+        belge: safeBelge(),
+        vade: '',
+        tutar: amount.toFixed(2),
+        kdv: 0,
+        acik: note,
+        odm: method,
+        dur: 'KAPALI',
+        urunler: []
+      });
+
+      if(typeof dbSave==='function') dbSave();
+      if(typeof cYukle==='function') cYukle();
+      try{ if(typeof renderF==='function') renderF(); }catch(e){}
+      try{ if(typeof dashboard==='function') dashboard(); }catch(e){}
+
+      if($('ctp-cari-pay-amount')) $('ctp-cari-pay-amount').value='';
+      if($('ctp-cari-pay-note')) $('ctp-cari-pay-note').value='';
+      showCariMsg('Ödeme kaydedildi.', true);
+      ctpCariMobilOdemeKartGuncelle();
+    }catch(e){
+      showCariMsg('Ödeme kaydedilemedi: '+(e.message||e), false);
+    }
+  };
+
+  const oldCSec = window.cSec;
+  if(typeof oldCSec === 'function' && !window.__ctpCariMobilePayCSecPatched){
+    window.cSec=function(){
+      const r=oldCSec.apply(this, arguments);
+      setTimeout(window.ctpCariMobilOdemeKartGuncelle, 50);
+      return r;
+    };
+    window.__ctpCariMobilePayCSecPatched=true;
+  }
+
+  document.addEventListener('DOMContentLoaded',function(){
+    setTimeout(function(){
+      ensureCariPaymentCard();
+      ctpCariMobilOdemeKartGuncelle();
+    },400);
+  });
+  window.addEventListener('resize',function(){
+    setTimeout(ctpCariMobilOdemeKartGuncelle,100);
+  });
+})();
+</script>
+<!-- CTP_MOBILE_CARI_PAYMENT_END -->
 
 </body>
 </html>
