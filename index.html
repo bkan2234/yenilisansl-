@@ -1228,9 +1228,75 @@ function login(){
     document.getElementById('sb-name').textContent=user.username+' — '+roleLabel(user.role);
     initApp();
     applyRoleUI();
+    ctpOturumKaydet(user.username);
+    if(document.getElementById('l-err')) document.getElementById('l-err').style.display='none';
   } else document.getElementById('l-err').style.display='flex';
 }
-function logout(){if(confirm('Çıkış yapmak istiyor musunuz?')){document.getElementById('app').style.display='none';document.getElementById('login-screen').style.display='flex';currentUser=null;}}
+function logout(){if(confirm('Çıkış yapmak istiyor musunuz?')){ctpOturumSil();document.getElementById('app').style.display='none';document.getElementById('login-screen').style.display='flex';currentUser=null;}}
+
+const CTP_OTURUM_KEY='ctp_oturum_v4_user';
+const CTP_OTURUM_LAST='ctp_oturum_v4_last';
+const CTP_OTURUM_LIMIT=10*60*1000;
+function ctpOturumKaydet(username){
+  try{
+    if(!username) return;
+    localStorage.setItem(CTP_OTURUM_KEY, String(username));
+    localStorage.setItem(CTP_OTURUM_LAST, String(Date.now()));
+  }catch(e){}
+}
+function ctpOturumSil(){
+  try{localStorage.removeItem(CTP_OTURUM_KEY);localStorage.removeItem(CTP_OTURUM_LAST);}catch(e){}
+}
+function ctpOturumGecerliMi(){
+  try{
+    const user=localStorage.getItem(CTP_OTURUM_KEY)||'';
+    const last=+(localStorage.getItem(CTP_OTURUM_LAST)||0);
+    if(!user || !last) return false;
+    if(Date.now()-last>CTP_OTURUM_LIMIT){ctpOturumSil();return false;}
+    return true;
+  }catch(e){return false;}
+}
+function ctpOturumAktivite(){
+  try{
+    const app=document.getElementById('app');
+    if(app && app.style.display==='block') localStorage.setItem(CTP_OTURUM_LAST, String(Date.now()));
+  }catch(e){}
+}
+function ctpOturumYenilemedenGiris(){
+  try{
+    if(!ctpOturumGecerliMi()) return false;
+    ensureUsers();
+    const username=localStorage.getItem(CTP_OTURUM_KEY)||'';
+    const user=(DB.users||[]).find(x=>String(x.username).toLowerCase()===username.toLowerCase() && x.active!==false);
+    if(!user){ctpOturumSil();return false;}
+    currentUser=user;
+    document.getElementById('login-screen').style.display='none';
+    document.getElementById('app').style.display='block';
+    document.getElementById('sb-av').textContent=user.username[0].toUpperCase();
+    document.getElementById('sb-name').textContent=user.username+' — '+roleLabel(user.role);
+    initApp();
+    applyRoleUI();
+    ctpOturumAktivite();
+    return true;
+  }catch(e){return false;}
+}
+function ctpOturumKontrol(){
+  try{
+    const app=document.getElementById('app');
+    if(!app || app.style.display!=='block') return;
+    if(!ctpOturumGecerliMi()){
+      currentUser=null;
+      app.style.display='none';
+      document.getElementById('login-screen').style.display='flex';
+      const err=document.getElementById('l-err');
+      if(err){err.style.display='flex';err.innerHTML='<i class="ti ti-alert-circle"></i> 10 dakika işlem yapılmadığı için çıkış yapıldı';}
+    }
+  }catch(e){}
+}
+['click','keydown','touchstart','mousemove','scroll'].forEach(function(ev){window.addEventListener(ev,ctpOturumAktivite,{passive:true});});
+document.addEventListener('DOMContentLoaded',function(){setTimeout(ctpOturumYenilemedenGiris,300);});
+window.addEventListener('load',function(){setTimeout(ctpOturumYenilemedenGiris,700);});
+setInterval(ctpOturumKontrol,15000);
 
 function goPage(id,el){
   if((id==='yedek'||id==='kullanicilar') && !isAdmin()) return permissionError('Bu bölüm sadece admin içindir.');
@@ -2254,7 +2320,40 @@ function faturaYazdir() {
   win.document.close();
 }
 
-window.addEventListener('beforeunload',e=>{if(hasUnsaved){e.preventDefault();e.returnValue='Kaydedilmemiş değişiklikler var. Sayfayı kapatmak istediğinizden emin misiniz?';}});
+window.addEventListener('beforeunload',e=>{if(hasUns
+<!-- CTP_VIEW_MODE_V4_START -->
+<style id="ctp-view-mode-v4-css">
+#ctp-view-toggle{position:fixed;right:12px;top:12px;z-index:1000000;display:none;gap:6px;background:#fff;border:1px solid #e5e7eb;border-radius:999px;padding:5px;box-shadow:0 8px 24px rgba(0,0,0,.16)}
+#ctp-view-toggle button{border:0;border-radius:999px;padding:7px 10px;font-size:11px;font-weight:800;background:#f3f4f6;color:#374151;cursor:pointer}
+body.ctp-view-mobile #ctp-view-toggle .m,body.ctp-view-web #ctp-view-toggle .w{background:#1d6f42;color:#fff}
+#app[style*="block"] ~ #ctp-view-toggle, body.ctp-app-open #ctp-view-toggle{display:flex}
+@media(max-width:780px){#ctp-view-toggle{top:8px;right:8px}body.ctp-view-web .sidebar{display:flex!important}body.ctp-view-web .main{margin-left:210px!important;padding:20px!important;min-width:980px!important}body.ctp-view-web #mobile-nav{display:none!important}body.ctp-view-web table{min-width:620px!important}body.ctp-view-web .g2{grid-template-columns:1fr 1fr!important}body.ctp-view-web .stats{grid-template-columns:repeat(4,1fr)!important}}
+@media(min-width:781px){body.ctp-view-mobile .sidebar{display:none!important}body.ctp-view-mobile .main{margin-left:0!important;padding:12px 10px 92px!important}body.ctp-view-mobile .g2,body.ctp-view-mobile .g3,body.ctp-view-mobile .stats{grid-template-columns:1fr!important}body.ctp-view-mobile #mobile-nav{display:flex!important}}
+</style>
+<div id="ctp-view-toggle"><button class="m" onclick="ctpGorunumSec('mobile')">Mobil</button><button class="w" onclick="ctpGorunumSec('web')">Web</button></div>
+<script id="ctp-view-mode-v4-js">
+(function(){
+  function apply(mode){
+    document.body.classList.remove('ctp-view-mobile','ctp-view-web');
+    document.body.classList.add(mode==='web'?'ctp-view-web':'ctp-view-mobile');
+    localStorage.setItem('ctp_view_mode_v4',mode);
+  }
+  window.ctpGorunumSec=apply;
+  function auto(){
+    var saved=localStorage.getItem('ctp_view_mode_v4');
+    apply(saved || (window.innerWidth<=780?'mobile':'web'));
+  }
+  function appFlag(){
+    var app=document.getElementById('app');
+    if(app && app.style.display==='block') document.body.classList.add('ctp-app-open'); else document.body.classList.remove('ctp-app-open');
+  }
+  document.addEventListener('DOMContentLoaded',function(){auto();setInterval(appFlag,800);});
+  window.addEventListener('resize',function(){if(!localStorage.getItem('ctp_view_mode_v4')) auto();});
+})();
+</script>
+<!-- CTP_VIEW_MODE_V4_END -->
+
+aved){e.preventDefault();e.returnValue='Kaydedilmemiş değişiklikler var. Sayfayı kapatmak istediğinizden emin misiniz?';}});
 
 // ══════════════════════════════════════════════════════════════
 // GOOGLE DRIVE OTOMATİK YEDEKLEME
